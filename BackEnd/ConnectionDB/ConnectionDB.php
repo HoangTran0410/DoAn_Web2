@@ -70,4 +70,3 @@
 		}
 }
 ?>
-<!-- ko hiểu sao githubdesktop nó ko nhân cái folđer mới thêm vào :v nên tui làm trên web luôn, chắc do mới tạo branch nó thế, :v giờ chắc bth rồi -->
