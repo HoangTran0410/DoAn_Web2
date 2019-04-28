@@ -18,7 +18,14 @@ class SanPham {
 	}
 
 	function show() {
-		echo $this->MaSP." ".$this->MaLSP." ".$this->TenSP." ".$this->DonGia." ".$this->SoLuong." ".$this->FileNameHinhAnh." ".$this->TrangThai."<br>";
+		echo "<tr>
+			<td>".$this->MaSP."</td>
+			<td>".$this->MaLSP."</td>
+			<td>".$this->TenSP."</td>
+			<td>".$this->DonGia."</td>
+			<td>".$this->SoLuong."</td>
+			<td>".$this->FileNameHinhAnh."</td>
+			<td>".$this->TrangThai."</td>
+		</tr>";
 	}
 }
-?>
