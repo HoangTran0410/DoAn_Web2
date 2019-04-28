@@ -25,6 +25,15 @@ abstract class BUS implements DAOBUSInteface
         return $this->DAO->query($qry);
     }
 
+    function get($ma) {
+        for ($i = 0; $i < count($this->ds); $i++) {
+            if ($this->ds[$i]->Ma == $ma) {
+                return $this->ds[$i];
+            }
+        }
+        return null;
+    }
+
     function add($obj)
     {
         $status = $this->DAO->add($obj);

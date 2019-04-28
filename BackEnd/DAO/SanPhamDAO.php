@@ -49,7 +49,7 @@ class SanPhamDAO implements DAOBUSInteface
 	{
 		$connection = new ConnectionDB();
 		$status = $connection->sqlUpdate("INSERT INTO `sanpham` VALUES ('"
-			. $sanpham->MaSP . "', '"
+			. $sanpham->Ma . "', '"
 			. $sanpham->MaLSP . "', '"
 			. $sanpham->TenSP . "', '"
 			. $sanpham->DonGia . "', '"
@@ -65,7 +65,7 @@ class SanPhamDAO implements DAOBUSInteface
 	function delete($masp)
 	{
 		$connection = new ConnectionDB();
-		$status = $connection->sqlUpdate("DELETE FROM `sanpham` WHERE `sanpham`.`MaSP` = '" . $masp . "'");
+		$status = $connection->sqlUpdate("DELETE FROM `sanpham` WHERE MaSP='" . $masp . "'");
 		$connection->closeConnect();
 		return $status;
 	}

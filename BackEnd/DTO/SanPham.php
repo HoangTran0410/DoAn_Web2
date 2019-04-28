@@ -10,7 +10,7 @@ class SanPham
 
     function SanPham($MaSP, $MaLSP, $TenSP, $DonGia, $SoLuong, $url, $TrangThai)
     {
-        $this->MaSP = $MaSP;
+        $this->Ma = $MaSP;
         $this->MaLSP = $MaLSP;
         $this->TenSP = $TenSP;
         $this->DonGia = $DonGia;
@@ -22,7 +22,7 @@ class SanPham
     function show()
     {
         echo "<tr>
-			<td>" . $this->MaSP . "</td>
+			<td>" . $this->Ma . "</td>
 			<td>" . $this->MaLSP . "</td>
 			<td>" . $this->TenSP . "</td>
 			<td>" . $this->DonGia . "</td>
