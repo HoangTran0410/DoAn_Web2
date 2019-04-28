@@ -13,7 +13,7 @@ class ConnectionDB
 		$this->localhost = "localhost";
 		$this->user = "root";
 		$this->pass = "";
-		$this->DB = "quanlysieuthidienthoai";
+		$this->DB = "web2";
 
 		if (!$this->connect) {
 			$this->setupConnect();

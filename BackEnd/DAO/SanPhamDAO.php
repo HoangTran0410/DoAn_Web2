@@ -1,9 +1,10 @@
 <?php
 include_once "../ConnectionDB/ConnectionDB.php";
-include_once "SanPham.php";
-class SanPhamDAO
-{
+include_once "../DAOBUSInterface.php";
+include_once "../DTO/SanPham.php";
 
+class SanPhamDAO implements DAOBUSInteface
+{
 	var $connection;
 	var $MaSP_I = 0,
 		$MaLSP_I = 1,
@@ -18,7 +19,7 @@ class SanPhamDAO
 
 	// Đọc Database, trả về mảng dữ liệu
 	function readDB()
-	{ 
+	{
 		return $this->query("select * from sanpham");
 	}
 
