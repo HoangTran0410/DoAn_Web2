@@ -14,7 +14,7 @@ function addTopNav()
             </div> <!-- End Social Topnav -->
 
             <ul class="top-nav-quicklink flexContain">
-                <li><a href="index.html"><i class="fa fa-home"></i> Trang chủ</a></li>
+                <li><a href="index.php"><i class="fa fa-home"></i> Trang chủ</a></li>
                 <li><a href="tintuc.html"><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
                 <li><a href="tuyendung.html"><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
                 <li><a href="gioithieu.html"><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
@@ -33,14 +33,14 @@ function addHeader()
         <div class="smallmenu" id="openmenu" onclick="smallmenu(1)">≡</div>
         <div style="display: none;" class="smallmenu" id="closemenu" onclick="smallmenu(0)">×</div>
         <div class="logo">
-            <a href="index.html">
+            <a href="index.php">
                 <img src="img/logo.jpg" alt="Trang chủ Smartphone Store" title="Trang chủ Smartphone Store">
             </a>
         </div> <!-- End Logo -->
 
         <div class="content">
             <div class="search-header">
-                <form class="input-search" method="get" action="index.html">
+                <form class="input-search" method="get" action="index.php">
                     <div class="autocomplete">
                         <input id="search-box" name="search" autocomplete="off" type="text" placeholder="Nhập từ khóa tìm kiếm...">
                         <button type="submit">
@@ -96,7 +96,7 @@ function addFooter()
 
     <!-- ============== Footer ============= -->
     <div class="copy-right">
-        <p><a href="index.html">SmartPhone Store</a> - All rights reserved © 2018 - Designed by
+        <p><a href="index.php">SmartPhone Store</a> - All rights reserved © 2018 - Designed by
             <span style="color: #eee; font-weight: bold">H-group</span></p>
     </div>';
 }
