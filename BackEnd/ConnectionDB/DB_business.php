@@ -40,7 +40,7 @@ class DB_business extends DB_driver
     // Hàm xóa theo id
     function delete_by_id($id)
     {
-        return $this->remove($this->_table_name, $this->_key . '=' . $id . "'");
+        return $this->remove($this->_table_name, $this->_key . "='" . $id . "'");
     }
 
     // Hàm cập nhật theo id
