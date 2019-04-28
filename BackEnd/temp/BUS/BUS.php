@@ -1,7 +1,7 @@
 <?php
 include_once "../DAOBUSInterface.php";
 
-abstract class BUS implements DAOBUSInteface
+class BUS implements BUSInterface
 {
     var $DAO;
     var $ds;

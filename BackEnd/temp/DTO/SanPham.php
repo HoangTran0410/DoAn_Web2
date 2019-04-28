@@ -1,12 +1,13 @@
 <?php
 class SanPham
 {
-    var $Ma;
-    var $TenSP;
-    var $DonGia;
-    var $SoLuong;
-    var $FileNameHinhAnh;
-    var $TrangThai;
+    var $Ma,
+        $MaLSP,
+        $TenSP,
+        $DonGia,
+        $SoLuong,
+        $FileNameHinhAnh,
+        $TrangThai;
 
     function SanPham($MaSP, $MaLSP, $TenSP, $DonGia, $SoLuong, $url, $TrangThai)
     {

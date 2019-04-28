@@ -41,7 +41,7 @@ class LoaiSanPhamDAO implements DAOBUSInteface
 	{
 		$connection = new ConnectionDB();
 		$status = $connection->sqlUpdate("INSERT INTO `loaisanpham` VALUES ('"
-			. $loaisanpham->MaLSP . "', '"
+			. $loaisanpham->Ma . "', '"
 			. $loaisanpham->TenLSP . "', '"
 			. $loaisanpham->MoTa . "');");
 
@@ -65,7 +65,7 @@ class LoaiSanPhamDAO implements DAOBUSInteface
 		$status = $connection->sqlUpdate("UPDATE loaisanpham Set "
 			. "TenLSP='" . $loaisanpham->TenLSP
 			. "',MoTa='" . $loaisanpham->MoTa
-			. "' where MaSP='" . $loaisanpham->MaLSP . "'");
+			. "' where MaSP='" . $loaisanpham->Ma . "'");
 		$connection->closeConnect();
 		return $status;
 	}

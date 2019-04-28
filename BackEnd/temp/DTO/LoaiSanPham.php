@@ -1,9 +1,7 @@
 <?php
 class LoaiSanPham
 {
-    var $Ma;
-    var $TenLSP;
-    var $MoTa;
+    var $Ma, $TenLSP, $MoTa;
 
     function LoaiSanPham($MaLSP,  $TenLSP, $MoTa)
     {
