@@ -10,8 +10,7 @@
 	<link rel="shortcut icon" href="img/favicon.ico" />
 
 	<!-- Load font awesome icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-	 crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
 	<!-- owl carousel libraries -->
 	<link rel="stylesheet" href="js/owlcarousel/owl.carousel.min.css">
@@ -39,14 +38,14 @@
 	<script src="js/dungchung.js"></script>
 	<script src="js/trangchu.js"></script>
 
-
+	<?php include_once "FrontEnd/echoHTML.php" ?>
 </head>
 
 <body>
-	<script> addTopNav(); </script>
+	<?php addTopNav(); ?>
 
 	<section>
-		<script> addHeader(); </script>
+		<?php addHeader(); ?>
 
 		<div class="banner">
 			<div class="owl-carousel owl-theme"></div>
@@ -97,7 +96,7 @@
 		<hr>
 
 		<!-- Mặc định mới vào trang sẽ ẩn đi, nế có filter thì mới hiện lên -->
-		<div class="contain-products" style="display:none"> 
+		<div class="contain-products" style="display:none">
 			<div class="filterName">
 				<input type="text" placeholder="Lọc trong trang theo tên..." onkeyup="filterProductsName(this)">
 			</div> <!-- End FilterName -->
@@ -113,15 +112,20 @@
 		</div>
 
 		<!-- Div hiển thị khung sp hot, khuyến mãi, mới ra mắt ... -->
-		<div class="contain-khungSanPham" ></div>
+		<div class="contain-khungSanPham"></div>
 
 	</section> <!-- End Section -->
 
-	<script>
-		addContainTaiKhoan(); addPlc();
-	</script>
+	<?php
+		addContainTaiKhoan();
+		addPlc();
+	?>
 
-	<div class="footer"><script>addFooter();</script></div>
+	<div class="footer">
+		<?php
+			addFooter();
+		?>
+	</div>
 
 	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
 
