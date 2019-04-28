@@ -18,9 +18,15 @@ class SanPhamDAO
 
 	// Đọc Database, trả về mảng dữ liệu
 	function readDB()
+	{ 
+		return $this->query("select * from sanpham");
+	}
+
+	// thực hiện câu truy vấn và trả về mảng sản phẩm lấy được
+	function query($qry)
 	{
 		$connection = new ConnectionDB();
-		$s = $connection->sqlQuery("select * from sanpham");
+		$s = $connection->sqlQuery($qry);
 		$dssp = array();
 		while ($row = mysqli_fetch_array($s)) {
 			$dssp[] = new SanPham(

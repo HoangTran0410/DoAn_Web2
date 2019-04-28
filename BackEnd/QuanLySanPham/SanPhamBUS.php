@@ -19,6 +19,11 @@ class SanPhamBUS
         $this->dssp = $this->sanphamDAO->readDB();
     }
 
+    // thực hiện câu truy vấn và trả về mảng sản phẩm lấy được
+    function query($qry) {
+        return $this->sanphamDAO->query($qry);
+    }
+
     // thêm 1 sản phẩm
     function add($sanpham)
     {
