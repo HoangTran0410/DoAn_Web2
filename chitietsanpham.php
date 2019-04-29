@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="FrontEnd/css/taikhoan.css">
     <link rel="stylesheet" href="FrontEnd/css/chitietsanpham.css">
     <link rel="stylesheet" href="FrontEnd/css/footer.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
     <!-- js -->
     <script src="data/products.js"></script>
     <script src="js/classes.js"></script>
