@@ -61,7 +61,7 @@ function addHeader()
                         Tài khoản
                     </a>
                     <div class="menuMember hide">
-                        <a href="nguoidung.html">Trang người dùng</a>
+                        <a href="nguoidung.php">Trang người dùng</a>
                         <a onclick="logOut();">Đăng xuất</a>
                     </div>
 
