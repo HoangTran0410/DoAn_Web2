@@ -206,7 +206,7 @@ function logIn(form) {
         if (equalUser(newUser, ad)) {
             alert('Xin chào admin .. ');
             window.localStorage.setItem('admin', true);
-            window.location.assign('admin.html');
+            window.location.assign('admin.php');
             return false;
         }
     }

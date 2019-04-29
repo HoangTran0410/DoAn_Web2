@@ -136,7 +136,7 @@ function addTableProducts() {
             <td style="width: 5%">` + (i+1) + `</td>
             <td style="width: 10%">` + p.masp + `</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.html?` + p.name.split(' ').join('-') + `">` + p.name + `</a>
+                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.name.split(' ').join('-') + `">` + p.name + `</a>
                 <img src="` + p.img + `"></img>
             </td>
             <td style="width: 15%">` + p.price + `</td>

@@ -81,7 +81,7 @@ function addToWeb(p, ele, returnString) {
 
 	// tách theo dấu ' ' vào gắn lại bằng dấu '-', code này giúp bỏ hết khoảng trắng và thay vào bằng dấu '-'.
 	// Tạo link tới chi tiết sản phẩm, chuyển tất cả ' ' thành '-'
-	var chitietSp = 'chitietsanpham.html?' + p.name.split(' ').join('-');
+	var chitietSp = 'chitietsanpham.php?' + p.name.split(' ').join('-');
 
 	// Cho mọi thứ vào tag <li>... </li>
 	var newLi =

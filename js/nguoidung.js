@@ -263,7 +263,7 @@ function addDonHang(dh) {
                 <tr>
                     <td>` + (i + 1) + `</td>
                     <td class="noPadding imgHide">
-                        <a target="_blank" href="chitietsanpham.html?` + p.name.split(' ').join('-') + `" title="Xem chi tiết">
+                        <a target="_blank" href="chitietsanpham.php?` + p.name.split(' ').join('-') + `" title="Xem chi tiết">
                             ` + p.name + `
                             <img src="` + p.img + `">
                         </a>
