@@ -109,17 +109,34 @@ function animateCartNumber() {
 function themVaoGioHang(masp, tensp) {
     var user = getCurrentUser();
     if (!user) {
-        alert('Bạn cần đăng nhập để mua hàng !');
-        showTaiKhoan(true);
+        // alert('Bạn cần đăng nhập để mua hàng !');
+        Swal.fire({
+            title: 'Xin chào!',
+            text: 'Bạn cần đăng nhập để mua hàng',
+            type: 'error',
+            grow: 'row',
+            confirmButtonText: 'Đăng nhập'
+        }).then((result) => {
+            showTaiKhoan(true);
+        })
+
         return;
     }
     if (user.off) {
-        alert('Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!');
-        addAlertBox('Tài khoản của bạn đã bị khóa bởi Admin.', '#aa0000', '#fff', 10000);
+        Swal.fire({
+            title: 'Tài Khoản Bị Khóa!',
+            text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
+            type: 'error',
+            grow: 'row',
+            confirmButtonText: 'Trở về',
+            footer: '<a href>Liên hệ với Admin</a>'
+        });
+
+        // addAlertBox('Tài khoản của bạn đã bị khóa bởi Admin.', '#aa0000', '#fff', 10000);
         return;
     }
     var t = new Date();
-    var daCoSanPham = false;;
+    var daCoSanPham = false;
 
     for (var i = 0; i < user.products.length; i++) { // check trùng sản phẩm
         if (user.products[i].ma == masp) {
@@ -138,7 +155,14 @@ function themVaoGioHang(masp, tensp) {
     }
 
     animateCartNumber();
-    addAlertBox('Đã thêm ' + tensp + ' vào giỏ.', '#17c671', '#fff', 3500);
+    // addAlertBox('Đã thêm ' + tensp + ' vào giỏ.', '#17c671', '#fff', 3500);
+    Swal.fire({
+        position: 'bottom-end',
+        type: 'success',
+        title: 'Đã thêm ' + tensp + ' vào giỏ.',
+        showConfirmButton: true,
+        timer: 2000
+    })
 
     setCurrentUser(user); // cập nhật giỏ hàng cho user hiện tại
     updateListUser(user); // cập nhật list user
@@ -204,16 +228,26 @@ function logIn(form) {
     // Đăng nhập vào admin
     for (var ad of adminInfo) {
         if (equalUser(newUser, ad)) {
-            alert('Xin chào admin .. ');
-            window.localStorage.setItem('admin', true);
-            window.location.assign('admin.php');
+            Swal.fire({
+                type: 'success',
+                title: 'Xin chào Admin'
+            }).then((result) => {
+                window.localStorage.setItem('admin', true);
+                window.location.assign('admin.php');
+            })
             return false;
         }
     }
 
     // Trả về thông báo nếu không khớp
-    alert('Nhập sai tên hoặc mật khẩu !!!');
-    form.username.focus();
+    // alert('Nhập sai tên hoặc mật khẩu !!!');
+    Swal.fire({
+        type: 'error',
+        title: 'Sai tên đăng nhập hoặc mật khẩu'
+    }).then((result) => {
+        form.username.focus();    
+    })
+    
     return false;
 }
 
@@ -231,7 +265,13 @@ function signUp(form) {
     // Kiểm tra trùng admin
     for (var ad of adminInfo) {
         if (newUser.username == ad.username) {
-            alert('Tên đăng nhập đã có người sử dụng !!');
+            Swal.fire({
+                type: 'error',
+                text: 'Tên đăng nhập đã có người sử dụng'
+            }).then((result) => {
+                form.newUser.focus();
+            });
+            // alert('Tên đăng nhập đã có người sử dụng !!');
             return false;
         }
     }
@@ -239,7 +279,13 @@ function signUp(form) {
     // Kiểm tra xem dữ liệu form có trùng với khách hàng đã có không
     for (var u of listUser) {
         if (newUser.username == u.username) {
-            alert('Tên đăng nhập đã có người sử dụng !!');
+            Swal.fire({
+                type: 'error',
+                text: 'Tên đăng nhập đã có người sử dụng'
+            }).then((result) => {
+                form.newUser.focus();
+            });
+            // alert('Tên đăng nhập đã có người sử dụng !!');
             return false;
         }
     }
@@ -250,17 +296,35 @@ function signUp(form) {
 
     // Đăng nhập vào tài khoản mới tạo
     window.localStorage.setItem('CurrentUser', JSON.stringify(newUser));
-    alert('Đăng kí thành công, Bạn sẽ được tự động đăng nhập!');
-    location.reload();
-
+    Swal.fire({
+        type: 'success',
+        title: 'Đăng kí thành công',
+        text: 'Bạn sẽ được đăng nhập tự động',
+        confirmButtonText: 'Tuyệt'
+    }).then((result) => {
+        setTimeout(function(){
+            location.reload();
+        }, 1000);
+    });
+    
     return false;
 }
 
 function logOut() {
-    if (window.confirm("Xác nhận đăng xuất ?")) {
-        window.localStorage.removeItem('CurrentUser');
-        location.reload();
-    }
+    Swal.fire({
+        type: 'question',
+        title: 'Xác nhận',
+        text: 'Bạn có chắc muốn đăng xuất?',
+        showCancelButton: true,
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy'
+
+    }).then((result) => {
+        if (result.value) {
+            window.localStorage.removeItem('CurrentUser');
+            location.reload();
+        }
+    });
 }
 
 // Hiển thị form tài khoản, giá trị truyền vào là true hoặc false
@@ -510,7 +574,7 @@ function smallmenu(number) {
         document.getElementById("closemenu").style.display = "block";
         document.getElementsByClassName("content")[0].style.maxHeight = document.getElementsByClassName("content")[0].scrollHeight + "px";
         document.getElementsByClassName("content")[0].style.overflow = "unset";
-    
+
     } else if (number == 0) {
         document.getElementById("openmenu").style.display = "block";
         document.getElementById("closemenu").style.display = "none";

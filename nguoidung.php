@@ -10,10 +10,12 @@
 	<link rel="shortcut icon" href="img/favicon.ico" />
 
 	<!-- Load font awesome icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-     crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
-     <script src="js/Jquery/Jquery.min.js"></script>
+	<!-- <script src="js/Jquery/Jquery.min.js"></script> -->
+
+	<!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 	<!-- our files -->
 	<!-- css -->
@@ -21,14 +23,14 @@
 	<link rel="stylesheet" href="FrontEnd/css/topnav.css">
 	<link rel="stylesheet" href="FrontEnd/css/header.css">
 	<link rel="stylesheet" href="FrontEnd/css/taikhoan.css">
-    <link rel="stylesheet" href="FrontEnd/css/gioHang.css">
-    <link rel="stylesheet" href="FrontEnd/css/nguoidung.css">
+	<link rel="stylesheet" href="FrontEnd/css/gioHang.css">
+	<link rel="stylesheet" href="FrontEnd/css/nguoidung.css">
 	<link rel="stylesheet" href="FrontEnd/css/footer.css">
 	<!-- js -->
 	<script src="data/products.js"></script>
 	<script src="js/classes.js"></script>
-    <script src="js/dungchung.js"></script>
-    <script src="js/nguoidung.js"></script>
+	<script src="js/dungchung.js"></script>
+	<script src="js/nguoidung.js"></script>
 
 	<?php require_once "FrontEnd/echoHTML.php"; ?>
 </head>
@@ -39,16 +41,17 @@
 	<section>
 		<?php addHeader(); ?>
 
-        <img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
-        
-        <div class="infoUser"> 
+		<img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
 
-        </div>
+		<div class="infoUser"> </div>
 
-        <div class="listDonHang"> </div>
+		<div class="listDonHang"> </div>
 	</section> <!-- End Section -->
 
-	<?php addContainTaiKhoan(); addPlc(); ?>
+	<?php 
+		addContainTaiKhoan();
+		addPlc(); 
+	?>
 
 	<div class="footer">
 		<?php addFooter(); ?>

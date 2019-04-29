@@ -10,8 +10,10 @@
 	<title>Thế giới điện thoại</title>
 
 	<!-- Load font awesome icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-	 crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+
+	<!-- Sweet Alert -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 	<!-- our files -->
 	<!-- css -->
@@ -37,8 +39,8 @@
 	<section style="min-height: 85vh">
 		<?php addHeader(); ?>
 
-		<table class="listSanPham" > </table>
-		
+		<table class="listSanPham"> </table>
+
 	</section> <!-- End Section -->
 
 	<?php addContainTaiKhoan(); ?>

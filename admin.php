@@ -10,11 +10,13 @@
     <link rel="shortcut icon" href="img/favicon.ico" />
 
     <!-- Load font awesome icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
     <!-- Chart JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- Our files -->
     <link rel="stylesheet" href="css/admin/style.css">
@@ -106,9 +108,9 @@
                         <td>
                             <select name="chonCompany" onchange="autoMaSanPham(this.value)">
                                 <script>
-                                    var company = ["Apple", "Samsung", "Oppo", "Nokia", "Huawei", "Xiaomi","Realme", "Vivo", "Philips", "Mobell", "Mobiistar", "Itel","Coolpad", "HTC", "Motorola"];
-                                    for(var c of company) {
-                                        document.writeln(`<option value="`+c+`">`+c+`</option>`);
+                                    var company = ["Apple", "Samsung", "Oppo", "Nokia", "Huawei", "Xiaomi", "Realme", "Vivo", "Philips", "Mobell", "Mobiistar", "Itel", "Coolpad", "HTC", "Motorola"];
+                                    for (var c of company) {
+                                        document.writeln(`<option value="` + c + `">` + c + `</option>`);
                                     }
                                 </script>
                             </select>

@@ -13,10 +13,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
     <!-- owl carousel libraries cho hình nhỏ -->
-    <link rel="stylesheet" href="js/owlcarousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="js/owlcarousel/owl.theme.default.min.css">
-    <script src="js/Jquery/Jquery.min.js"></script>
-    <script src="js/owlcarousel/owl.carousel.min.js"></script>
+    <!-- <link rel="stylesheet" href="js/owlcarousel/owl.carousel.min.css"> -->
+    <!-- <link rel="stylesheet" href="js/owlcarousel/owl.theme.default.min.css"> -->
+    <!-- <script src="js/Jquery/Jquery.min.js"></script> -->
+    <!-- <script src="js/owlcarousel/owl.carousel.min.js"></script> -->
+
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- our files -->
     <!-- css -->

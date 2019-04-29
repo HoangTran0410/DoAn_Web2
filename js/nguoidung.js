@@ -122,17 +122,28 @@ function changePass() {
     var khungChangePass = document.getElementById('khungDoiMatKhau');
     var inps = khungChangePass.getElementsByTagName('input');
     if (inps[0].value != currentUser.pass) {
-        alert('Sai mật khẩu !!');
-        inps[0].focus();
+        Swal.fire({
+            type: 'error',
+            title: 'Sai mật khẩu'
+        }).then((result) => {
+            inps[0].focus();
+        });
         return;
     }
     if (inps[1] == '') {
+        Swal.fire({
+            type: 'error',
+            title: 'Chưa nhập mật khẩu mới !'
+        })
         inps[1].focus();
-        alert('Chưa nhập mật khẩu mới !');
     }
     if (inps[1].value != inps[2].value) {
-        alert('Mật khẩu không khớp');
-        inps[2].focus();
+        Swal.fire({
+            type: 'error',
+            title: 'Mật khẩu không khớp'
+        }).then((result) => {
+            inps[2].focus();
+        });
         return;
     }
 
@@ -147,8 +158,15 @@ function changePass() {
     capNhat_ThongTin_CurrentUser();
 
     // thông báo
-    addAlertBox('Thay đổi mật khẩu thành công.', '#5f5', '#000', 4000);
-    openChangePass();
+    Swal.fire({
+        type: 'success',
+        title: 'Xong',
+        text: 'Thay đổi mật khẩu thành công.'
+    }).then((result) => {
+        inps[0].value = inps[1].value = inps[2].value = "";
+        openChangePass();    
+    });
+    // addAlertBox('Thay đổi mật khẩu thành công.', '#5f5', '#000', 4000);
 }
 
 function changeInfo(iTag, info) {

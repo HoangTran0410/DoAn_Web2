@@ -18,6 +18,9 @@
 	<script src="js/Jquery/Jquery.min.js"></script>
 	<script src="js/owlcarousel/owl.carousel.min.js"></script>
 
+	<!-- Sweet Alert -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 	<!-- tidio - live chat -->
 	<!-- <script src="//code.tidio.co/bfiiplaaohclhqwes5xivoizqkq56guu.js"></script> -->
 
