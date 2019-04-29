@@ -62,7 +62,7 @@ function addHeader()
                     </a>
                     <div class="menuMember hide">
                         <a href="nguoidung.html">Trang người dùng</a>
-                        <a onclick="if(window.confirm(`Xác nhận đăng xuất ?`)) logOut();">Đăng xuất</a>
+                        <a onclick="logOut();">Đăng xuất</a>
                     </div>
 
                 </div> <!-- End Member -->
@@ -86,6 +86,135 @@ function addHeader()
     </div> <!-- End Header -->';
 }
 
+// thêm home
+function addHome()
+{
+    echo '
+    <div class="banner">
+    <div class="owl-carousel owl-theme"></div>
+    </div> <!-- End Banner -->
+
+    <img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
+
+    <br>
+
+    <div class="companysFilter">
+    <button class="companysButton" onclick="setCompanysMenu()">
+        <p>Hãng</p>
+        <div id="iconOpenMenu">▷</div>
+        <div id="iconCloseMenu" style="display: none;">▽</div>
+    </button>
+    </div>
+    <div class="companyMenu group flexContain"></div>
+
+    <div class="flexContain">
+
+    <div class="pricesRangeFilter dropdown">
+        <button class="dropbtn">Giá tiền</button>
+        <div class="dropdown-content"></div>
+    </div>
+
+    <div class="promosFilter dropdown">
+        <button class="dropbtn">Khuyến mãi</button>
+        <div class="dropdown-content"></div>
+    </div>
+
+    <div class="starFilter dropdown">
+        <button class="dropbtn">Số lượng sao</button>
+        <div class="dropdown-content"></div>
+    </div>
+
+    <div class="sortFilter dropdown">
+        <button class="dropbtn">Sắp xếp</button>
+        <div class="dropdown-content"></div>
+    </div>
+
+    </div> <!-- End khung chọn bộ lọc -->
+
+    <div class="choosedFilter flexContain">
+    <a id="deleteAllFilter" style="display: none;">
+        <h3>Xóa bộ lọc</h3>
+    </a>
+    </div> <!-- Những bộ lọc đã chọn -->
+    <hr>
+
+    <!-- Mặc định mới vào trang sẽ ẩn đi, nế có filter thì mới hiện lên -->
+    <div class="contain-products" style="display:none">
+    <div class="filterName">
+        <input type="text" placeholder="Lọc trong trang theo tên..." onkeyup="filterProductsName(this)">
+    </div> <!-- End FilterName -->
+
+    <ul id="products" class="homeproduct group flexContain">
+        <div id="khongCoSanPham">
+            <i class="fa fa-times-circle"></i>
+            Không có sản phẩm nào
+        </div> <!-- End Khong co san pham -->
+    </ul><!-- End products -->
+
+    <div class="pagination"></div>
+    </div>
+
+    <!-- Div hiển thị khung sp hot, khuyến mãi, mới ra mắt ... -->
+    <div class="contain-khungSanPham"></div>';
+}
+
+// Thêm chi tiết sản phẩm
+function addChiTietSanPham()
+{
+    echo '
+    <div class="chitietSanpham" style="min-height: 85vh">
+        <h1>Điện thoại </h1>
+        <div class="rating"></div>
+        <div class="rowdetail group">
+            <div class="picture">
+                <img src="">
+            </div>
+            <div class="price_sale">
+                <div class="area_price"> </div>
+                <div class="ship" style="display: none;">
+                    <img src="img/chitietsanpham/clock-152067_960_720.png">
+                    <div>NHẬN HÀNG TRONG 1 GIỜ</div>
+                </div>
+                <div class="area_promo">
+                    <strong>khuyến mãi</strong>
+                    <div class="promo">
+                        <img src="img/chitietsanpham/icon-tick.png">
+                        <div id="detailPromo"> </div>
+                    </div>
+                </div>
+                <div class="policy">
+                    <div>
+                        <img src="img/chitietsanpham/box.png">
+                        <p>Trong hộp có: Sạc, Tai nghe, Sách hướng dẫn, Cây lấy sim, Ốp lưng </p>
+                    </div>
+                    <div>
+                        <img src="img/chitietsanpham/icon-baohanh.png">
+                        <p>Bảo hành chính hãng 12 tháng.</p>
+                    </div>
+                    <div class="last">
+                        <img src="img/chitietsanpham/1-1.jpg">
+                        <p>1 đổi 1 trong 1 tháng nếu lỗi, đổi sản phẩm tại nhà trong 1 ngày.</p>
+                    </div>
+                </div>
+                <div class="area_order">
+                    <!-- nameProduct là biến toàn cục được khởi tạo giá trị trong phanTich_URL_chiTietSanPham -->
+                    <a class="buy_now" onclick="themVaoGioHang(maProduct, nameProduct);">
+                        <b><i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng</b>
+                        <p>Giao trong 1 giờ hoặc nhận tại cửa hàng</p>
+                    </a>
+                </div>
+            </div>
+            <div class="info_product">
+                <h2>Thông số kỹ thuật</h2>
+                <ul class="info">
+
+                </ul>
+            </div>
+        </div>
+    </div>';
+}
+
+// Thêm footer
 function addFooter()
 {
     echo '
@@ -124,7 +253,7 @@ function addContainTaiKhoan()
                             <label>
                                 Tên đăng nhập<span class="req">*</span>
                             </label>
-                            <input name=`username` type="text" required autocomplete="off" />
+                            <input name="username" type="text" required autocomplete="off" />
                         </div> <!-- /user name -->
 
                         <div class="field-wrap">

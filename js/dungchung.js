@@ -77,7 +77,7 @@ function addAlertBox(text, bgcolor, textcolor, time) {
 
     if (textcolor) al.style.color = textcolor;
     if (time)
-        setTimeout(function() {
+        setTimeout(function () {
             al.style.opacity = 0;
             al.style.zIndex = 0;
         }, time);
@@ -99,7 +99,7 @@ function animateCartNumber() {
     cn.style.transform = 'scale(2)';
     cn.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
     cn.style.color = 'white';
-    setTimeout(function() {
+    setTimeout(function () {
         cn.style.transform = 'scale(1)';
         cn.style.backgroundColor = 'transparent';
         cn.style.color = 'red';
@@ -257,8 +257,10 @@ function signUp(form) {
 }
 
 function logOut() {
-    window.localStorage.removeItem('CurrentUser');
-    location.reload();
+    if (window.confirm("Xác nhận đăng xuất ?")) {
+        window.localStorage.removeItem('CurrentUser');
+        location.reload();
+    }
 }
 
 // Hiển thị form tài khoản, giá trị truyền vào là true hoặc false
@@ -283,9 +285,9 @@ function setupEventTaiKhoan() {
 
     // Tạo eventlistener cho input để tạo hiệu ứng label
     // Gồm 2 event onblur, onfocus được áp dụng cho từng input trong list bên trên
-    ['blur', 'focus'].forEach(function(evt) {
+    ['blur', 'focus'].forEach(function (evt) {
         for (var i = 0; i < list.length; i++) {
-            list[i].addEventListener(evt, function(e) {
+            list[i].addEventListener(evt, function (e) {
                 var label = this.previousElementSibling; // lấy element ĐỨNG TRƯỚC this, this ở đây là input
                 if (e.type === 'blur') { // khi ấn chuột ra ngoài
                     if (this.value === '') { // không có value trong input thì đưa label lại như cũ
@@ -306,7 +308,7 @@ function setupEventTaiKhoan() {
     var tab = document.getElementsByClassName('tab');
     for (var i = 0; i < tab.length; i++) {
         var a = tab[i].getElementsByTagName('a')[0];
-        a.addEventListener('click', function(e) {
+        a.addEventListener('click', function (e) {
             e.preventDefault(); // tắt event mặc định
 
             // Thêm active(màu xanh lá) cho li chứa tag a này => ấn login thì login xanh, signup thì signup sẽ xanh
@@ -382,7 +384,7 @@ function stringToNum(str, char) {
 function autocomplete(inp, arr) {
     var currentFocus;
 
-    inp.addEventListener("keyup", function(e) {
+    inp.addEventListener("keyup", function (e) {
         if (e.keyCode != 13 && e.keyCode != 40 && e.keyCode != 38) { // not Enter,Up,Down arrow
             var a, b, i, val = this.value;
 
@@ -417,7 +419,7 @@ function autocomplete(inp, arr) {
                     b.innerHTML += "<input type='hidden' value='" + arr[i].name + "'>";
 
                     /*execute a function when someone clicks on the item value (DIV element):*/
-                    b.addEventListener("click", function(e) {
+                    b.addEventListener("click", function (e) {
                         /*insert the value for the autocomplete text field:*/
                         inp.value = this.getElementsByTagName("input")[0].value;
                         inp.focus();
@@ -433,7 +435,7 @@ function autocomplete(inp, arr) {
 
     });
     /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
+    inp.addEventListener("keydown", function (e) {
         var x = document.getElementById(this.id + "autocomplete-list");
         if (x) x = x.getElementsByTagName("div");
         if (e.keyCode == 40) {
@@ -488,7 +490,7 @@ function autocomplete(inp, arr) {
         }
     }
     /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function(e) {
+    document.addEventListener("click", function (e) {
         closeAllLists(e.target);
     });
 }
@@ -500,91 +502,6 @@ function addTags(nameTag, link) {
     // Thêm <a> vừa tạo vào khung tìm kiếm
     var khung_tags = document.getElementsByClassName('tags')[0];
     khung_tags.innerHTML += new_tag;
-}
-
-// Thêm topnav vào trang
-function addTopNav() {
-    document.write(`    
-	<div class="top-nav group">
-        <section>
-            <div class="social-top-nav">
-                <a class="fa fa-facebook"></a>
-                <a class="fa fa-twitter"></a>
-                <a class="fa fa-google"></a>
-                <a class="fa fa-youtube"></a>
-            </div> <!-- End Social Topnav -->
-
-            <ul class="top-nav-quicklink flexContain">
-                <li><a href="index.html"><i class="fa fa-home"></i> Trang chủ</a></li>
-                <li><a href="tintuc.html"><i class="fa fa-newspaper-o"></i> Tin tức</a></li>
-                <li><a href="tuyendung.html"><i class="fa fa-handshake-o"></i> Tuyển dụng</a></li>
-                <li><a href="gioithieu.html"><i class="fa fa-info-circle"></i> Giới thiệu</a></li>
-                <li><a href="trungtambaohanh.html"><i class="fa fa-wrench"></i> Bảo hành</a></li>
-                <li><a href="lienhe.html"><i class="fa fa-phone"></i> Liên hệ</a></li>
-            </ul> <!-- End Quick link -->
-        </section><!-- End Section -->
-    </div><!-- End Top Nav  -->`);
-}
-
-// Thêm header
-
-function addHeader() {
-    document.write(`        
-	<div class="header group">
-        <div class="smallmenu" id="openmenu" onclick="smallmenu(1)">≡</div>
-        <div style="display: none;" class="smallmenu" id="closemenu" onclick="smallmenu(0)">×</div>
-        <div class="logo">
-            <a href="index.html">
-                <img src="img/logo.jpg" alt="Trang chủ Smartphone Store" title="Trang chủ Smartphone Store">
-            </a>
-        </div> <!-- End Logo -->
-
-        <div class="content">
-            <div class="search-header">
-                <form class="input-search" method="get" action="index.html">
-                    <div class="autocomplete">
-                        <input id="search-box" name="search" autocomplete="off" type="text" placeholder="Nhập từ khóa tìm kiếm...">
-                        <button type="submit">
-                            <i class="fa fa-search"></i>
-                            Tìm kiếm
-                        </button>
-                    </div>
-                </form> <!-- End Form search -->
-                <div class="tags">
-                    <strong>Từ khóa: </strong>
-                </div>
-            </div> <!-- End Search header -->
-
-            <div class="tools-member">
-                <div class="member">
-                    <a onclick="checkTaiKhoan()">
-                        <i class="fa fa-user"></i>
-                        Tài khoản
-                    </a>
-                    <div class="menuMember hide">
-                        <a href="nguoidung.html">Trang người dùng</a>
-                        <a onclick="if(window.confirm('Xác nhận đăng xuất ?')) logOut();">Đăng xuất</a>
-                    </div>
-
-                </div> <!-- End Member -->
-
-                <div class="cart">
-                    <a href="giohang.html">
-                        <i class="fa fa-shopping-cart"></i>
-                        <span>Giỏ hàng</span>
-                        <span class="cart-number"></span>
-                    </a>
-                </div> <!-- End Cart -->
-
-                <!--<div class="check-order">
-                    <a>
-                        <i class="fa fa-truck"></i>
-                        <span>Đơn hàng</span>
-                    </a>
-                </div> -->
-            </div><!-- End Tools Member -->
-        </div> <!-- End Content -->
-    </div> <!-- End Header -->`)
 }
 
 function smallmenu(number) {
@@ -602,134 +519,8 @@ function smallmenu(number) {
     }
 }
 
-function addFooter() {
-    document.write(`
-    <!-- ============== Alert Box ============= -->
-    <div id="alert">
-        <span id="closebtn">&otimes;</span>
-    </div>
-
-    <!-- ============== Footer ============= -->
-    <div class="copy-right">
-        <p><a href="index.html">SmartPhone Store</a> - All rights reserved © 2018 - Designed by
-            <span style="color: #eee; font-weight: bold">H-group</span></p>
-    </div>`);
-}
-
-// Thêm contain Taikhoan
-function addContainTaiKhoan() {
-    document.write(`
-	<div class="containTaikhoan">
-        <span class="close" onclick="showTaiKhoan(false);">&times;</span>
-        <div class="taikhoan">
-
-            <ul class="tab-group">
-                <li class="tab active"><a href="#login">Đăng nhập</a></li>
-                <li class="tab"><a href="#signup">Đăng kí</a></li>
-            </ul> <!-- /tab group -->
-
-            <div class="tab-content">
-                <div id="login">
-                    <h1>Chào mừng bạn trở lại!</h1>
-
-                    <form onsubmit="return logIn(this);">
-
-                        <div class="field-wrap">
-                            <label>
-                                Tên đăng nhập<span class="req">*</span>
-                            </label>
-                            <input name='username' type="text" required autocomplete="off" />
-                        </div> <!-- /user name -->
-
-                        <div class="field-wrap">
-                            <label>
-                                Mật khẩu<span class="req">*</span>
-                            </label>
-                            <input name="pass" type="password" required autocomplete="off" />
-                        </div> <!-- pass -->
-
-                        <p class="forgot"><a href="#">Quên mật khẩu?</a></p>
-
-                        <button type="submit" class="button button-block" />Tiếp tục</button>
-
-                    </form> <!-- /form -->
-
-                </div> <!-- /log in -->
-
-                <div id="signup">
-                    <h1>Đăng kí miễn phí</h1>
-
-                    <form onsubmit="return signUp(this);">
-
-                        <div class="top-row">
-                            <div class="field-wrap">
-                                <label>
-                                    Họ<span class="req">*</span>
-                                </label>
-                                <input name="ho" type="text" required autocomplete="off" />
-                            </div>
-
-                            <div class="field-wrap">
-                                <label>
-                                    Tên<span class="req">*</span>
-                                </label>
-                                <input name="ten" type="text" required autocomplete="off" />
-                            </div>
-                        </div> <!-- / ho ten -->
-
-                        <div class="field-wrap">
-                            <label>
-                                Địa chỉ Email<span class="req">*</span>
-                            </label>
-                            <input name="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
-
-                        <div class="field-wrap">
-                            <label>
-                                Tên đăng nhập<span class="req">*</span>
-                            </label>
-                            <input name="newUser" type="text" required autocomplete="off" />
-                        </div> <!-- /user name -->
-
-                        <div class="field-wrap">
-                            <label>
-                                Mật khẩu<span class="req">*</span>
-                            </label>
-                            <input name="newPass" type="password" required autocomplete="off" />
-                        </div> <!-- /pass -->
-
-                        <button type="submit" class="button button-block" />Tạo tài khoản</button>
-
-                    </form> <!-- /form -->
-
-                </div> <!-- /sign up -->
-            </div><!-- tab-content -->
-
-        </div> <!-- /taikhoan -->
-    </div>`);
-}
-
-// Thêm plc (phần giới thiệu trước footer)
-function addPlc() {
-    document.write(`
-    <div class="plc">
-        <section>
-            <ul class="flexContain">
-                <li>Giao hàng hỏa tốc trong 1 giờ</li>
-                <li>Thanh toán linh hoạt: tiền mặt, visa / master, trả góp</li>
-                <li>Trải nghiệm sản phẩm tại nhà</li>
-                <li>Lỗi đổi tại nhà trong 1 ngày</li>
-                <li>Hỗ trợ suốt thời gian sử dụng.
-                    <br>Hotline:
-                    <a href="tel:12345678" style="color: #288ad6;">1234.5678</a>
-                </li>
-            </ul>
-        </section>
-    </div>`);
-}
-
 function checkLocalStorage() {
-    if (typeof(Storage) == "undefined") {
+    if (typeof (Storage) == "undefined") {
         alert('Máy tính không hỗ trợ LocalStorage. Không thể lưu thông tin sản phẩm, khách hàng!!');
     } else {
         console.log('LocaStorage OKE!');
@@ -788,7 +579,7 @@ function auto_Get_Database() {
 }
 
 function getThongTinSanPhamFrom_TheGioiDiDong() {
-    javascript: (function() {
+    javascript: (function () {
         var s = document.createElement('script');
         s.innerHTML = `
 			(function () {

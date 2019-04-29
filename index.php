@@ -38,82 +38,17 @@
 	<script src="js/dungchung.js"></script>
 	<script src="js/trangchu.js"></script>
 
-	<?php include_once "FrontEnd/echoHTML.php" ?>
+	<?php require_once "FrontEnd/echoHTML.php"; ?>
 </head>
 
 <body>
 	<?php addTopNav(); ?>
 
 	<section>
-		<?php addHeader(); ?>
-
-		<div class="banner">
-			<div class="owl-carousel owl-theme"></div>
-		</div> <!-- End Banner -->
-
-		<img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
-
-		<br>
-
-		<div class="companysFilter">
-			<button class="companysButton" onclick="setCompanysMenu()">
-				<p>Hãng</p>
-				<div id="iconOpenMenu">▷</div>
-				<div id="iconCloseMenu" style="display: none;">▽</div>
-			</button>
-		</div>
-		<div class="companyMenu group flexContain"></div>
-
-		<div class="flexContain">
-
-			<div class="pricesRangeFilter dropdown">
-				<button class="dropbtn">Giá tiền</button>
-				<div class="dropdown-content"></div>
-			</div>
-
-			<div class="promosFilter dropdown">
-				<button class="dropbtn">Khuyến mãi</button>
-				<div class="dropdown-content"></div>
-			</div>
-
-			<div class="starFilter dropdown">
-				<button class="dropbtn">Số lượng sao</button>
-				<div class="dropdown-content"></div>
-			</div>
-
-			<div class="sortFilter dropdown">
-				<button class="dropbtn">Sắp xếp</button>
-				<div class="dropdown-content"></div>
-			</div>
-
-		</div> <!-- End khung chọn bộ lọc -->
-
-		<div class="choosedFilter flexContain">
-			<a id="deleteAllFilter" style="display: none;">
-				<h3>Xóa bộ lọc</h3>
-			</a>
-		</div> <!-- Những bộ lọc đã chọn -->
-		<hr>
-
-		<!-- Mặc định mới vào trang sẽ ẩn đi, nế có filter thì mới hiện lên -->
-		<div class="contain-products" style="display:none">
-			<div class="filterName">
-				<input type="text" placeholder="Lọc trong trang theo tên..." onkeyup="filterProductsName(this)">
-			</div> <!-- End FilterName -->
-
-			<ul id="products" class="homeproduct group flexContain">
-				<div id="khongCoSanPham">
-					<i class="fa fa-times-circle"></i>
-					Không có sản phẩm nào
-				</div> <!-- End Khong co san pham -->
-			</ul><!-- End products -->
-
-			<div class="pagination"></div>
-		</div>
-
-		<!-- Div hiển thị khung sp hot, khuyến mãi, mới ra mắt ... -->
-		<div class="contain-khungSanPham"></div>
-
+		<?php 
+			addHeader(); 
+			addHome();
+		?>
 	</section> <!-- End Section -->
 
 	<?php
@@ -122,9 +57,7 @@
 	?>
 
 	<div class="footer">
-		<?php
-			addFooter();
-		?>
+		<?php addFooter(); ?>
 	</div>
 
 	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
