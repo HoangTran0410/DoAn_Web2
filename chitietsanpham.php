@@ -20,12 +20,12 @@
 
     <!-- our files -->
     <!-- css -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/topnav.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/taikhoan.css">
-    <link rel="stylesheet" href="css/chitietsanpham.css">
-    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="FrontEnd/css/style.css">
+    <link rel="stylesheet" href="FrontEnd/css/topnav.css">
+    <link rel="stylesheet" href="FrontEnd/css/header.css">
+    <link rel="stylesheet" href="FrontEnd/css/taikhoan.css">
+    <link rel="stylesheet" href="FrontEnd/css/chitietsanpham.css">
+    <link rel="stylesheet" href="FrontEnd/css/footer.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <!-- js -->
     <script src="data/products.js"></script>
