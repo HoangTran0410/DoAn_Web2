@@ -27,7 +27,7 @@ window.onload = function () {
 
 	// thêm tags (từ khóa) vào khung tìm kiếm
 	var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
-	for (var t of tags) addTags(t, "index.html?search=" + t);
+	for (var t of tags) addTags(t, "index.php?search=" + t);
 
 	// Thêm danh sách hãng điện thoại
 	var company = ["Apple.jpg", "Samsung.jpg", "Oppo.jpg", "Nokia.jpg", "Huawei.jpg", "Xiaomi.png",
@@ -262,7 +262,7 @@ function addKhungSanPham(tenKhung, color, filter, len) {
 
 	// thêm nút xem tất cả rồi đóng tag
 	s += `	</div>
-			<a class="xemTatCa" href="index.html?`+filter.join('&')+`" style="`+borderA+`">
+			<a class="xemTatCa" href="index.php?`+filter.join('&')+`" style="`+borderA+`">
 				Xem tất cả `+spResult.length+` sản phẩm
 			</a>
 		</div> <hr>`;
@@ -461,7 +461,7 @@ function createLinkFilter(type, nameFilter, valueAdd) {
 		else if (type == 'remove') o[nameFilter] = '';
 	}
 
-	var link = 'index.html'; //window.location.href.split('?')[0].replace('#', '');
+	var link = 'index.php'; //window.location.href.split('?')[0].replace('#', '');
 	var h = false; // Đã có dấu hỏi hay chưa
 
 	// thêm những filter trước sort
