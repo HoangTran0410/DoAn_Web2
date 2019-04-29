@@ -27,23 +27,25 @@
 	<script src="js/dungchung.js"></script>
 	<script src="js/giohang.js"></script>
 
+	<?php require_once "FrontEnd/echoHTML.php"; ?>
+
 </head>
 
 <body>
-	<script> addTopNav(); </script>
+	<?php addTopNav(); ?>
 
 	<section style="min-height: 85vh">
-		<script> addHeader(); </script>
+		<?php addHeader(); ?>
 
 		<table class="listSanPham" > </table>
 		
 	</section> <!-- End Section -->
 
-	<script>
-		addContainTaiKhoan();
-	</script>
+	<?php addContainTaiKhoan(); ?>
 
-	<div class="footer"><script>addFooter();</script></div>
+	<div class="footer">
+		<?php addFooter(); ?>
+	</div>
 
 	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
 </body>
