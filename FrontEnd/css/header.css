@@ -260,7 +260,7 @@
         margin-top: 5px;
         max-height: 0;
         overflow: hidden;
-  		transition: max-height 0.2s ease-out;
+  		transition: max-height .05s ease-out;
     }
     .search-header
     {
@@ -302,7 +302,7 @@
     {
     	float: left;
     	width: 50%;
-    	/*height: 35px;*/
+    	height: 35px;
     	margin: 0;
     	text-align: center;
     	padding: 0;
