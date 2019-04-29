@@ -101,10 +101,21 @@ function addProductToTable(user) {
 }
 
 function xoaSanPhamTrongGioHang(i) {
-	if (window.confirm('Xác nhận hủy mua')) {
-		currentuser.products.splice(i, 1);
-		capNhatMoiThu();
-	}
+
+	Swal.fire({
+		type: "question",
+		title: "Xác nhận?",
+		html: "Bạn có chắc muốn xóa sản phẩm này ?",
+		grow: "row",
+		cancelButtonText: 'Hủy',
+		showCancelButton: true
+
+	}).then((result) => {
+		if (result.value) {
+			currentuser.products.splice(i, 1);
+			capNhatMoiThu();
+		}
+	});
 }
 
 function thanhToan() {
@@ -124,27 +135,61 @@ function thanhToan() {
 	}
 
 	if (!currentuser.products.length) {
-		addAlertBox('Không có mặt hàng nào cần thanh toán !!', '#ffb400', '#fff', 2000);
+		Swal.fire({
+			type: 'info',
+			title: "Rỗng",
+			grow: 'row',
+			text: 'Không có mặt hàng nào để thanh toán.'
+		});
+		// addAlertBox('Không có mặt hàng nào cần thanh toán !!', '#ffb400', '#fff', 2000);
 		return;
 	}
-	if (window.confirm('Thanh toán giỏ hàng ?')) {
-		currentuser.donhang.push({
-			"sp": currentuser.products,
-			"ngaymua": new Date(),
-			"tinhTrang": 'Đang chờ xử lý'
-		});
-		currentuser.products = [];
-		capNhatMoiThu();
-		addAlertBox('Các sản phẩm đã được gửi vào đơn hàng và chờ xử lý.', '#17c671', '#fff', 4000);
-	}
+
+	Swal.fire({
+		type: 'question',
+		title: "Thanh toán giỏ hàng?",
+		confirmButtonText: "Đồng ý",
+		cancelButtonText: "Để sau",
+		showCancelButton: true,
+		grow: 'row',
+	}).then((result) => {
+		if (result.value) {
+			currentuser.donhang.push({
+				"sp": currentuser.products,
+				"ngaymua": new Date(),
+				"tinhTrang": 'Đang chờ xử lý'
+			});
+
+			currentuser.products = [];
+			capNhatMoiThu();
+			
+			Swal.fire({
+				type: 'success',
+				title: "Xong",
+				grow: 'row',
+				text: 'Các sản phẩm đã được gửi vào đơn hàng và chờ xử lý.'
+			});
+		}
+	});
 }
 
 function xoaHet() {
 	if (currentuser.products.length) {
-		if (window.confirm('Bạn có chắc chắn muốn xóa hết sản phẩm trong giỏ !!')) {
-			currentuser.products = [];
-			capNhatMoiThu();
-		}
+		Swal.fire({
+			title: 'Xóa ?',
+			text: 'Bạn có chắc muốn xóa hết sản phẩm trong giỏ!',
+			type: 'question',
+			grow: 'row',
+			confirmButtonText: 'Đồng ý',
+			cancelButtonText: 'Hủy',
+			showCancelButton: true
+
+		}).then((result) => {
+			if (result.value) {
+				currentuser.products = [];
+				capNhatMoiThu();
+			}
+		})
 	}
 }
 

@@ -144,7 +144,7 @@ function themVaoGioHang(masp, tensp) {
             daCoSanPham = true;
             break;
         }
-    }
+    }``
 
     if (!daCoSanPham) { // nếu không trùng thì mới thêm sản phẩm vào user.products
         user.products.push({
@@ -157,11 +157,12 @@ function themVaoGioHang(masp, tensp) {
     animateCartNumber();
     // addAlertBox('Đã thêm ' + tensp + ' vào giỏ.', '#17c671', '#fff', 3500);
     Swal.fire({
+        toast: true,
         position: 'bottom-end',
         type: 'success',
-        title: 'Đã thêm ' + tensp + ' vào giỏ.',
+        html: ' Đã thêm <strong>' + tensp + '</strong> vào giỏ.',
         showConfirmButton: true,
-        timer: 2000
+        timer: 5000
     })
 
     setCurrentUser(user); // cập nhật giỏ hàng cho user hiện tại
