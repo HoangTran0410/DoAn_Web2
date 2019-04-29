@@ -76,7 +76,7 @@
 
 /*.overlaycertainimg-content img.bigimg {
     /*hình lớn ở certainimg*/
-    height: 540px;
+    /*height: 540px;
     display: block;
     margin: auto;
 }*/
@@ -118,8 +118,8 @@
     display: block;
     height: auto;
     margin: auto;
-    cursor: pointer;
-    /*thay đổi trỏ chuột đi đưa vào*/
+    /*cursor: pointer;
+    thay đổi trỏ chuột đi đưa vào*/
     max-width: 100%;
 }
 
