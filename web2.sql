@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 28, 2019 lúc 09:07 PM
+-- Thời gian đã tạo: Th4 29, 2019 lúc 04:16 PM
 -- Phiên bản máy phục vụ: 10.1.37-MariaDB
 -- Phiên bản PHP: 7.2.12
 
@@ -62,11 +62,11 @@ CREATE TABLE `chitietsanpham` (
 
 CREATE TABLE `hoadon` (
   `MaHD` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `MaNV` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `MaKH` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `NgayLap` date NOT NULL,
   `GioLap` time NOT NULL,
-  `TongTien` float NOT NULL
+  `TongTien` float NOT NULL,
+  `TrangThai` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -126,21 +126,18 @@ INSERT INTO `loaisanpham` (`MaLSP`, `TenLSP`, `Mota`) VALUES
 
 CREATE TABLE `nguoidung` (
   `MaND` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `HoTen` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `NgaySinh` date NOT NULL,
-  `Email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `SDT` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `DiaChi` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `TrangThai` int(11) NOT NULL
+  `Ho` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Ten` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `Email` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `nguoidung`
 --
 
-INSERT INTO `nguoidung` (`MaND`, `HoTen`, `NgaySinh`, `Email`, `SDT`, `DiaChi`, `TrangThai`) VALUES
-('ND1', 'Tran Van Hoang', '1999-11-11', 'th01634044850@gmail.com', '01207764668', 'Binh Chanh, TP HCM', 0),
-('ND2', 'Tran Thi Thu Hien', '1999-09-14', 'thuhien@gmail.com', '0936597487', 'Q12, TP HCM', 0);
+INSERT INTO `nguoidung` (`MaND`, `Ho`, `Ten`, `Email`) VALUES
+('ND1', '', '', 'th01634044850@gmail.com'),
+('ND2', '', '', 'thuhien@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -210,8 +207,9 @@ INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`,
 CREATE TABLE `taikhoan` (
   `TenTaiKhoan` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `MatKhau` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `MaNguoiDung` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `MaQuyen` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+  `MaND` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `MaQuyen` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `TrangThai` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -236,7 +234,6 @@ ALTER TABLE `chitietsanpham`
 --
 ALTER TABLE `hoadon`
   ADD PRIMARY KEY (`MaHD`),
-  ADD KEY `MaNV` (`MaNV`),
   ADD KEY `MaKH` (`MaKH`);
 
 --
@@ -277,7 +274,7 @@ ALTER TABLE `sanpham`
 ALTER TABLE `taikhoan`
   ADD PRIMARY KEY (`TenTaiKhoan`),
   ADD KEY `MaQuyen` (`MaQuyen`),
-  ADD KEY `MaNV` (`MaNguoiDung`);
+  ADD KEY `MaND` (`MaND`);
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -300,7 +297,6 @@ ALTER TABLE `chitietsanpham`
 -- Các ràng buộc cho bảng `hoadon`
 --
 ALTER TABLE `hoadon`
-  ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`MaNV`) REFERENCES `nguoidung` (`MaND`),
   ADD CONSTRAINT `hoadon_ibfk_2` FOREIGN KEY (`MaKH`) REFERENCES `nguoidung` (`MaND`);
 
 --
@@ -314,8 +310,8 @@ ALTER TABLE `sanpham`
 -- Các ràng buộc cho bảng `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  ADD CONSTRAINT `taikhoan_ibfk_1` FOREIGN KEY (`MaNguoiDung`) REFERENCES `nguoidung` (`MaND`),
-  ADD CONSTRAINT `taikhoan_ibfk_2` FOREIGN KEY (`MaQuyen`) REFERENCES `phanquyen` (`MaQuyen`);
+  ADD CONSTRAINT `taikhoan_ibfk_2` FOREIGN KEY (`MaQuyen`) REFERENCES `phanquyen` (`MaQuyen`),
+  ADD CONSTRAINT `taikhoan_ibfk_3` FOREIGN KEY (`MaND`) REFERENCES `nguoidung` (`MaND`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
