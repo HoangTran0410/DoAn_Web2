@@ -307,4 +307,9 @@
     	text-align: center;
     	padding: 0;
     }
+    .member:hover > .menuMember
+    {
+    	transform: translateX(0%) scale(1);
+    	width: 90%;
+	}
 }
