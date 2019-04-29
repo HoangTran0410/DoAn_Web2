@@ -1,6 +1,20 @@
 <?php
 require_once("DB_business.php");
 
+// hiển thị dạng <table> dữ liệu từ 1 bảng trong database 
+function show_DataBUS_as_Table($bus)
+{
+    echo "<table cellspacing='15'>";
+    foreach ($bus->select_all() as $rowname => $row) {
+        echo "<tr>";
+        foreach ($row as $colname => $col) {
+            echo "<td>" . $col . "</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+
 // Lớp sản phẩm
 class SanPhamBUS extends DB_business
 {
