@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 29, 2019 lúc 04:16 PM
+-- Thời gian đã tạo: Th5 03, 2019 lúc 06:13 AM
 -- Phiên bản máy phục vụ: 10.1.37-MariaDB
 -- Phiên bản PHP: 7.2.12
 
@@ -128,6 +128,7 @@ CREATE TABLE `nguoidung` (
   `MaND` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `Ho` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `Ten` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `SDT` int(11) NOT NULL,
   `Email` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -135,9 +136,10 @@ CREATE TABLE `nguoidung` (
 -- Đang đổ dữ liệu cho bảng `nguoidung`
 --
 
-INSERT INTO `nguoidung` (`MaND`, `Ho`, `Ten`, `Email`) VALUES
-('ND1', '', '', 'th01634044850@gmail.com'),
-('ND2', '', '', 'thuhien@gmail.com');
+INSERT INTO `nguoidung` (`MaND`, `Ho`, `Ten`, `SDT`, `Email`) VALUES
+('ND1', 'Tran', 'Van Hoang', 0, 'hoang@gmail.com'),
+('ND2', 'Nguyen', 'Haiba', 0, 'hbb@gmail.com'),
+('ND3', 'Tran', 'Thu Hien', 0, 'thuhien@gmail.com');
 
 -- --------------------------------------------------------
 

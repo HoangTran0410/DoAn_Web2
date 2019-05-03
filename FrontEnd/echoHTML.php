@@ -292,12 +292,21 @@ function addContainTaiKhoan()
                             </div>
                         </div> <!-- / ho ten -->
 
-                        <div class="field-wrap">
-                            <label>
-                                Địa chỉ Email<span class="req">*</span>
-                            </label>
-                            <input name="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
+                        <div class="top-row">
+                            <div class="field-wrap">
+                                <label>
+                                    Số điện thoại<span class="req">*</span>
+                                </label>
+                                <input name="sdt" type="number" required autocomplete="off" />
+                            </div> <!-- /sdt -->
+    
+                            <div class="field-wrap">
+                                <label>
+                                    Địa chỉ Email<span class="req">*</span>
+                                </label>
+                                <input name="email" type="email" required autocomplete="off" />
+                            </div> <!-- /email -->
+                        </div>
 
                         <div class="field-wrap">
                             <label>
