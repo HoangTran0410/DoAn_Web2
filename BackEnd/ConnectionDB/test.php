@@ -1,8 +1,11 @@
 <?php
 require_once('DB_classes.php');
 
-// $nguoidungBUS->add_new(array('ND3', 'Tran Thi Thu Hien', 'Nu', '1999-09-14', 'thuhien@gmail.com', '0936597487', 'Q12, TP HCM', '0'));
-// $nguoidungBUS->delete_by_id('ND3');
+$nguoidung = new NguoiDungBUS();
+// $nguoidung->delete_by_id("ND2");
+// $nguoidung->add_new(array('ND3', 'Tran', 'Thu Hien', 'thuhien@gmail.com'));
 
+show_DataBUS_as_Table(new NguoiDungBUS());
+die('LOL');
 
-show_DataBUS_as_Table(new SanPhamBUS());
+// Check trùng bằng getList
