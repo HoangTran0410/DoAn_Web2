@@ -11,7 +11,6 @@ function setListAdmin(l) {
     window.localStorage.setItem('ListAdmin', JSON.stringify(l));
 }
 
-
 // Hàm khởi tạo, tất cả các trang đều cần
 function khoiTao() {
     // get data từ localstorage

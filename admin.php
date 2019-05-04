@@ -19,8 +19,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- Our files -->
-    <link rel="stylesheet" href="css/admin/style.css">
-    <link rel="stylesheet" href="css/admin/progress.css">
+    <link rel="stylesheet" href="FrontEnd/css/admin/style.css">
+    <link rel="stylesheet" href="FrontEnd/css/admin/progress.css">
 
     <script src="data/products.js"></script>
     <script src="js/classes.js"></script>
@@ -42,9 +42,9 @@
             <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-address-book-o"></i> Khách Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
-            <li class="nav-item">
+            <!-- <li class="nav-item"> -->
                 <hr>
-            </li>
+            <!-- </li> -->
             <li class="nav-item">
                 <a href="index.php" class="nav-link" onclick="logOutAdmin(); return true;">
                     <i class="fa fa-arrow-left"></i>

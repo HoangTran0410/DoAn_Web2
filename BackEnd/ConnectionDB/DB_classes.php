@@ -49,6 +49,15 @@ class NguoiDungBUS extends DB_business
     {
         $this->setTable("NguoiDung", "MaND");
     }
+
+    function add_new($data)
+    {
+        // check
+        // username trung, email trung
+        
+        // them
+        parent::add_new($data);
+    }
 }
 
 // Lớp hóa đơn
