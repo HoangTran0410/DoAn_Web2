@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 12, 2019 lúc 06:08 PM
+-- Thời gian đã tạo: Th5 12, 2019 lúc 07:40 PM
 -- Phiên bản máy phục vụ: 10.1.37-MariaDB
 -- Phiên bản PHP: 7.2.12
 
@@ -33,25 +33,6 @@ CREATE TABLE `chitiethoadon` (
   `MaSP` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `SoLuong` int(11) NOT NULL,
   `DonGia` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `chitietsanpham`
---
-
-CREATE TABLE `chitietsanpham` (
-  `MaSP` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `ManHinh` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `HDH` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `CamSau` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `CamTruoc` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `CPU` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `RAM` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `ROM` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `SDCard` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `Pin` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -120,6 +101,7 @@ INSERT INTO `khuyenmai` (`MaKM`, `TenKM`, `LoaiKM`, `GiaTriKM`, `NgayBD`, `NgayK
 CREATE TABLE `loaisanpham` (
   `MaLSP` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `TenLSP` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
+  `HinhAnh` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `Mota` varchar(200) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -127,16 +109,16 @@ CREATE TABLE `loaisanpham` (
 -- Đang đổ dữ liệu cho bảng `loaisanpham`
 --
 
-INSERT INTO `loaisanpham` (`MaLSP`, `TenLSP`, `Mota`) VALUES
-('LSP1', 'Apple', 'Các sản phẩm của Apple'),
-('LSP2', 'Oppo', 'Camara Selphi cuc chat tu Oppo'),
-('LSP3', 'SamSung', 'Khuyen mai lon tu SamSung'),
-('LSP4', 'Phillip', 'Cac san pham tuyet dep tu Phillip'),
-('LSP5', 'Nokia', 'Các sản phẩm đến từ thương hiệu Nokia'),
-('LSP6', 'Blackbery', 'BlackBery is the best'),
-('LSP7', 'Huawei', 'Các sản phẩm đến từ thương hiệu Huawei'),
-('LSP8', 'Vivo', 'Các sản phẩm đến từ Vivo'),
-('LSP9', 'Xiaomi', 'Các sản phẩm đến từ thương hiệu Xiaomi');
+INSERT INTO `loaisanpham` (`MaLSP`, `TenLSP`, `HinhAnh`, `Mota`) VALUES
+('LSP1', 'Apple', '', 'Các sản phẩm của Apple'),
+('LSP2', 'Oppo', '', 'Camara Selphi cuc chat tu Oppo'),
+('LSP3', 'SamSung', '', 'Khuyen mai lon tu SamSung'),
+('LSP4', 'Phillip', '', 'Cac san pham tuyet dep tu Phillip'),
+('LSP5', 'Nokia', '', 'Các sản phẩm đến từ thương hiệu Nokia'),
+('LSP6', 'Blackbery', '', 'BlackBery is the best'),
+('LSP7', 'Huawei', '', 'Các sản phẩm đến từ thương hiệu Huawei'),
+('LSP8', 'Vivo', '', 'Các sản phẩm đến từ Vivo'),
+('LSP9', 'Xiaomi', '', 'Các sản phẩm đến từ thương hiệu Xiaomi');
 
 -- --------------------------------------------------------
 
@@ -199,6 +181,15 @@ CREATE TABLE `sanpham` (
   `SoLuong` int(10) UNSIGNED NOT NULL DEFAULT '1',
   `HinhAnh` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `MaKM` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `ManHinh` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `HDH` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `CamSau` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `CamTruoc` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `CPU` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `Ram` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `Rom` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `SDCard` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `Pin` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `TrangThai` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -206,31 +197,31 @@ CREATE TABLE `sanpham` (
 -- Đang đổ dữ liệu cho bảng `sanpham`
 --
 
-INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`, `MaKM`, `TrangThai`) VALUES
-('SP1', 'LSP1', 'IPhone X', 20, 102, 'iphone-xr-128gb-red-400x400.jpg', '', 0),
-('SP10', 'LSP1', 'iPhone Xr 256GB', 23.9, 76, 'iphone-xr-256gb-white-400x400.jpg', '', 0),
-('SP11', 'LSP2', 'OPPO R17 Pro', 15.9, 99, 'oppo-r17-pro-2-400x460.jpg', '', 0),
-('SP12', 'LSP8', 'Vivo V15', 7.9, 257, 'vivo-v15-quanghai-400x460.jpg', '', 0),
-('SP13', 'LSP6', 'Blackberry Evolve', 7.9, 46, 'blackberry-evolve6xvk3-640.jpg', '', 0),
-('SP14', 'LSP7', 'Huawei Y9 (2019)', 5.5, 37, 'huawei-y9-2019-blue-400x460.jpg', '', 0),
-('SP15', 'LSP2', 'OPPO F7', 5.5, 361, 'oppo-f7-red-mtp-400x460.jpg', '', 0),
-('SP16', 'LSP9', 'Xiaomi Mi 8', 11.9, 41, 'xiaomi-mi-8-1-400x460-400x460.jpg', '', 0),
-('SP17', 'LSP9', 'Xiaomi Redmi Note 6 Pro 64GB', 5.6, 68, 'xiaomi-redmi-note-6-pro-black-1-400x460.jpg', '', 0),
-('SP18', 'LSP3', 'Samsung Galaxy Note 9 512GB', 24, 60, 'samsung-galaxy-note-9-512gb-blue-400x460.jpg', '', 0),
-('SP19', 'LSP7', 'Huawei Mate 20', 13, 45, 'huawei-mate-20-black-400x460.jpg', '', 0),
-('SP2', 'LSP2', 'Oppo A7', 8.2, 70, 'oppo-a7-400x460.jpg', '', 0),
-('SP20', 'LSP8', 'Vivo Y85', 5, 36, 'vivo-y85-red-docquyen-400x460.jpg', '', 0),
-('SP21', 'LSP8', 'Vivo V11', 8, 30, 'vivo-v11-400x460.jpg', '', 0),
-('SP22', 'LSP1', 'iPhone Xs Max 512GB', 39, 45, 'iphone-xs-max-512gb-gold-400x460.jpg', '', 0),
-('SP23', 'LSP2', 'OPPO Fid X', 19.9, 49, 'oppo-find-x-1-400x460-400x460.jpg', '', 0),
-('SP24', 'LSP1', 'Iphone abc', 25, 20, 'iphone-xr-256gb-white-400x400.jpg', '', 0),
-('SP3', 'LSP5', 'Nokia 8.1', 7.9, 69, 'nokia-81-silver-400x460.jpg', '', 0),
-('SP4', 'LSP4', 'Philips S327', 3.9, 56, 'philips-s327-400-400x460.jpg', '', 0),
-('SP5', 'LSP1', 'iPhone 8 Plus 256GB', 25.7, 167, 'iphone-8-plus-256gb-gold-400x460.jpg', '', 0),
-('SP6', 'LSP5', 'Nokia 6.1 Plus', 6.5, 44, 'nokia-61-plus-3-400x460.jpg', '', 0),
-('SP7', 'LSP2', 'Oppo NEO 3', 15.4, 101, 'oppo-a7-32gb-gold-400x400.jpg', '', 1),
-('SP8', 'LSP7', 'Huawei P30 Pro', 23, 69, 'huawei-p30-pro-1-400x460.jpg', '', 0),
-('SP9', 'LSP3', 'Samsung Galaxy S10+ (512GB)', 29, 57, 'samsung-galaxy-s10-plus-512gb-ceramic-black-400x460.jpg', '', 0);
+INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`, `MaKM`, `ManHinh`, `HDH`, `CamSau`, `CamTruoc`, `CPU`, `Ram`, `Rom`, `SDCard`, `Pin`, `TrangThai`) VALUES
+('SP1', 'LSP1', 'IPhone X', 20, 102, 'iphone-xr-128gb-red-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP10', 'LSP1', 'iPhone Xr 256GB', 23.9, 76, 'iphone-xr-256gb-white-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP11', 'LSP2', 'OPPO R17 Pro', 15.9, 99, 'oppo-r17-pro-2-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP12', 'LSP8', 'Vivo V15', 7.9, 257, 'vivo-v15-quanghai-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP13', 'LSP6', 'Blackberry Evolve', 7.9, 46, 'blackberry-evolve6xvk3-640.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP14', 'LSP7', 'Huawei Y9 (2019)', 5.5, 37, 'huawei-y9-2019-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP15', 'LSP2', 'OPPO F7', 5.5, 361, 'oppo-f7-red-mtp-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP16', 'LSP9', 'Xiaomi Mi 8', 11.9, 41, 'xiaomi-mi-8-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP17', 'LSP9', 'Xiaomi Redmi Note 6 Pro 64GB', 5.6, 68, 'xiaomi-redmi-note-6-pro-black-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP18', 'LSP3', 'Samsung Galaxy Note 9 512GB', 24, 60, 'samsung-galaxy-note-9-512gb-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP19', 'LSP7', 'Huawei Mate 20', 13, 45, 'huawei-mate-20-black-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP2', 'LSP2', 'Oppo A7', 8.2, 70, 'oppo-a7-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP20', 'LSP8', 'Vivo Y85', 5, 36, 'vivo-y85-red-docquyen-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP21', 'LSP8', 'Vivo V11', 8, 30, 'vivo-v11-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP22', 'LSP1', 'iPhone Xs Max 512GB', 39, 45, 'iphone-xs-max-512gb-gold-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP23', 'LSP2', 'OPPO Fid X', 19.9, 49, 'oppo-find-x-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP24', 'LSP1', 'Iphone abc', 25, 20, 'iphone-xr-256gb-white-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP3', 'LSP5', 'Nokia 8.1', 7.9, 69, 'nokia-81-silver-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP4', 'LSP4', 'Philips S327', 3.9, 56, 'philips-s327-400-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP5', 'LSP1', 'iPhone 8 Plus 256GB', 25.7, 167, 'iphone-8-plus-256gb-gold-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP6', 'LSP5', 'Nokia 6.1 Plus', 6.5, 44, 'nokia-61-plus-3-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP7', 'LSP2', 'Oppo NEO 3', 15.4, 101, 'oppo-a7-32gb-gold-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 1),
+('SP8', 'LSP7', 'Huawei P30 Pro', 23, 69, 'huawei-p30-pro-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
+('SP9', 'LSP3', 'Samsung Galaxy S10+ (512GB)', 29, 57, 'samsung-galaxy-s10-plus-512gb-ceramic-black-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -242,12 +233,6 @@ INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`,
 ALTER TABLE `chitiethoadon`
   ADD KEY `MaHD` (`MaHD`),
   ADD KEY `MaSP` (`MaSP`);
-
---
--- Chỉ mục cho bảng `chitietsanpham`
---
-ALTER TABLE `chitietsanpham`
-  ADD PRIMARY KEY (`MaSP`);
 
 --
 -- Chỉ mục cho bảng `danhgia`
@@ -306,12 +291,6 @@ ALTER TABLE `sanpham`
 ALTER TABLE `chitiethoadon`
   ADD CONSTRAINT `chitiethoadon_ibfk_1` FOREIGN KEY (`MaHD`) REFERENCES `hoadon` (`MaHD`),
   ADD CONSTRAINT `chitiethoadon_ibfk_2` FOREIGN KEY (`MaSP`) REFERENCES `sanpham` (`MaSP`);
-
---
--- Các ràng buộc cho bảng `chitietsanpham`
---
-ALTER TABLE `chitietsanpham`
-  ADD CONSTRAINT `chitietsanpham_ibfk_1` FOREIGN KEY (`MaSP`) REFERENCES `sanpham` (`MaSP`);
 
 --
 -- Các ràng buộc cho bảng `danhgia`
