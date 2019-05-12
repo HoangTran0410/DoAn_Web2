@@ -8,7 +8,7 @@ window.onload = function () {
     addEventChangeTab();
 
     if (window.localStorage.getItem('admin')) {
-        addTableProducts();
+        //addTableProducts();
         addTableDonHang();
         addTableKhachHang();
         addThongKe();
@@ -126,7 +126,7 @@ function openTab(nameTab) {
 
 // ========================== Sản Phẩm ========================
 // Vẽ bảng danh sách sản phẩm
-function addTableProducts() {
+/*function addTableProducts() {
     var tc = document.getElementsByClassName('sanpham')[0].getElementsByClassName('table-content')[0];
     var s = `<table class="table-outline hideImg">`;
 
@@ -157,7 +157,7 @@ function addTableProducts() {
     s += `</table>`;
 
     tc.innerHTML = s;
-}
+}*/
 
 // Tìm kiếm
 function timKiemSanPham(inp) {

@@ -74,7 +74,40 @@
                 </tr>
             </table>
 
+            <!--<div class="table-content">
+            </div>-->
+
             <div class="table-content">
+            <?php
+                require_once('BackEnd/ConnectionDB/DB_classes.php');
+
+                $sp = new SanPhamBUS();
+                $i = 1;
+                echo "<table class='table-outline hideImg'>";
+                foreach ($sp->select_all() as $rowname => $row) {
+                    echo "<tr>
+                        <td style'width: 5%'>" . $i++ . "</td>
+                        <td style='width: 10%'>" . $row['MaSP'] . "</td>
+                        <td style='width: 40%'>
+                            <a title='Xem chi tiết' target='_blank' href='chitietsanpham.php?" . $row['TenSP'] . "'>" . $row['TenSP'] . "</a>
+                            <img src='" . $row['HinhAnh'] . "'></img>
+                        </td>
+                        <td style='width: 15%'>" . $row['DonGia'] . "</td>
+                        <td style='width: 15%'>" . $row['MaKM'] . "</td>
+                        <td style='width: 15%'>
+                            <div class='tooltip'>
+                                <i class='fa fa-wrench' onclick='addKhungSuaSanPham('" . $row['MaSP'] . "')'></i>
+                                <span class='tooltiptext'>Sửa</span>
+                            </div>
+                            <div class='tooltip'>
+                                <i class='fa fa-trash' onclick='xoaSanPham('" . $row['MaSP'] . "', '" . $row['TenSP'] . "')'></i>
+                                <span class='tooltiptext'>Xóa</span>
+                            </div>
+                        </td>
+                    </tr>";
+                }
+                echo "</table>";
+            ?>
             </div>
 
             <div class="table-footer">
