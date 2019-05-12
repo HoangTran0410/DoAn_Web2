@@ -2,7 +2,7 @@ var nameProduct, maProduct; // Tên sản phẩm trong trang này,
 // là biến toàn cục để có thể dùng ở bát cứ đâu trong trang
 // không cần tính toán lấy tên từ url nhiều lần
 
-window.onload = function () {
+window.onload = function() {
     khoiTao();
 
     // thêm tags (từ khóa) vào khung tìm kiếm
@@ -13,6 +13,17 @@ window.onload = function () {
 
     // autocomplete cho khung tim kiem
     autocomplete(document.getElementById('search-box'), list_products);
+
+    var s = "";
+    for(var i = 0; i < 10; i++)
+    s += createComment("Hoàng Trần", `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`, new Date().toShortFormat());
+
+    document.getElementsByClassName("comment-content")[0].innerHTML += s;
 }
 
 function phanTich_URL_chiTietSanPham() {
@@ -23,8 +34,8 @@ function phanTich_URL_chiTietSanPham() {
     // code này làm ngược lại so với lúc tạo href cho sản phẩm trong file classes.js
     nameProduct = nameProduct.split('-').join(' ');
 
-    for(var p of list_products) {
-        if(nameProduct == p.name) {
+    for (var p of list_products) {
+        if (nameProduct == p.name) {
             maProduct = p.masp;
             break;
         }
@@ -135,6 +146,32 @@ function addThongSo(ten, giatri) {
                 <p>` + ten + `</p>
                 <div>` + giatri + `</div>
             </li>`;
+}
+
+function createComment(name, value, time) {
+    return `<div class="comment">
+                <i class="fa fa-user-circle"> </i>
+                <h4>` + name + `</h4>
+                <p>` + value + `</p>
+                <span class="time">` + time + `</span>
+            </div>`;
+}
+
+Date.prototype.toShortFormat = function() {
+    // var month_names = ["Jan", "Feb", "Mar",
+    //     "Apr", "May", "Jun",
+    //     "Jul", "Aug", "Sep",
+    //     "Oct", "Nov", "Dec"
+    // ];
+    var day = this.getDate();
+    var month_index = this.getMonth();
+    var year = this.getFullYear();
+
+    var second = this.getSeconds();
+    var minute = this.getMinutes();
+    var hour = this.getHours();
+
+    return day + "/" + (month_index+1) + "/" + year + " " + hour + ":" + minute;
 }
 
 /*// add hình

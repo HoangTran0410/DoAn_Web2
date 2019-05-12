@@ -114,9 +114,13 @@ function themVaoGioHang(masp, tensp) {
             text: 'Bạn cần đăng nhập để mua hàng',
             type: 'error',
             grow: 'row',
-            confirmButtonText: 'Đăng nhập'
+            confirmButtonText: 'Đăng nhập',
+            cancelButtonText: 'Trở về',
+            showCancelButton: true
         }).then((result) => {
-            showTaiKhoan(true);
+            if(result.value) {
+                showTaiKhoan(true);
+            }
         })
 
         return;
