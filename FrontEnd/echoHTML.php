@@ -99,35 +99,35 @@ function addHome()
     <br>
 
     <div class="companysFilter">
-    <button class="companysButton" onclick="setCompanysMenu()">
-        <p>Hãng</p>
-        <div id="iconOpenMenu">▷</div>
-        <div id="iconCloseMenu" style="display: none;">▽</div>
-    </button>
+        <button class="companysButton" onclick="setCompanysMenu()">
+            <p>Hãng</p>
+            <div id="iconOpenMenu">▷</div>
+            <div id="iconCloseMenu" style="display: none;">▽</div>
+        </button>
     </div>
     <div class="companyMenu group flexContain"></div>
 
-    <div class="flexContain">
+    <div class="flexContain timNangCao">
 
-    <div class="pricesRangeFilter dropdown">
-        <button class="dropbtn">Giá tiền</button>
-        <div class="dropdown-content"></div>
-    </div>
+        <!-- <div class="pricesRangeFilter dropdown">
+            <button class="dropbtn">Giá tiền</button>
+            <div class="dropdown-content"></div>
+        </div>
 
-    <div class="promosFilter dropdown">
-        <button class="dropbtn">Khuyến mãi</button>
-        <div class="dropdown-content"></div>
-    </div>
+        <div class="promosFilter dropdown">
+            <button class="dropbtn">Khuyến mãi</button>
+            <div class="dropdown-content"></div>
+        </div>
 
-    <div class="starFilter dropdown">
-        <button class="dropbtn">Số lượng sao</button>
-        <div class="dropdown-content"></div>
-    </div>
+        <div class="starFilter dropdown">
+            <button class="dropbtn">Số lượng sao</button>
+            <div class="dropdown-content"></div>
+        </div>
 
-    <div class="sortFilter dropdown">
-        <button class="dropbtn">Sắp xếp</button>
-        <div class="dropdown-content"></div>
-    </div>
+        <div class="sortFilter dropdown">
+            <button class="dropbtn">Sắp xếp</button>
+            <div class="dropdown-content"></div>
+        </div> -->
 
     </div> <!-- End khung chọn bộ lọc -->
 
@@ -225,7 +225,7 @@ function addFooter()
 
     <!-- ============== Footer ============= -->
     <div class="copy-right">
-        <p><a href="index.php">SmartPhone Store</a> - All rights reserved © 2018 - Designed by
+        <p><a href="index.php">SmartPhone Store</a> - All rights reserved © 2018-' . date("Y") . ' - Designed by
             <span style="color: #eee; font-weight: bold">H-group</span></p>
     </div>';
 }
