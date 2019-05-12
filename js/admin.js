@@ -2,8 +2,9 @@ var TONGTIEN = 0;
 
 window.onload = function () {
     // get data từ localstorage
-    list_products = getListProducts() || list_products;
+    // list_products = getListProducts() || list_products;
     adminInfo = getListAdmin() || adminInfo;
+    console.log(list_products);
 
     addEventChangeTab();
 
@@ -134,20 +135,20 @@ function openTab(nameTab) {
         var p = list_products[i];
         s += `<tr>
             <td style="width: 5%">` + (i+1) + `</td>
-            <td style="width: 10%">` + p.masp + `</td>
+            <td style="width: 10%">` + p.MaSP + `</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.name.split(' ').join('-') + `">` + p.name + `</a>
-                <img src="` + p.img + `"></img>
+                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
+                <img src="` + p.HinhAnh + `"></img>
             </td>
-            <td style="width: 15%">` + p.price + `</td>
-            <td style="width: 15%">` + promoToStringValue(p.promo) + `</td>
+            <td style="width: 15%">` + p.DonGia + `</td>
+            <td style="width: 15%">` + promoToStringValue(p.MaKM) + `</td>
             <td style="width: 15%">
                 <div class="tooltip">
-                    <i class="fa fa-wrench" onclick="addKhungSuaSanPham('` + p.masp + `')"></i>
+                    <i class="fa fa-wrench" onclick="addKhungSuaSanPham('` + p.MaSP + `')"></i>
                     <span class="tooltiptext">Sửa</span>
                 </div>
                 <div class="tooltip">
-                    <i class="fa fa-trash" onclick="xoaSanPham('` + p.masp + `', '`+p.name+`')"></i>
+                    <i class="fa fa-trash" onclick="xoaSanPham('` + p.MaSP + `', '`+p.TenSP+`')"></i>
                     <span class="tooltiptext">Xóa</span>
                 </div>
             </td>
@@ -232,7 +233,7 @@ function layThongTinSanPhamTuTable(id) {
 function themSanPham() {
     var newSp = layThongTinSanPhamTuTable('khungThemSanPham')
     for(var p of list_products) {
-        if(p.masp == newSp.masp) {
+        if(p.MaSP == newSp.MaSP) {
             alert('Mã sản phẩm bị trùng !!');
             return false;
         }
@@ -246,7 +247,7 @@ function themSanPham() {
      // Vẽ lại table
      addTableProducts();
 
-    alert('Thêm sản phẩm "' + newSp.name + '" thành công.');
+    alert('Thêm sản phẩm "' + newSp.TenSP + '" thành công.');
     document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
 }
 function autoMaSanPham(company) {
@@ -284,7 +285,7 @@ function suaSanPham(masp) {
     var sp = layThongTinSanPhamTuTable('khungSuaSanPham');
     
     for(var p of list_products) {
-        if(p.masp == masp && p.masp != sp.masp) {
+        if(p.MaSP == masp && p.MaSP != sp.MaSP) {
             alert('Mã sản phẩm bị trùng !!');
             return false;
         }
@@ -302,7 +303,7 @@ function suaSanPham(masp) {
     // Vẽ lại table
     addTableProducts();
 
-    alert('Sửa ' + sp.name + ' thành công');
+    alert('Sửa ' + sp.TenSP + ' thành công');
 
     document.getElementById('khungSuaSanPham').style.transform = 'scale(0)';
 }
@@ -310,7 +311,7 @@ function suaSanPham(masp) {
 function addKhungSuaSanPham(masp) {
     var sp;
     for(var p of list_products) {
-        if(p.masp == masp) {
+        if(p.MaSP == masp) {
             sp = p;
         }
     }
@@ -318,15 +319,15 @@ function addKhungSuaSanPham(masp) {
     var s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
     <table class="overlayTable table-outline table-content table-header">
         <tr>
-            <th colspan="2">`+sp.name+`</th>
+            <th colspan="2">`+sp.TenSP+`</th>
         </tr>
         <tr>
             <td>Mã sản phẩm:</td>
-            <td><input type="text" value="`+sp.masp+`"></td>
+            <td><input type="text" value="`+sp.MaSP+`"></td>
         </tr>
         <tr>
             <td>Tên sẩn phẩm:</td>
-            <td><input type="text" value="`+sp.name+`"></td>
+            <td><input type="text" value="`+sp.TenSP+`"></td>
         </tr>
         <tr>
             <td>Hãng:</td>
@@ -347,13 +348,13 @@ function addKhungSuaSanPham(masp) {
         <tr>
             <td>Hình:</td>
             <td>
-                <img class="hinhDaiDien" id="anhDaiDienSanPhamSua" src="`+sp.img+`">
+                <img class="hinhDaiDien" id="anhDaiDienSanPhamSua" src="`+sp.HinhAnh+`">
                 <input type="file" accept="image/*" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamSua')">
             </td>
         </tr>
         <tr>
             <td>Giá tiền:</td>
-            <td><input type="text" value="`+sp.price+`"></td>
+            <td><input type="text" value="`+sp.DonGia+`"></td>
         </tr>
         <tr>
             <td>Số sao:</td>
@@ -368,16 +369,16 @@ function addKhungSuaSanPham(masp) {
             <td>
                 <select>
                     <option value="">Không</option>
-                    <option value="tragop" `+(sp.promo.name == 'tragop'?'selected':'')+`>Trả góp</option>
-                    <option value="giamgia" `+(sp.promo.name == 'giamgia'?'selected':'')+`>Giảm giá</option>
-                    <option value="giareonline" `+(sp.promo.name == 'giareonline'?'selected':'')+`>Giá rẻ online</option>
-                    <option value="moiramat" `+(sp.promo.name == 'moiramat'?'selected':'')+`>Mới ra mắt</option>
+                    <option value="tragop" `+(sp.MaKM.name == 'tragop'?'selected':'')+`>Trả góp</option>
+                    <option value="giamgia" `+(sp.MaKM.name == 'giamgia'?'selected':'')+`>Giảm giá</option>
+                    <option value="giareonline" `+(sp.MaKM.name == 'giareonline'?'selected':'')+`>Giá rẻ online</option>
+                    <option value="moiramat" `+(sp.MaKM.name == 'moiramat'?'selected':'')+`>Mới ra mắt</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td>Giá trị khuyến mãi:</td>
-            <td><input type="text" value="`+sp.promo.value+`"></td>
+            <td><input type="text" value="`+sp.MaKM.value+`"></td>
         </tr>
         <tr>
             <th colspan="2">Thông số kĩ thuật</th>
@@ -419,7 +420,7 @@ function addKhungSuaSanPham(masp) {
             <td><input type="text" value="`+sp.detail.battery+`"></td>
         </tr>
         <tr>
-            <td colspan="2"  class="table-footer"> <button onclick="suaSanPham('`+sp.masp+`')">SỬA</button> </td>
+            <td colspan="2"  class="table-footer"> <button onclick="suaSanPham('`+sp.MaSP+`')">SỬA</button> </td>
         </tr>
     </table>`
     var khung = document.getElementById('khungSuaSanPham');
@@ -504,8 +505,8 @@ function getListDonHang() {
             var tongtien = 0;
             for(var s of u[i].donhang[j].sp) {
                 var timsp = timKiemTheoMa(list_products, s.ma);
-                if(timsp.promo.name == 'giareonline') tongtien += stringToNum(timsp.promo.value);
-                else tongtien += stringToNum(timsp.price);
+                if(timsp.MaKM.name == 'giareonline') tongtien += stringToNum(timsp.MaKM.value);
+                else tongtien += stringToNum(timsp.DonGia);
             }
 
             // Ngày giờ

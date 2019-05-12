@@ -29,6 +29,18 @@
 </head>
 
 <body>
+    <!-- =============== Phần lấy dữ liệu từ DB ===================== -->
+    <?php
+        // Lấy dữ liệu từ DATABASE đổ vào mảng dssp
+        require_once('BackEnd/ConnectionDB/DB_classes.php');
+        $dssp = (new SanPhamBUS())->select_all();
+    ?>
+    <script type="text/javascript">
+        // Đổ dữ liệu từ $dssp vào biến của javascript, dạng JSON
+        list_products = JSON.parse(`<?php echo json_encode($dssp) ?>`);
+    </script>
+    <!-- ================ Kết thúc lấy dữ liệu ======================= -->
+
     <header>
         <h2>SmartPhone Store - Admin</h2>
     </header>
@@ -42,13 +54,11 @@
             <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-address-book-o"></i> Khách Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
-            <!-- <li class="nav-item"> -->
-                <hr>
-            <!-- </li> -->
+            <hr>
             <li class="nav-item">
                 <a href="index.php" class="nav-link" onclick="logOutAdmin(); return true;">
                     <i class="fa fa-arrow-left"></i>
-                    Đăng xuất (về Trang chủ)
+                    Đăng xuất
                 </a>
             </li>
         </ul>
