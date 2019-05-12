@@ -36,7 +36,10 @@
     <script src="js/dungchung.js"></script>
     <script src="js/chitietsanpham.js"></script>
 
-    <?php require_once "FrontEnd/echoHTML.php"; ?>
+    <?php 
+        require_once "FrontEnd/echoHTML.php";
+        // require_once "getData.php"
+    ?>
 </head>
 
 <body>

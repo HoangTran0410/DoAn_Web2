@@ -223,8 +223,15 @@ function logIn(form) {
         if (equalUser(newUser, u)) {
             setCurrentUser(u);
 
-            // Reload lại trang -> sau khi reload sẽ cập nhật luôn giỏ hàng khi hàm setupEventTaiKhoan chạy
-            location.reload();
+            Swal.fire({
+                type: 'success',
+                title: 'Đăng nhập thành công',
+                timer: 1500
+            }).then((result) => {
+                // Reload lại trang -> sau khi reload sẽ cập nhật luôn giỏ hàng khi hàm setupEventTaiKhoan chạy
+                location.reload();
+            })
+
             return false;
         }
     }

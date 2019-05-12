@@ -214,30 +214,31 @@ function addChiTietSanPham()
         <div class="comment-area">
             <div class="guiBinhLuan">
                 <div class="stars">
-                  <form action="">
-                    <input class="star star-5" id="star-5" type="radio" name="star"/>
-                    <label class="star star-5" for="star-5" title="Tuyệt vời"></label>
+                    <form action="">
+                        <input class="star star-5" id="star-5" type="radio" name="star"/>
+                        <label class="star star-5" for="star-5" title="Tuyệt vời"></label>
 
-                    <input class="star star-4" id="star-4" type="radio" name="star"/>
-                    <label class="star star-4" for="star-4" title="Tốt"></label>
+                        <input class="star star-4" id="star-4" type="radio" name="star"/>
+                        <label class="star star-4" for="star-4" title="Tốt"></label>
 
-                    <input class="star star-3" id="star-3" type="radio" name="star"/>
-                    <label class="star star-3" for="star-3" title="Tạm"></label>
+                        <input class="star star-3" id="star-3" type="radio" name="star"/>
+                        <label class="star star-3" for="star-3" title="Tạm"></label>
 
-                    <input class="star star-2" id="star-2" type="radio" name="star"/>
-                    <label class="star star-2" for="star-2" title="Khá"></label>
+                        <input class="star star-2" id="star-2" type="radio" name="star"/>
+                        <label class="star star-2" for="star-2" title="Khá"></label>
 
-                    <input class="star star-1" id="star-1" type="radio" name="star"/>
-                    <label class="star star-1" for="star-1" title="Tệ"></label>
-                  </form>
+                        <input class="star star-1" id="star-1" type="radio" name="star"/>
+                        <label class="star star-1" for="star-1" title="Tệ"></label>
+                    </form>
                 </div>
-                <input type="text" id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></input>
+                <textarea id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></textarea>
                 <input id="btnBinhLuan" type="button" value="GỬI BÌNH LUẬN">
             </div>
             <!-- <h2>Bình luận</h2> -->
-            <div class="rating"></div>
-            <div class="comment-content">
-                
+            <div class="container-comment">
+                <div class="rating"></div>
+                <div class="comment-content">
+                </div>
             </div>
         </div>
     </div>';
@@ -254,8 +255,10 @@ function addFooter()
 
     <!-- ============== Footer ============= -->
     <div class="copy-right">
-        <p><a href="index.php">SmartPhone Store</a> - All rights reserved © 2018-' . date("Y") . ' - Designed by
-            <span style="color: #eee; font-weight: bold">H-group</span></p>
+        <p>
+            All rights reserved © 2018-' . date("Y") . ' - Designed by
+            <span style="color: #eee; font-weight: bold">H-group</span>
+        </p>
     </div>';
 }
 

@@ -13,17 +13,6 @@ window.onload = function() {
 
     // autocomplete cho khung tim kiem
     autocomplete(document.getElementById('search-box'), list_products);
-
-    var s = "";
-    for(var i = 0; i < 10; i++)
-    s += createComment("Hoàng Trần", `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`, new Date().toShortFormat());
-
-    document.getElementsByClassName("comment-content")[0].innerHTML += s;
 }
 
 function phanTich_URL_chiTietSanPham() {
@@ -54,14 +43,8 @@ function phanTich_URL_chiTietSanPham() {
     // Cập nhật sao
     var rating = "";
     if (sanPham.rateCount > 0) {
-        for (var i = 1; i <= 5; i++) {
-            if (i <= sanPham.star) {
-                rating += `<i class="fa fa-star"></i>`
-            } else {
-                rating += `<i class="fa fa-star-o"></i>`
-            }
-        }
-        rating += `<span> ` + sanPham.rateCount + ` đánh giá</span>`;
+        rating = getRateStar(sanPham.rateCount);
+        rating += `<span> ` + sanPham.rateCount + ` đánh giá </span>`;
     }
     divChiTiet.getElementsByClassName('rating')[0].innerHTML += rating;
 
@@ -96,24 +79,32 @@ function phanTich_URL_chiTietSanPham() {
     var hinh = divChiTiet.getElementsByClassName('picture')[0];
     hinh = hinh.getElementsByTagName('img')[0];
     hinh.src = sanPham.img;
-    /*document.getElementById('bigimg').src = sanPham.img;
 
-    // Hình nhỏ
-    addSmallImg("img/products/huawei-mate-20-pro-green-600x600.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-1-org.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-2-org.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-3-org.jpg");
-    addSmallImg("img/products/huawei-mate-20-pro-green-600x600.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-3-org.jpg");
-    addSmallImg("img/products/huawei-mate-20-pro-green-600x600.jpg");*/
+    // Test bình luận
+    var s = "";
+    for(var i = 0; i < Math.min(sanPham.rateCount, 20); i++) {
+        s += createComment("Hoàng Trần", `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit.`, 
+                getRateStar(Math.random()*5),  
+                new Date().toShortFormat()
+            );
+    }
 
-    // Khởi động thư viện hỗ trợ banner - chỉ chạy sau khi tạo xong hình nhỏ
-    /*var owl = $('.owl-carousel');
-    owl.owlCarousel({
-        items: 5,
-        center: true,
-        smartSpeed: 450,
-    });*/
+    document.getElementsByClassName("comment-content")[0].innerHTML += s;
+}
+
+function getRateStar(num) {
+    var result = "";
+    for (var i = 1; i <= 5; i++) {
+        if (i <= num) {
+            result += `<i class="fa fa-star"></i>`
+        } else {
+            result += `<i class="fa fa-star-o"></i>`
+        }
+    }
+    return result;
 }
 
 // Chi tiết khuyến mãi
@@ -148,10 +139,10 @@ function addThongSo(ten, giatri) {
             </li>`;
 }
 
-function createComment(name, value, time) {
+function createComment(name, value, star, time) {
     return `<div class="comment">
                 <i class="fa fa-user-circle"> </i>
-                <h4>` + name + `</h4>
+                <h4>` + name + `<span> `+ star +`</span></h4>
                 <p>` + value + `</p>
                 <span class="time">` + time + `</span>
             </div>`;

@@ -12,14 +12,15 @@
 }
 
 .rating {
-    float: left;
-    margin-left: 15px;
-    line-height: 40px;
+    margin: 20px auto;
+    width: 100%;
+    text-align: center;
 }
 
-.fa-star,
-.fa-star-o {
-    color: orange;
+.rating .fa-star,
+.rating .fa-star-o {
+    color: #FD4;
+    font-size: 24px;
 }
 
 .rowdetail {
@@ -283,6 +284,9 @@
     width: 40%;
     color: #666;
 }
+.info li i {
+    font-size: 25px;
+}
 
 .info li div {
     width: 60%;
@@ -325,7 +329,7 @@
 }
 
 /* Style images */
-.comment i {
+.comment>i {
     float: left;
     font-size: 40px;
     margin-right: 10px;
@@ -334,6 +338,10 @@
 .comment h4 {
     /*float: left;*/
     margin-right: 20px;
+}
+
+.comment h4 i.fa-star {
+    color: #FD4;
 }
 
 /* Style time text */
@@ -448,8 +456,7 @@ label.star:before {
         margin: 10px 0;
     }
 
-    .chitietSanpham h1,
-    .rating {
+    .chitietSanpham h1 {
         float: none;
         width: 100%;
         margin: 0;
