@@ -4,7 +4,7 @@ window.onload = function () {
     // get data từ localstorage
     // list_products = getListProducts() || list_products;
     adminInfo = getListAdmin() || adminInfo;
-    console.log(list_products);
+    //console.log(list_products);
 
     addEventChangeTab();
 
@@ -127,7 +127,7 @@ function openTab(nameTab) {
 
 // ========================== Sản Phẩm ========================
 // Vẽ bảng danh sách sản phẩm
-/*function addTableProducts() {
+function addTableProducts(list_products) {
     var tc = document.getElementsByClassName('sanpham')[0].getElementsByClassName('table-content')[0];
     var s = `<table class="table-outline hideImg">`;
 
@@ -137,11 +137,11 @@ function openTab(nameTab) {
             <td style="width: 5%">` + (i+1) + `</td>
             <td style="width: 10%">` + p.MaSP + `</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
+                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP/*.split(' ').join('-')*/ + `">` + p.TenSP + `</a>
                 <img src="` + p.HinhAnh + `"></img>
             </td>
             <td style="width: 15%">` + p.DonGia + `</td>
-            <td style="width: 15%">` + promoToStringValue(p.MaKM) + `</td>
+            <td style="width: 15%">` + /*promoToStringValue(*/p.MaKM/*)*/ + `</td>
             <td style="width: 15%">
                 <div class="tooltip">
                     <i class="fa fa-wrench" onclick="addKhungSuaSanPham('` + p.MaSP + `')"></i>
@@ -158,7 +158,7 @@ function openTab(nameTab) {
     s += `</table>`;
 
     tc.innerHTML = s;
-}*/
+}
 
 // Tìm kiếm
 function timKiemSanPham(inp) {

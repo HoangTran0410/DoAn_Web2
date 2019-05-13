@@ -18,6 +18,8 @@
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+
     <!-- Our files -->
     <link rel="stylesheet" href="FrontEnd/css/admin/style.css">
     <link rel="stylesheet" href="FrontEnd/css/admin/progress.css">
@@ -30,14 +32,22 @@
 
 <body>
     <!-- =============== Phần lấy dữ liệu từ DB ===================== -->
-    <?php
-        // Lấy dữ liệu từ DATABASE đổ vào mảng dssp
-        require_once('BackEnd/ConnectionDB/DB_classes.php');
-        $dssp = (new SanPhamBUS())->select_all();
-    ?>
     <script type="text/javascript">
         // Đổ dữ liệu từ $dssp vào biến của javascript, dạng JSON
-        list_products = JSON.parse(`<?php echo json_encode($dssp) ?>`);
+        $('document').ready(function(){
+            $.ajax({       
+            type: "post",
+            url: "sanpham.php",
+            dataType: "json",
+            data : {
+                         number : "1",                    },  
+            success: function(data){           
+                var list_products = data;
+                addTableProducts(list_products);
+                },
+           });
+        });
+        
     </script>
     <!-- ================ Kết thúc lấy dữ liệu ======================= -->
 
@@ -84,10 +94,10 @@
                 </tr>
             </table>
 
-            <!--<div class="table-content">
-            </div>-->
-
             <div class="table-content">
+            </div>
+
+            <!--<div class="table-content">
             <?php
                 require_once('BackEnd/ConnectionDB/DB_classes.php');
 
@@ -118,7 +128,7 @@
                 }
                 echo "</table>";
             ?>
-            </div>
+            </div>-->
 
             <div class="table-footer">
                 <select name="kieuTimSanPham">
