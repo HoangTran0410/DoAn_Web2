@@ -8,19 +8,6 @@ window.onload = function () {
     addEventChangeTab();
 
     if (window.localStorage.getItem('admin')) {
-        $.ajax({
-            type: "post",
-            url: "sanpham.php",
-            dataType: "json",
-            data : {
-                number : "1",                    
-            },  
-            success: function(data){           
-                list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
-                addTableProducts(data);
-            }
-       });
-
         //addTableProducts();
         addTableDonHang();
         addTableKhachHang();
@@ -30,6 +17,21 @@ window.onload = function () {
     } else {
         document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
     }
+}
+
+function refreshTableSanPham() {
+    $.ajax({
+        type: "post",
+        url: "sanpham.php",
+        dataType: "json",
+        data : {
+            number : "1",                    
+        },  
+        success: function(data){           
+            list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
+            addTableProducts(data);
+        }
+   });
 }
 
 function logOutAdmin() {

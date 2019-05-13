@@ -88,6 +88,10 @@
                     <i class="fa fa-plus-square"></i>
                     Thêm sản phẩm
                 </button>
+                <button onclick="refreshTableSanPham()">
+                    <i class="fa fa-refresh"></i>
+                    Làm mới
+                </button>
             </div>
 
             <div id="khungThemSanPham" class="overlay">
