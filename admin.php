@@ -18,6 +18,9 @@
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
+    <!-- Jquery -->
+    <script src="js/Jquery/Jquery.min.js"></script>
+
     <!-- Our files -->
     <link rel="stylesheet" href="FrontEnd/css/admin/style.css">
     <link rel="stylesheet" href="FrontEnd/css/admin/progress.css">
@@ -26,8 +29,6 @@
     <script src="js/classes.js"></script>
     <script src="js/dungchung.js"></script>
     <script src="js/admin.js"></script>
-
-    <?php require_once "getData.php"?>
 </head>
 
 <body>
