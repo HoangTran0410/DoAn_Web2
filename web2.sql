@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 12, 2019 lúc 07:40 PM
+-- Thời gian đã tạo: Th5 13, 2019 lúc 08:23 PM
 -- Phiên bản máy phục vụ: 10.1.37-MariaDB
 -- Phiên bản PHP: 7.2.12
 
@@ -190,6 +190,8 @@ CREATE TABLE `sanpham` (
   `Rom` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `SDCard` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Pin` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `SoSao` int(11) NOT NULL,
+  `SoDanhGia` int(11) NOT NULL,
   `TrangThai` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -197,31 +199,31 @@ CREATE TABLE `sanpham` (
 -- Đang đổ dữ liệu cho bảng `sanpham`
 --
 
-INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`, `MaKM`, `ManHinh`, `HDH`, `CamSau`, `CamTruoc`, `CPU`, `Ram`, `Rom`, `SDCard`, `Pin`, `TrangThai`) VALUES
-('SP1', 'LSP1', 'IPhone X', 20, 102, 'iphone-xr-128gb-red-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP10', 'LSP1', 'iPhone Xr 256GB', 23.9, 76, 'iphone-xr-256gb-white-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP11', 'LSP2', 'OPPO R17 Pro', 15.9, 99, 'oppo-r17-pro-2-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP12', 'LSP8', 'Vivo V15', 7.9, 257, 'vivo-v15-quanghai-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP13', 'LSP6', 'Blackberry Evolve', 7.9, 46, 'blackberry-evolve6xvk3-640.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP14', 'LSP7', 'Huawei Y9 (2019)', 5.5, 37, 'huawei-y9-2019-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP15', 'LSP2', 'OPPO F7', 5.5, 361, 'oppo-f7-red-mtp-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP16', 'LSP9', 'Xiaomi Mi 8', 11.9, 41, 'xiaomi-mi-8-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP17', 'LSP9', 'Xiaomi Redmi Note 6 Pro 64GB', 5.6, 68, 'xiaomi-redmi-note-6-pro-black-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP18', 'LSP3', 'Samsung Galaxy Note 9 512GB', 24, 60, 'samsung-galaxy-note-9-512gb-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP19', 'LSP7', 'Huawei Mate 20', 13, 45, 'huawei-mate-20-black-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP2', 'LSP2', 'Oppo A7', 8.2, 70, 'oppo-a7-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP20', 'LSP8', 'Vivo Y85', 5, 36, 'vivo-y85-red-docquyen-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP21', 'LSP8', 'Vivo V11', 8, 30, 'vivo-v11-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP22', 'LSP1', 'iPhone Xs Max 512GB', 39, 45, 'iphone-xs-max-512gb-gold-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP23', 'LSP2', 'OPPO Fid X', 19.9, 49, 'oppo-find-x-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP24', 'LSP1', 'Iphone abc', 25, 20, 'iphone-xr-256gb-white-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP3', 'LSP5', 'Nokia 8.1', 7.9, 69, 'nokia-81-silver-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP4', 'LSP4', 'Philips S327', 3.9, 56, 'philips-s327-400-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP5', 'LSP1', 'iPhone 8 Plus 256GB', 25.7, 167, 'iphone-8-plus-256gb-gold-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP6', 'LSP5', 'Nokia 6.1 Plus', 6.5, 44, 'nokia-61-plus-3-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP7', 'LSP2', 'Oppo NEO 3', 15.4, 101, 'oppo-a7-32gb-gold-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 1),
-('SP8', 'LSP7', 'Huawei P30 Pro', 23, 69, 'huawei-p30-pro-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0),
-('SP9', 'LSP3', 'Samsung Galaxy S10+ (512GB)', 29, 57, 'samsung-galaxy-s10-plus-512gb-ceramic-black-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0);
+INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`, `MaKM`, `ManHinh`, `HDH`, `CamSau`, `CamTruoc`, `CPU`, `Ram`, `Rom`, `SDCard`, `Pin`, `SoSao`, `SoDanhGia`, `TrangThai`) VALUES
+('SP1', 'LSP1', 'IPhone X', 20, 102, 'iphone-xr-128gb-red-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP10', 'LSP1', 'iPhone Xr 256GB', 23.9, 76, 'iphone-xr-256gb-white-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP11', 'LSP2', 'OPPO R17 Pro', 15.9, 99, 'oppo-r17-pro-2-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP12', 'LSP8', 'Vivo V15', 7.9, 257, 'vivo-v15-quanghai-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP13', 'LSP6', 'Blackberry Evolve', 7.9, 46, 'blackberry-evolve6xvk3-640.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP14', 'LSP7', 'Huawei Y9 (2019)', 5.5, 37, 'huawei-y9-2019-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP15', 'LSP2', 'OPPO F7', 5.5, 361, 'oppo-f7-red-mtp-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP16', 'LSP9', 'Xiaomi Mi 8', 11.9, 41, 'xiaomi-mi-8-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP17', 'LSP9', 'Xiaomi Redmi Note 6 Pro 64GB', 5.6, 68, 'xiaomi-redmi-note-6-pro-black-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP18', 'LSP3', 'Samsung Galaxy Note 9 512GB', 24, 60, 'samsung-galaxy-note-9-512gb-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP19', 'LSP7', 'Huawei Mate 20', 13, 45, 'huawei-mate-20-black-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP2', 'LSP2', 'Oppo A7', 8.2, 70, 'oppo-a7-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP20', 'LSP8', 'Vivo Y85', 5, 36, 'vivo-y85-red-docquyen-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP21', 'LSP8', 'Vivo V11', 8, 30, 'vivo-v11-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP22', 'LSP1', 'iPhone Xs Max 512GB', 39, 45, 'iphone-xs-max-512gb-gold-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP23', 'LSP2', 'OPPO Fid X', 19.9, 49, 'oppo-find-x-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP24', 'LSP1', 'Iphone abc', 25, 20, 'iphone-xr-256gb-white-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP3', 'LSP5', 'Nokia 8.1', 7.9, 69, 'nokia-81-silver-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP4', 'LSP4', 'Philips S327', 3.9, 56, 'philips-s327-400-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP5', 'LSP1', 'iPhone 8 Plus 256GB', 25.7, 167, 'iphone-8-plus-256gb-gold-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP6', 'LSP5', 'Nokia 6.1 Plus', 6.5, 44, 'nokia-61-plus-3-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP7', 'LSP2', 'Oppo NEO 3', 15.4, 101, 'oppo-a7-32gb-gold-400x400.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 1),
+('SP8', 'LSP7', 'Huawei P30 Pro', 23, 69, 'huawei-p30-pro-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP9', 'LSP3', 'Samsung Galaxy S10+ (512GB)', 29, 57, 'samsung-galaxy-s10-plus-512gb-ceramic-black-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -296,7 +298,8 @@ ALTER TABLE `chitiethoadon`
 -- Các ràng buộc cho bảng `danhgia`
 --
 ALTER TABLE `danhgia`
-  ADD CONSTRAINT `danhgia_ibfk_1` FOREIGN KEY (`MaSP`) REFERENCES `sanpham` (`MaSP`);
+  ADD CONSTRAINT `danhgia_ibfk_1` FOREIGN KEY (`MaSP`) REFERENCES `sanpham` (`MaSP`),
+  ADD CONSTRAINT `danhgia_ibfk_2` FOREIGN KEY (`MaND`) REFERENCES `nguoidung` (`MaND`);
 
 --
 -- Các ràng buộc cho bảng `hoadon`
