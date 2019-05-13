@@ -107,28 +107,66 @@ function addHome()
     </div>
     <div class="companyMenu group flexContain"></div>
 
-    <div class="flexContain timNangCao">
+    <div class="timNangCao">
+        <div class="flexContain">
+            <div class="pricesRangeFilter dropdown">
+                <button class="dropbtn">Giá tiền</button>
+                <div class="dropdown-content"></div>
+            </div>
 
-        <!-- <div class="pricesRangeFilter dropdown">
-            <button class="dropbtn">Giá tiền</button>
-            <div class="dropdown-content"></div>
+            <div class="promosFilter dropdown">
+                <button class="dropbtn">Khuyến mãi</button>
+                <div class="dropdown-content"></div>
+            </div>
+
+            <div class="starFilter dropdown">
+                <button class="dropbtn">Số lượng sao</button>
+                <div class="dropdown-content"></div>
+            </div>
+
+            <div class="sortFilter dropdown">
+                <button class="dropbtn">Sắp xếp</button>
+                <div class="dropdown-content"></div>
+            </div>            
         </div>
 
-        <div class="promosFilter dropdown">
-            <button class="dropbtn">Khuyến mãi</button>
-            <div class="dropdown-content"></div>
-        </div>
 
-        <div class="starFilter dropdown">
-            <button class="dropbtn">Số lượng sao</button>
-            <div class="dropdown-content"></div>
-        </div>
+        <br>
 
-        <div class="sortFilter dropdown">
-            <button class="dropbtn">Sắp xếp</button>
-            <div class="dropdown-content"></div>
-        </div> -->
-
+        <fieldset>
+            <legend>Tìm kiếm nâng cao:</legend>
+    
+            <table>
+                <tr>
+                    <td>Hãng</td>
+                    <td><select id="slCompany"></select></td>
+                </tr>
+                <tr>
+                    <td>Giá</td>
+                    <td>
+                        Từ<input type="number" id="giaTu" size="7"> <br> 
+                        Tới<input type="number" id="giaToi" size="7">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Khuyến mãi</td>
+                    <td><select id="slPromo"></select></td>
+                </tr>
+                <tr>
+                    <td>Số sao</td>
+                    <td><select id="slStar"></select></td>
+                </tr>
+                <tr>
+                    <td>Sắp xếp</td>
+                    <td><select id="slSort"></select></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button onclick="timNangCao()">Tìm</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
     </div> <!-- End khung chọn bộ lọc -->
 
     <div class="choosedFilter flexContain">
