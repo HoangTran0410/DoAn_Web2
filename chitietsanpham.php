@@ -12,24 +12,17 @@
     <!-- Load font awesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
-    <!-- owl carousel libraries cho hình nhỏ -->
-    <!-- <link rel="stylesheet" href="js/owlcarousel/owl.carousel.min.css"> -->
-    <!-- <link rel="stylesheet" href="js/owlcarousel/owl.theme.default.min.css"> -->
-    <!-- <script src="js/Jquery/Jquery.min.js"></script> -->
-    <!-- <script src="js/owlcarousel/owl.carousel.min.js"></script> -->
-
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- our files -->
     <!-- css -->
-    <link rel="stylesheet" href="FrontEnd/css/style.css">
-    <link rel="stylesheet" href="FrontEnd/css/topnav.css">
-    <link rel="stylesheet" href="FrontEnd/css/header.css">
-    <link rel="stylesheet" href="FrontEnd/css/taikhoan.css">
-    <link rel="stylesheet" href="FrontEnd/css/chitietsanpham.css">
-    <link rel="stylesheet" href="FrontEnd/css/footer.css">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/topnav.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/taikhoan.css">
+    <link rel="stylesheet" href="css/chitietsanpham.css">
+    <link rel="stylesheet" href="css/footer.css">
     <!-- js -->
     <script src="data/products.js"></script>
     <script src="js/classes.js"></script>
@@ -37,8 +30,7 @@
     <script src="js/chitietsanpham.js"></script>
 
     <?php 
-        require_once "FrontEnd/echoHTML.php";
-        // require_once "getData.php"
+        require_once "php/echoHTML.php";
     ?>
 </head>
 

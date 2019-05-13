@@ -19,11 +19,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
     <!-- Jquery -->
-    <script src="js/Jquery/Jquery.min.js"></script>
+    <script src="lib/Jquery/Jquery.min.js"></script>
 
     <!-- Our files -->
-    <link rel="stylesheet" href="FrontEnd/css/admin/style.css">
-    <link rel="stylesheet" href="FrontEnd/css/admin/progress.css">
+    <link rel="stylesheet" href="css/admin/style.css">
+    <link rel="stylesheet" href="css/admin/progress.css">
 
     <script src="data/products.js"></script>
     <script src="js/classes.js"></script>

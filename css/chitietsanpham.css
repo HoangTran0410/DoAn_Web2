@@ -129,11 +129,12 @@
     line-height: 30px;
 }
 
-.ship img {
+.ship i {
     width: 19px;
     height: 21px;
     margin: 4px 10px 0 0;
     float: left;
+    font-size: 20px;
 }
 
 .ship div {
@@ -172,9 +173,9 @@
     padding: 0 15px 5px 40px;
 }
 
-.promo img {
-    width: 14px;
-    height: 14px;
+.promo i {
+    color: #090;
+    font-size: 20px;
     float: left;
     margin: 2px 0 0 -20px;
 }
@@ -203,10 +204,8 @@
     background: -webkit-linear-gradient(top, #fd6e1d, #f59000);
 }
 
-.area_order .buy_now p {
-    display: block;
-    font-size: 13px;
-    margin: 3px 0;
+.area_order .buy_now h3 {
+    margin: 10px 0;
 }
 
 .policy {
@@ -230,13 +229,13 @@
     position: relative;
 }
 
-.policy div img {
-    background: #fff;
+.policy div i {
     display: block;
     width: 20px;
     height: 17px;
     float: left;
     margin: 3px;
+    font-size: 18px;
 }
 
 .policy div p {
@@ -278,12 +277,14 @@
 }
 
 .info li p {
-    clear: both;
+    /*clear: both;*/
     float: left;
     margin: 5px 0;
     width: 40%;
     color: #666;
+    font-weight: bold;
 }
+
 .info li i {
     font-size: 25px;
 }
@@ -293,6 +294,7 @@
     float: left;
     margin: 5px 0;
     color: #333;
+    font-style: italic;
 }
 
 

@@ -131,7 +131,7 @@ function addHome()
         </div>
 
 
-        <br>
+        <!-- <br>
 
         <fieldset>
             <legend>Tìm kiếm nâng cao:</legend>
@@ -166,7 +166,7 @@ function addHome()
                     </td>
                 </tr>
             </table>
-        </fieldset>
+        </fieldset> -->
     </div> <!-- End khung chọn bộ lọc -->
 
     <div class="choosedFilter flexContain">
@@ -209,35 +209,34 @@ function addChiTietSanPham()
             <div class="price_sale">
                 <div class="area_price"> </div>
                 <div class="ship" style="display: none;">
-                    <img src="img/chitietsanpham/clock-152067_960_720.png">
+                    <i class="fa fa-clock-o"></i>
                     <div>NHẬN HÀNG TRONG 1 GIỜ</div>
                 </div>
                 <div class="area_promo">
                     <strong>khuyến mãi</strong>
                     <div class="promo">
-                        <img src="img/chitietsanpham/icon-tick.png">
+                        <i class="fa fa-check-circle"></i>
                         <div id="detailPromo"> </div>
                     </div>
                 </div>
                 <div class="policy">
                     <div>
-                        <img src="img/chitietsanpham/box.png">
+                        <i class="fa fa-archive"></i>
                         <p>Trong hộp có: Sạc, Tai nghe, Sách hướng dẫn, Cây lấy sim, Ốp lưng </p>
                     </div>
                     <div>
-                        <img src="img/chitietsanpham/icon-baohanh.png">
+                        <i class="fa fa-star"></i>
                         <p>Bảo hành chính hãng 12 tháng.</p>
                     </div>
                     <div class="last">
-                        <img src="img/chitietsanpham/1-1.jpg">
+                        <i class="fa fa-retweet"></i>
                         <p>1 đổi 1 trong 1 tháng nếu lỗi, đổi sản phẩm tại nhà trong 1 ngày.</p>
                     </div>
                 </div>
                 <div class="area_order">
                     <!-- nameProduct là biến toàn cục được khởi tạo giá trị trong phanTich_URL_chiTietSanPham -->
                     <a class="buy_now" onclick="themVaoGioHang(maProduct, nameProduct);">
-                        <b><i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng</b>
-                        <p>Giao trong 1 giờ hoặc nhận tại cửa hàng</p>
+                        <h3><i class="fa fa-plus"></i> Thêm vào giỏ hàng</h3>
                     </a>
                 </div>
             </div>

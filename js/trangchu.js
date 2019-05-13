@@ -37,9 +37,9 @@ window.onload = function() {
     for (var c of company) addCompany("img/company/" + c, c.slice(0, c.length - 4));
 
     // =================== web 2 tìm nâng cao ================
-    addCompanysSelect(company);
-	addStarSelect();
-	addPromoSelect();
+ //    addCompanysSelect(company);
+	// addStarSelect();
+	// addPromoSelect();
 	// ==================== End ===========================
 
     // Thêm sản phẩm vào trang
