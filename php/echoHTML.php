@@ -329,14 +329,14 @@ function addContainTaiKhoan()
                         <div class="top-row">
                             <div class="field-wrap">
                                 <label>
-                                    Số điện thoại<span class="req">*</span>
+                                    Điện thoại<span class="req">*</span>
                                 </label>
                                 <input name="sdt" type="number" required autocomplete="off" />
                             </div> <!-- /sdt -->
     
                             <div class="field-wrap">
                                 <label>
-                                    Địa chỉ Email<span class="req">*</span>
+                                    Email<span class="req"></span>
                                 </label>
                                 <input name="email" type="email" required autocomplete="off" />
                             </div> <!-- /email -->

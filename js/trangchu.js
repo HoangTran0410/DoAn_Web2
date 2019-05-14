@@ -27,7 +27,7 @@ window.onload = function() {
         type: "double",
         grid: true,
         min: 0,
-        max: 30,
+        max: 50,
         from: 0,
         to: 5,
         step: 0.5,
@@ -70,7 +70,7 @@ window.onload = function() {
         addKhungSanPham('GIÁ RẺ CHO MỌI NHÀ', green, ['price=0-3000000', 'sort=price'], soLuong);
     }
 
-    filtersAjax(['sort=TenSP-des']);
+    filtersAjax(['sort=DonGia-asc']);
 
     // Thêm chọn mức giá
     addPricesRange(0, 2000000);
@@ -126,22 +126,20 @@ function setUpBanner() {
                 center: true,
                 loop: true,
                 smartSpeed: 450,
+                nav: false,
 
                 autoplay: true,
                 autoplayTimeout: 3500,
 
                 responsive:{
                     0:{
-                        items:1,
-                        nav:true
+                        items:1
                     },
                     600:{
-                        items:1.5,
-                        nav:false
+                        items:1.5
                     },
                     1000:{
-                        items:2,
-                        nav:true,
+                        items:2
                     }
                 }
             });
