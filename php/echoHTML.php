@@ -91,12 +91,10 @@ function addHome()
 {
     echo '
     <div class="banner">
-    <div class="owl-carousel owl-theme"></div>
+        <div class="owl-carousel owl-theme"></div>
     </div> <!-- End Banner -->
-
-    <img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
-
-    <br>
+    
+    <div class="smallbanner" style="width: 100%;"></div>
 
     <div class="companysFilter">
         <button class="companysButton" onclick="setCompanysMenu()">

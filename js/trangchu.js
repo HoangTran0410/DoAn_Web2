@@ -2,25 +2,7 @@ window.onload = function() {
     khoiTao();
 
     // Thêm hình vào banner
-    addBanner("img/banners/banner0.gif", "img/banners/banner0.gif");
-    var numBanner = 9; // Số lượng hình banner
-    for (var i = 1; i <= numBanner; i++) {
-        var linkimg = "img/banners/banner" + i + ".png";
-        addBanner(linkimg, linkimg);
-    }
-
-    // Khởi động thư viện hỗ trợ banner - chỉ chạy khi đã tạo hình trong banner
-    var owl = $('.owl-carousel');
-    owl.owlCarousel({
-        items: 1.5,
-        margin: 100,
-        center: true,
-        loop: true,
-        smartSpeed: 450,
-
-        autoplay: true,
-        autoplayTimeout: 3500
-    });
+    setUpBanner();
 
     // autocomplete cho khung tim kiem
     autocomplete(document.getElementById('search-box'), list_products);
@@ -104,6 +86,65 @@ window.onload = function() {
     // Thêm filter đã chọn
     addAllChoosedFilter();
 };
+
+function setUpBanner() {
+    $.ajax({
+        type: "POST",
+        url: "php/xylyhinhanh.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getallbanners",
+        },
+        success: function(data, status, xhr) {
+            for(var url of data) {
+                var realPath = url.split('../').join('');
+                addBanner(realPath, realPath);
+            }
+
+            // Khởi động thư viện hỗ trợ banner - chỉ chạy khi đã tạo hình trong banner
+            var owl = $('.owl-carousel');
+            owl.owlCarousel({
+                items: 1.5,
+                margin: 100,
+                center: true,
+                loop: true,
+                smartSpeed: 450,
+
+                autoplay: true,
+                autoplayTimeout: 3500
+            });
+        },
+        error: function() {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu hình ảnh banners (trangchu.js > setUpBanner)"
+            });
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "php/xylyhinhanh.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getsmallbanner",
+        },
+        success: function(data, status, xhr) {
+            for(var url of data) {
+                var realPath = url.split('../').join('');
+                addSmallBanner(realPath);
+            }
+        },
+        error: function() {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu hình ảnh small banners (trangchu.js > setUpBanner)"
+            });
+        }
+    });
+}
 
 var soLuongSanPhamMaxTrongMotTrang = 15;
 
@@ -636,6 +677,12 @@ function addBanner(img, link) {
 					</div>`;
     var banner = document.getElementsByClassName('owl-carousel')[0];
     banner.innerHTML += newDiv;
+}
+
+function addSmallBanner(img) {
+    var newimg = `<img src=` + img + ` style="width: 100%;">`;
+    var smallbanner = document.getElementsByClassName('smallbanner')[0];
+    smallbanner.innerHTML += newimg;
 }
 
 // Thêm hãng sản xuất

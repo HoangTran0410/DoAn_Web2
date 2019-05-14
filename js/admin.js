@@ -26,7 +26,7 @@ function refreshTableSanPham() {
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            type: "getall",
+            request: "getall",
         },
         success: function(data, status, xhr) {
             list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
@@ -35,7 +35,7 @@ function refreshTableSanPham() {
         error: function() {
             Swal.fire({
                 type: "error",
-                title: "Lỗi lấy dữ liệu sản phẩm"
+                title: "Lỗi lấy dữ liệu sản phẩm (admin.js > refreshTableSanPham)"
             });
         }
     });

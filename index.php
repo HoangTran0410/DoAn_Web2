@@ -54,7 +54,7 @@
 			addHeader(); 
 			addHome();
 		?>
-	</section> <!-- End Section -->
+	</section>
 
 	<?php
 		addContainTaiKhoan();
