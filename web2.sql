@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 13, 2019 lúc 08:23 PM
+-- Thời gian đã tạo: Th5 14, 2019 lúc 08:29 PM
 -- Phiên bản máy phục vụ: 10.1.37-MariaDB
 -- Phiên bản PHP: 7.2.12
 
@@ -205,7 +205,7 @@ INSERT INTO `sanpham` (`MaSP`, `MaLSP`, `TenSP`, `DonGia`, `SoLuong`, `HinhAnh`,
 ('SP11', 'LSP2', 'OPPO R17 Pro', 15.9, 99, 'oppo-r17-pro-2-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
 ('SP12', 'LSP8', 'Vivo V15', 7.9, 257, 'vivo-v15-quanghai-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
 ('SP13', 'LSP6', 'Blackberry Evolve', 7.9, 46, 'blackberry-evolve6xvk3-640.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
-('SP14', 'LSP7', 'Huawei Y9 (2019)', 5.5, 37, 'huawei-y9-2019-blue-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
+('SP14', 'LSP7', 'Huawei Y9 (2019)', 5.5, 37, 'huawei-y9-2019-blue-400x460.jpg', 'KM2', '', '', '', '', '', '', '', '', '', 0, 0, 0),
 ('SP15', 'LSP2', 'OPPO F7', 5.5, 361, 'oppo-f7-red-mtp-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
 ('SP16', 'LSP9', 'Xiaomi Mi 8', 11.9, 41, 'xiaomi-mi-8-1-400x460-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
 ('SP17', 'LSP9', 'Xiaomi Redmi Note 6 Pro 64GB', 5.6, 68, 'xiaomi-redmi-note-6-pro-black-1-400x460.jpg', '', '', '', '', '', '', '', '', '', '', 0, 0, 0),
