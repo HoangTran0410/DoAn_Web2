@@ -96,7 +96,7 @@ hr {
 
 /* ===== End clear float ====== */
 
-#goto-top-page {
+#goto-top-page, #goto-bot-page {
     position: fixed;
     bottom: 15px;
     right: 15px;
@@ -112,11 +112,15 @@ hr {
     cursor: pointer;
     transition-duration: .2s;
 }
-#goto-top-page:hover {
+#goto-top-page:hover, #goto-bot-page:hover {
     background: rgba(0, 0, 0, .7);
     width: 50px;
     height: 50px;
     line-height: 50px;
+}
+
+#goto-bot-page {
+    left: 15px;
 }
 
 /* ========= ScrollBar ============ */

@@ -22,6 +22,21 @@ window.onload = function() {
  //    addCompanysSelect(company);
 	// addStarSelect();
 	// addPromoSelect();
+
+    $("#demoSlider").ionRangeSlider({
+        type: "double",
+        grid: true,
+        min: 0,
+        max: 30,
+        from: 0,
+        to: 5,
+        step: 0.5,
+        drag_interval: true,
+        postfix: " triệu",
+        prettify_enabled: true,
+        prettify_separator: ",",
+        values_separator: " →   "
+    });
 	// ==================== End ===========================
 
     // Thêm sản phẩm vào trang
@@ -54,6 +69,8 @@ window.onload = function() {
         addKhungSanPham('GIẢM GIÁ LỚN', yellow_red, ['promo=giamgia'], soLuong);
         addKhungSanPham('GIÁ RẺ CHO MỌI NHÀ', green, ['price=0-3000000', 'sort=price'], soLuong);
     }
+
+    filtersAjax(['sort=TenSP-des']);
 
     // Thêm chọn mức giá
     addPricesRange(0, 2000000);
@@ -103,8 +120,7 @@ function setUpBanner() {
             }
 
             // Khởi động thư viện hỗ trợ banner - chỉ chạy khi đã tạo hình trong banner
-            var owl = $('.owl-carousel');
-            owl.owlCarousel({
+            $('.owl-carousel').owlCarousel({
                 items: 1.5,
                 margin: 100,
                 center: true,
@@ -133,7 +149,8 @@ function setUpBanner() {
         error: function() {
             Swal.fire({
                 type: "error",
-                title: "Lỗi lấy dữ liệu hình ảnh banners (trangchu.js > setUpBanner)"
+                title: "Lỗi lấy dữ liệu hình ảnh banners (trangchu.js > setUpBanner)",
+                html: e.responseText
             });
         }
     });
@@ -155,10 +172,36 @@ function setUpBanner() {
         error: function() {
             Swal.fire({
                 type: "error",
-                title: "Lỗi lấy dữ liệu hình ảnh small banners (trangchu.js > setUpBanner)"
+                title: "Lỗi lấy dữ liệu hình ảnh small banners (trangchu.js > setUpBanner)",
+                html: e.responseText
             });
         }
     });
+}
+
+function filtersAjax(filters) {
+    console.log(filters);
+    $.ajax({
+        type: "POST",
+        url: "php/xylysanpham.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "phanTich_Filters",
+            filters: filters
+        },
+        success: function(data, status, xhr) {
+            console.log(data);
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu sản phẩm filters (trangchu.js > filtersAjax)",
+                html: e.responseText
+            });
+            console.log(e);
+        }
+    })
 }
 
 var soLuongSanPhamMaxTrongMotTrang = 15;
@@ -379,13 +422,13 @@ function tinhToanPhanTrang(list, vitriTrang) {
 // function timKiemTheoTen(list, ten, soluong) {}
 // hàm Tìm-kiếm-theo-tên được đặt trong dungchung.js , do trang chitietsanpham cũng cần dùng tới nó
 
-function timKiemTheoCongTySanXuat(list, tenCongTy, soluong) {
+function timKiemTheoCongTySanXuat(list, maLSP, soluong) {
     var count, result = [];
     if (soluong < list.length) count = soluong;
     else count = list.length;
 
     for (var i = 0; i < list.length; i++) {
-        if (list[i].company.toUpperCase().indexOf(tenCongTy.toUpperCase()) >= 0) {
+        if (list[i].MaLSP == maLSP) {
             result.push(list[i]);
             count--;
             if (count <= 0) break;
@@ -401,7 +444,7 @@ function timKiemTheoSoLuongSao(list, soLuongSaoToiThieu, soluong) {
     else count = list.length;
 
     for (var i = 0; i < list.length; i++) {
-        if (list[i].star >= soLuongSaoToiThieu) {
+        if (list[i].soSao >= soLuongSaoToiThieu) {
             result.push(list[i]);
             count--;
             if (count <= 0) break;
@@ -417,7 +460,7 @@ function timKiemTheoGiaTien(list, giaMin, giaMax, soluong) {
     else count = list.length;
 
     for (var i = 0; i < list.length; i++) {
-        var gia = parseInt(list[i].price.split('.').join(''));
+        var gia = list[i].DonGia;
         if (gia >= giaMin && gia <= giaMax) {
             result.push(list[i]);
             count--;
@@ -428,29 +471,13 @@ function timKiemTheoGiaTien(list, giaMin, giaMax, soluong) {
     return result;
 }
 
-function timKiemTheoKhuyenMai(list, tenKhuyenMai, soluong) {
+function timKiemTheoKhuyenMai(list, maKhuyenMai, soluong) {
     var count, result = [];
     if (soluong < list.length) count = soluong;
     else count = list.length;
 
     for (var i = 0; i < list.length; i++) {
-        if (list[i].promo.name == tenKhuyenMai) {
-            result.push(list[i]);
-            count--;
-            if (count <= 0) break;
-        }
-    }
-
-    return result;
-}
-
-function timKiemTheoRAM(list, luongRam, soluong) {
-    var count, result = [];
-    if (soluong < list.length) count = soluong;
-    else count = list.length;
-
-    for (var i = 0; i < list.length; i++) {
-        if (parseInt(list[i].detail.ram) == luongRam) {
+        if (list[i].MaKM == maKhuyenMai) {
             result.push(list[i]);
             count--;
             if (count <= 0) break;
