@@ -112,7 +112,22 @@ function setUpBanner() {
                 smartSpeed: 450,
 
                 autoplay: true,
-                autoplayTimeout: 3500
+                autoplayTimeout: 3500,
+
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:true
+                    },
+                    600:{
+                        items:1.5,
+                        nav:false
+                    },
+                    1000:{
+                        items:2,
+                        nav:true,
+                    }
+                }
             });
         },
         error: function() {
