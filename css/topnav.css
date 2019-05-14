@@ -64,9 +64,11 @@
         margin-right: auto;
         margin-left: auto;
     }
-	.top-nav
-	{
+	.top-nav {
         float: none;
         width: 100%;
+	}
+	.top-nav-quicklink {
+		display: none;
 	}
 }

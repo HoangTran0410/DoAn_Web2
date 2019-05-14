@@ -2,7 +2,7 @@ var nameProduct, maProduct; // Tên sản phẩm trong trang này,
 // là biến toàn cục để có thể dùng ở bát cứ đâu trong trang
 // không cần tính toán lấy tên từ url nhiều lần
 
-window.onload = function () {
+window.onload = function() {
     khoiTao();
 
     // thêm tags (từ khóa) vào khung tìm kiếm
@@ -23,8 +23,8 @@ function phanTich_URL_chiTietSanPham() {
     // code này làm ngược lại so với lúc tạo href cho sản phẩm trong file classes.js
     nameProduct = nameProduct.split('-').join(' ');
 
-    for(var p of list_products) {
-        if(nameProduct == p.name) {
+    for (var p of list_products) {
+        if (nameProduct == p.name) {
             maProduct = p.masp;
             break;
         }
@@ -43,14 +43,8 @@ function phanTich_URL_chiTietSanPham() {
     // Cập nhật sao
     var rating = "";
     if (sanPham.rateCount > 0) {
-        for (var i = 1; i <= 5; i++) {
-            if (i <= sanPham.star) {
-                rating += `<i class="fa fa-star"></i>`
-            } else {
-                rating += `<i class="fa fa-star-o"></i>`
-            }
-        }
-        rating += `<span> ` + sanPham.rateCount + ` đánh giá</span>`;
+        rating = getRateStar(sanPham.rateCount);
+        rating += `<span> ` + sanPham.rateCount + ` đánh giá </span>`;
     }
     divChiTiet.getElementsByClassName('rating')[0].innerHTML += rating;
 
@@ -85,24 +79,32 @@ function phanTich_URL_chiTietSanPham() {
     var hinh = divChiTiet.getElementsByClassName('picture')[0];
     hinh = hinh.getElementsByTagName('img')[0];
     hinh.src = sanPham.img;
-    /*document.getElementById('bigimg').src = sanPham.img;
 
-    // Hình nhỏ
-    addSmallImg("img/products/huawei-mate-20-pro-green-600x600.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-1-org.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-2-org.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-3-org.jpg");
-    addSmallImg("img/products/huawei-mate-20-pro-green-600x600.jpg");
-    addSmallImg("img/chitietsanpham/oppo-f9-mau-do-3-org.jpg");
-    addSmallImg("img/products/huawei-mate-20-pro-green-600x600.jpg");*/
+    // Test bình luận
+    var s = "";
+    for(var i = 0; i < Math.min(sanPham.rateCount, 20); i++) {
+        s += createComment("Hoàng Trần", `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit.`, 
+                getRateStar(Math.random()*5),  
+                new Date().toShortFormat()
+            );
+    }
 
-    // Khởi động thư viện hỗ trợ banner - chỉ chạy sau khi tạo xong hình nhỏ
-    /*var owl = $('.owl-carousel');
-    owl.owlCarousel({
-        items: 5,
-        center: true,
-        smartSpeed: 450,
-    });*/
+    document.getElementsByClassName("comment-content")[0].innerHTML += s;
+}
+
+function getRateStar(num) {
+    var result = "";
+    for (var i = 1; i <= 5; i++) {
+        if (i <= num) {
+            result += `<i class="fa fa-star"></i>`
+        } else {
+            result += `<i class="fa fa-star-o"></i>`
+        }
+    }
+    return result;
 }
 
 // Chi tiết khuyến mãi
@@ -135,6 +137,32 @@ function addThongSo(ten, giatri) {
                 <p>` + ten + `</p>
                 <div>` + giatri + `</div>
             </li>`;
+}
+
+function createComment(name, value, star, time) {
+    return `<div class="comment">
+                <i class="fa fa-user-circle"> </i>
+                <h4>` + name + `<span> `+ star +`</span></h4>
+                <p>` + value + `</p>
+                <span class="time">` + time + `</span>
+            </div>`;
+}
+
+Date.prototype.toShortFormat = function() {
+    // var month_names = ["Jan", "Feb", "Mar",
+    //     "Apr", "May", "Jun",
+    //     "Jul", "Aug", "Sep",
+    //     "Oct", "Nov", "Dec"
+    // ];
+    var day = this.getDate();
+    var month_index = this.getMonth();
+    var year = this.getFullYear();
+
+    var second = this.getSeconds();
+    var minute = this.getMinutes();
+    var hour = this.getHours();
+
+    return day + "/" + (month_index+1) + "/" + year + " " + hour + ":" + minute;
 }
 
 /*// add hình

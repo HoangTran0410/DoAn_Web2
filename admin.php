@@ -18,11 +18,12 @@
     <!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <!-- Jquery -->
+    <script src="lib/Jquery/Jquery.min.js"></script>
 
     <!-- Our files -->
-    <link rel="stylesheet" href="FrontEnd/css/admin/style.css">
-    <link rel="stylesheet" href="FrontEnd/css/admin/progress.css">
+    <link rel="stylesheet" href="css/admin/style.css">
+    <link rel="stylesheet" href="css/admin/progress.css">
 
     <script src="data/products.js"></script>
     <script src="js/classes.js"></script>
@@ -31,26 +32,6 @@
 </head>
 
 <body>
-    <!-- =============== Phần lấy dữ liệu từ DB ===================== -->
-    <script type="text/javascript">
-        // Đổ dữ liệu từ $dssp vào biến của javascript, dạng JSON
-        $('document').ready(function(){
-            $.ajax({       
-            type: "post",
-            url: "sanpham.php",
-            dataType: "json",
-            data : {
-                         number : "1",                    },  
-            success: function(data){           
-                var list_products = data;
-                addTableProducts(list_products);
-                },
-           });
-        });
-        
-    </script>
-    <!-- ================ Kết thúc lấy dữ liệu ======================= -->
-
     <header>
         <h2>SmartPhone Store - Admin</h2>
     </header>
@@ -139,6 +120,10 @@
                 <button onclick="document.getElementById('khungThemSanPham').style.transform = 'scale(1)'; autoMaSanPham()">
                     <i class="fa fa-plus-square"></i>
                     Thêm sản phẩm
+                </button>
+                <button onclick="refreshTableSanPham()">
+                    <i class="fa fa-refresh"></i>
+                    Làm mới
                 </button>
             </div>
 

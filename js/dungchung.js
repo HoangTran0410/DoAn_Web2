@@ -114,9 +114,13 @@ function themVaoGioHang(masp, tensp) {
             text: 'Bạn cần đăng nhập để mua hàng',
             type: 'error',
             grow: 'row',
-            confirmButtonText: 'Đăng nhập'
+            confirmButtonText: 'Đăng nhập',
+            cancelButtonText: 'Trở về',
+            showCancelButton: true
         }).then((result) => {
-            showTaiKhoan(true);
+            if(result.value) {
+                showTaiKhoan(true);
+            }
         })
 
         return;
@@ -219,8 +223,15 @@ function logIn(form) {
         if (equalUser(newUser, u)) {
             setCurrentUser(u);
 
-            // Reload lại trang -> sau khi reload sẽ cập nhật luôn giỏ hàng khi hàm setupEventTaiKhoan chạy
-            location.reload();
+            Swal.fire({
+                type: 'success',
+                title: 'Đăng nhập thành công',
+                timer: 1500
+            }).then((result) => {
+                // Reload lại trang -> sau khi reload sẽ cập nhật luôn giỏ hàng khi hàm setupEventTaiKhoan chạy
+                location.reload();
+            })
+
             return false;
         }
     }

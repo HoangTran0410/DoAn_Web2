@@ -91,12 +91,10 @@ function addHome()
 {
     echo '
     <div class="banner">
-    <div class="owl-carousel owl-theme"></div>
+        <div class="owl-carousel owl-theme"></div>
     </div> <!-- End Banner -->
-
-    <img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
-
-    <br>
+    
+    <div class="smallbanner" style="width: 100%;"></div>
 
     <div class="companysFilter">
         <button class="companysButton" onclick="setCompanysMenu()">
@@ -107,28 +105,66 @@ function addHome()
     </div>
     <div class="companyMenu group flexContain"></div>
 
-    <div class="flexContain timNangCao">
+    <div class="timNangCao">
+        <div class="flexContain">
+            <div class="pricesRangeFilter dropdown">
+                <button class="dropbtn">Giá tiền</button>
+                <div class="dropdown-content"></div>
+            </div>
 
-        <!-- <div class="pricesRangeFilter dropdown">
-            <button class="dropbtn">Giá tiền</button>
-            <div class="dropdown-content"></div>
+            <div class="promosFilter dropdown">
+                <button class="dropbtn">Khuyến mãi</button>
+                <div class="dropdown-content"></div>
+            </div>
+
+            <div class="starFilter dropdown">
+                <button class="dropbtn">Số lượng sao</button>
+                <div class="dropdown-content"></div>
+            </div>
+
+            <div class="sortFilter dropdown">
+                <button class="dropbtn">Sắp xếp</button>
+                <div class="dropdown-content"></div>
+            </div>            
         </div>
 
-        <div class="promosFilter dropdown">
-            <button class="dropbtn">Khuyến mãi</button>
-            <div class="dropdown-content"></div>
-        </div>
 
-        <div class="starFilter dropdown">
-            <button class="dropbtn">Số lượng sao</button>
-            <div class="dropdown-content"></div>
-        </div>
+        <!-- <br>
 
-        <div class="sortFilter dropdown">
-            <button class="dropbtn">Sắp xếp</button>
-            <div class="dropdown-content"></div>
-        </div> -->
-
+        <fieldset>
+            <legend>Tìm kiếm nâng cao:</legend>
+    
+            <table>
+                <tr>
+                    <td>Hãng</td>
+                    <td><select id="slCompany"></select></td>
+                </tr>
+                <tr>
+                    <td>Giá</td>
+                    <td>
+                        Từ<input type="number" id="giaTu" size="7"> <br> 
+                        Tới<input type="number" id="giaToi" size="7">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Khuyến mãi</td>
+                    <td><select id="slPromo"></select></td>
+                </tr>
+                <tr>
+                    <td>Số sao</td>
+                    <td><select id="slStar"></select></td>
+                </tr>
+                <tr>
+                    <td>Sắp xếp</td>
+                    <td><select id="slSort"></select></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button onclick="timNangCao()">Tìm</button>
+                    </td>
+                </tr>
+            </table>
+        </fieldset> -->
     </div> <!-- End khung chọn bộ lọc -->
 
     <div class="choosedFilter flexContain">
@@ -164,7 +200,6 @@ function addChiTietSanPham()
     echo '
     <div class="chitietSanpham" style="min-height: 85vh">
         <h1>Điện thoại </h1>
-        <div class="rating"></div>
         <div class="rowdetail group">
             <div class="picture">
                 <img src="">
@@ -172,35 +207,34 @@ function addChiTietSanPham()
             <div class="price_sale">
                 <div class="area_price"> </div>
                 <div class="ship" style="display: none;">
-                    <img src="img/chitietsanpham/clock-152067_960_720.png">
+                    <i class="fa fa-clock-o"></i>
                     <div>NHẬN HÀNG TRONG 1 GIỜ</div>
                 </div>
                 <div class="area_promo">
                     <strong>khuyến mãi</strong>
                     <div class="promo">
-                        <img src="img/chitietsanpham/icon-tick.png">
+                        <i class="fa fa-check-circle"></i>
                         <div id="detailPromo"> </div>
                     </div>
                 </div>
                 <div class="policy">
                     <div>
-                        <img src="img/chitietsanpham/box.png">
+                        <i class="fa fa-archive"></i>
                         <p>Trong hộp có: Sạc, Tai nghe, Sách hướng dẫn, Cây lấy sim, Ốp lưng </p>
                     </div>
                     <div>
-                        <img src="img/chitietsanpham/icon-baohanh.png">
+                        <i class="fa fa-star"></i>
                         <p>Bảo hành chính hãng 12 tháng.</p>
                     </div>
                     <div class="last">
-                        <img src="img/chitietsanpham/1-1.jpg">
+                        <i class="fa fa-retweet"></i>
                         <p>1 đổi 1 trong 1 tháng nếu lỗi, đổi sản phẩm tại nhà trong 1 ngày.</p>
                     </div>
                 </div>
                 <div class="area_order">
                     <!-- nameProduct là biến toàn cục được khởi tạo giá trị trong phanTich_URL_chiTietSanPham -->
                     <a class="buy_now" onclick="themVaoGioHang(maProduct, nameProduct);">
-                        <b><i class="fa fa-cart-plus"></i> Thêm vào giỏ hàng</b>
-                        <p>Giao trong 1 giờ hoặc nhận tại cửa hàng</p>
+                        <h3><i class="fa fa-plus"></i> Thêm vào giỏ hàng</h3>
                     </a>
                 </div>
             </div>
@@ -209,6 +243,37 @@ function addChiTietSanPham()
                 <ul class="info">
 
                 </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="comment-area">
+            <div class="guiBinhLuan">
+                <div class="stars">
+                    <form action="">
+                        <input class="star star-5" id="star-5" type="radio" name="star"/>
+                        <label class="star star-5" for="star-5" title="Tuyệt vời"></label>
+
+                        <input class="star star-4" id="star-4" type="radio" name="star"/>
+                        <label class="star star-4" for="star-4" title="Tốt"></label>
+
+                        <input class="star star-3" id="star-3" type="radio" name="star"/>
+                        <label class="star star-3" for="star-3" title="Tạm"></label>
+
+                        <input class="star star-2" id="star-2" type="radio" name="star"/>
+                        <label class="star star-2" for="star-2" title="Khá"></label>
+
+                        <input class="star star-1" id="star-1" type="radio" name="star"/>
+                        <label class="star star-1" for="star-1" title="Tệ"></label>
+                    </form>
+                </div>
+                <textarea id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></textarea>
+                <input id="btnBinhLuan" type="button" value="GỬI BÌNH LUẬN">
+            </div>
+            <!-- <h2>Bình luận</h2> -->
+            <div class="container-comment">
+                <div class="rating"></div>
+                <div class="comment-content">
+                </div>
             </div>
         </div>
     </div>';
@@ -225,8 +290,10 @@ function addFooter()
 
     <!-- ============== Footer ============= -->
     <div class="copy-right">
-        <p><a href="index.php">SmartPhone Store</a> - All rights reserved © 2018-' . date("Y") . ' - Designed by
-            <span style="color: #eee; font-weight: bold">H-group</span></p>
+        <p>
+            All rights reserved © 2018-' . date("Y") . ' - Designed by
+            <span style="color: #eee; font-weight: bold">H-group</span>
+        </p>
     </div>';
 }
 

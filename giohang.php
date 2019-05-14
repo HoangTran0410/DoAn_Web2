@@ -17,19 +17,19 @@
 
 	<!-- our files -->
 	<!-- css -->
-	<link rel="stylesheet" href="FrontEnd/css/style.css">
-	<link rel="stylesheet" href="FrontEnd/css/topnav.css">
-	<link rel="stylesheet" href="FrontEnd/css/header.css">
-	<link rel="stylesheet" href="FrontEnd/css/taikhoan.css">
-	<link rel="stylesheet" href="FrontEnd/css/gioHang.css">
-	<link rel="stylesheet" href="FrontEnd/css/footer.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/topnav.css">
+	<link rel="stylesheet" href="css/header.css">
+	<link rel="stylesheet" href="css/taikhoan.css">
+	<link rel="stylesheet" href="css/gioHang.css">
+	<link rel="stylesheet" href="css/footer.css">
 	<!-- js -->
 	<script src="data/products.js"></script>
 	<script src="js/classes.js"></script>
 	<script src="js/dungchung.js"></script>
 	<script src="js/giohang.js"></script>
 
-	<?php require_once "FrontEnd/echoHTML.php"; ?>
+	<?php require_once "php/echoHTML.php"; ?>
 
 </head>
 

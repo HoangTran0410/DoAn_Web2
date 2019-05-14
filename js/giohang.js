@@ -176,11 +176,11 @@ function thanhToan() {
 function xoaHet() {
 	if (currentuser.products.length) {
 		Swal.fire({
-			title: 'Xóa ?',
-			text: 'Bạn có chắc muốn xóa hết sản phẩm trong giỏ!',
-			type: 'question',
+			title: 'Xóa Hết?',
+			text: 'Bạn có chắc muốn xóa hết sản phẩm trong giỏ! Việc này không thể được hoàn lại.',
+			type: 'warning',
 			grow: 'row',
-			confirmButtonText: 'Đồng ý',
+			confirmButtonText: 'Tôi đồng ý',
 			cancelButtonText: 'Hủy',
 			showCancelButton: true
 
