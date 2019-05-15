@@ -41,7 +41,7 @@
         <ul class="nav">
             <li class="nav-title">MENU</li>
             <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Home</a></li>
-            <li class="nav-item"><a class="nav-link"><i class="fa fa-th-large"></i> Sản Phẩm</a></li>
+            <li class="nav-item" onclick="refreshTableSanPham()"><a class="nav-link"><i class="fa fa-th-large"></i> Sản Phẩm</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-address-book-o"></i> Khách Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
@@ -166,18 +166,22 @@
                         <td><input type="text"></td>
                     </tr>
                     <tr>
+                        <td>Số lượng:</td>
+                        <td><input type="text" value="0"></td>
+                    </tr>
+                    <tr>
                         <td>Số sao:</td>
-                        <td><input type="text"></td>
+                        <td><input disabled="disabled" value="0" type="text"></td>
                     </tr>
                     <tr>
                         <td>Đánh giá:</td>
-                        <td><input type="text"></td>
+                        <td><input disabled="disabled" value="0" type="text"></td>
                     </tr>
                     <tr>
                         <td>Khuyến mãi:</td>
                         <td>
                             <select>
-                                <option value="">Không</option>
+                                <option selected="selected" value="">Không</option>
                                 <option value="tragop">Trả góp</option>
                                 <option value="giamgia">Giảm giá</option>
                                 <option value="giareonline">Giá rẻ online</option>

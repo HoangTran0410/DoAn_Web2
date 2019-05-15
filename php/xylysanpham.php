@@ -9,6 +9,11 @@
 				$dssp = (new SanPhamBUS())->select_all();
 		    	die (json_encode($dssp));
     		break;
+
+        case 'add':
+                $data = $_POST['dataAdd'];
+                $sp = (new SanPhamBUS())->add_new($data);
+            break;
     	
     	default:
     		# code...

@@ -41,6 +41,7 @@ function refreshTableSanPham() {
     });
 }
 
+
 function logOutAdmin() {
     window.localStorage.removeItem('admin');
 }
@@ -224,28 +225,28 @@ function layThongTinSanPhamTuTable(id) {
     var company = tr[3].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
     var img = tr[4].getElementsByTagName('td')[1].getElementsByTagName('img')[0].src;
     var price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var star = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var rateCount = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var promoName = tr[8].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
-    var promoValue = tr[9].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var rateCount = tr[8].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var promoName = tr[9].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
+    var promoValue = tr[10].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
-    var screen = tr[11].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var os = tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var camara = tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var camaraFront = tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var cpu = tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var ram = tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var rom = tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var microUSB = tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
-    var battery = tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var screen = tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var os = tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var camara = tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var camaraFront = tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var cpu = tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var ram = tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var rom = tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var microUSB = tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
+    var battery = tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
     return {
+        "masp": masp,
         "name": name,
-        "company": company,
         "img": img,
-        "price": price,
-        "star": star,
-        "rateCount": rateCount,
+        "company": company,
+        "amount": amount,
         "promo": {
             "name": promoName,
             "value": promoValue
@@ -266,36 +267,97 @@ function layThongTinSanPhamTuTable(id) {
 }
 
 function themSanPham() {
-    var newSp = layThongTinSanPhamTuTable('khungThemSanPham')
-    for (var p of list_products) {
-        if (p.MaSP == newSp.MaSP) {
-            alert('Mã sản phẩm bị trùng !!');
-            return false;
+    var newSp = layThongTinSanPhamTuTable('khungThemSanPham');
+    var check = 1;// biến kt hợp lệ
+
+    //kt mã sp
+    var pattCheckMaSP = /^(SP)([0-9]{1,})$/;
+    if (pattCheckMaSP.test(newSp.masp) != false)
+    {
+        for (var p of list_products) {
+            if (p.MaSP == newSp.masp) {
+                alert('Mã sản phẩm bị trùng !!');
+                return false;
+            }
         }
     }
-    // Them san pham vao list_products
-    list_products.push(newSp);
+    else
+    {
+        alert ("Mã sản phẩm không hợp lệ");
+        return false;
+    }
 
-    // Lưu vào localstorage
-    setListProducts(list_products);
+    //kt tên sp
+    var pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;
+    if (pattCheckTenSP.test(newSp.name) == false)
+    {
+        alert ("Tên sản phẩm không hợp lệ");
+        return false;
+    }
 
-    // Vẽ lại table
-    addTableProducts();
+    //kt giá tiền
+    var pattCheckGia = /^([0-9]){1,}(000)$/;
+    if (pattCheckGia.test(newSp.price) == false)
+    {
+        alert ("Đơn giá sản phẩm không hợp lệ");
+        return false;
+    }
 
-    alert('Thêm sản phẩm "' + newSp.TenSP + '" thành công.');
+    //kt số lượng
+    var pattCheckSL = /[0-9]{1,}$/;
+    if (pattCheckSL.test(newSp.amount) == false)
+    {
+        alert ("Số lượng sản phẩm không hợp lệ");
+        return false;
+    }
+
+    $.ajax({
+        traditional: true,
+        type: "POST",
+        url: "php/xylysanpham.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "add",
+            dataAdd: newSp
+        },
+        success: function(data, status, xhr) {
+
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi add",
+                html: e.responseText
+            });
+        }
+    });
+
+    var khung = document.getElementById('khungThemSanPham');
+    var tr = khung.getElementsByTagName('tr');
+
+    tr[2].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "";
+    tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value = "0";
+
+    tr[12].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[13].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[14].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[15].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[16].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[17].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+    tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
+
+    alert('Thêm sản phẩm "' + newSp.name + '" thành công.');
     document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
 }
 
 function autoMaSanPham(company) {
     // hàm tự tạo mã cho sản phẩm mới
-    if (!company) company = document.getElementsByName('chonCompany')[0].value;
-    var index = 0;
-    for (var i = 0; i < list_products.length; i++) {
-        if (list_products[i].company == company) {
-            index++;
-        }
-    }
-    document.getElementById('maspThem').value = company.substring(0, 3) + index;
+    var autoMaSP = list_products.length+1;
+    document.getElementById('maspThem').value = "SP" + autoMaSP;
 }
 
 // Xóa
