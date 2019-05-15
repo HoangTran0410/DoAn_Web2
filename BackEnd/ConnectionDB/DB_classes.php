@@ -22,6 +22,10 @@ class SanPhamBUS extends DB_business
     {
         $this->setTable("SanPham", "MaSP");
     }
+
+    function getNextID() {
+        return "SP".sizeof($this->select_all());
+    }
 }
 
 // Lớp loại sản phẩm

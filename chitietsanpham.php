@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="css/footer.css">
     <!-- js -->
     <script src="data/products.js"></script>
-    <script src="js/classes.js"></script>
+    <!-- <script src="js/classes.js"></script> -->
     <script src="js/dungchung.js"></script>
     <script src="js/chitietsanpham.js"></script>
 

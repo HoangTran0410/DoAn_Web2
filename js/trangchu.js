@@ -1,9 +1,6 @@
 window.onload = function() {
     khoiTao();
 
-    // Thêm hình vào banner
-    setUpBanner();
-
     // autocomplete cho khung tim kiem
     autocomplete(document.getElementById('search-box'), list_products);
 
@@ -11,18 +8,17 @@ window.onload = function() {
     var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
     for (var t of tags) addTags(t, "index.php?search=" + t);
 
-    // Thêm danh sách hãng điện thoại
-    var company = ["Apple.jpg", "Samsung.jpg", "Oppo.jpg", "Nokia.jpg", "Huawei.jpg", "Xiaomi.png",
-        "Realme.png", "Vivo.jpg", "Philips.jpg", "Mobell.jpg", "Mobiistar.jpg", "Itel.jpg",
-        "Coolpad.png", "HTC.jpg", "Motorola.jpg"
-    ];
-    for (var c of company) addCompany("img/company/" + c, c.slice(0, c.length - 4));
-
     // =================== web 2 tìm nâng cao ================
- //    addCompanysSelect(company);
-	// addStarSelect();
-	// addPromoSelect();
+    // Thêm hình vào banner
+    setupBanner();
 
+    // Thêm danh sách hãng điện thoại
+    setupCompany();
+
+    // test ajax tìm kiếm
+    filtersAjax(['sort=DonGia-asc']);
+
+    // slider chọn khoảng giá
     $("#demoSlider").ionRangeSlider({
         type: "double",
         grid: true,
@@ -37,7 +33,7 @@ window.onload = function() {
         prettify_separator: ",",
         values_separator: " →   "
     });
-	// ==================== End ===========================
+    // ==================== End ===========================
 
     // Thêm sản phẩm vào trang
     var sanPhamPhanTich
@@ -45,10 +41,10 @@ window.onload = function() {
 
     var filters = getFilterFromURL();
     if (filters.length) { // có filter
-        sanPhamPhanTich = phanTich_URL(filters, true);
-        sanPhamPhanTrang = tinhToanPhanTrang(sanPhamPhanTich, filtersFromUrl.page || 1);
-        if (!sanPhamPhanTrang.length) alertNotHaveProduct(false);
-        else addProductsFrom(sanPhamPhanTrang);
+        // sanPhamPhanTich = phanTich_URL(filters, true);
+        // sanPhamPhanTrang = tinhToanPhanTrang(sanPhamPhanTich, filtersFromUrl.page || 1);
+        // if (!sanPhamPhanTrang.length) alertNotHaveProduct(false);
+        // else addProductsFrom(sanPhamPhanTrang);
 
         // hiển thị list sản phẩm
         document.getElementsByClassName('contain-products')[0].style.display = '';
@@ -69,8 +65,6 @@ window.onload = function() {
         addKhungSanPham('GIẢM GIÁ LỚN', yellow_red, ['promo=giamgia'], soLuong);
         addKhungSanPham('GIÁ RẺ CHO MỌI NHÀ', green, ['price=0-3000000', 'sort=price'], soLuong);
     }
-
-    filtersAjax(['sort=DonGia-asc']);
 
     // Thêm chọn mức giá
     addPricesRange(0, 2000000);
@@ -104,17 +98,21 @@ window.onload = function() {
     addAllChoosedFilter();
 };
 
-function setUpBanner() {
+// ============================== web2 ===========================
+var danhSachCompany; // lưu danh sách sản phẩm lấy được từ ajax trong setupCompany()
+var danhsachKhuyenMai = {};
+
+function setupBanner() {
     $.ajax({
         type: "POST",
-        url: "php/xylyhinhanh.php",
+        url: "php/xulyhinhanh.php",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             request: "getallbanners",
         },
         success: function(data, status, xhr) {
-            for(var url of data) {
+            for (var url of data) {
                 var realPath = url.split('../').join('');
                 addBanner(realPath, realPath);
             }
@@ -131,15 +129,15 @@ function setUpBanner() {
                 autoplay: true,
                 autoplayTimeout: 3500,
 
-                responsive:{
-                    0:{
-                        items:1
+                responsive: {
+                    0: {
+                        items: 1
                     },
-                    600:{
-                        items:1.5
+                    600: {
+                        items: 1.25
                     },
-                    1000:{
-                        items:2
+                    1000: {
+                        items: 1.5
                     }
                 }
             });
@@ -155,14 +153,14 @@ function setUpBanner() {
 
     $.ajax({
         type: "POST",
-        url: "php/xylyhinhanh.php",
+        url: "php/xulyhinhanh.php",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             request: "getsmallbanner",
         },
         success: function(data, status, xhr) {
-            for(var url of data) {
+            for (var url of data) {
                 var realPath = url.split('../').join('');
                 addSmallBanner(realPath);
             }
@@ -177,11 +175,37 @@ function setUpBanner() {
     });
 }
 
+// chọn hãng
+function setupCompany() {
+    $.ajax({
+        type: "POST",
+        url: "php/xulyloaisanpham.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getall",
+        },
+        success: function(data, status, xhr) {
+            danhSachCompany = data;
+            for (var c of data) {
+                addCompany("img/company/" + c.HinhAnh, c.TenLSP);
+            }
+        },
+        error: function() {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu loại sản phẩm (trangchu.js > setupCompany)",
+                html: e.responseText
+            });
+        }
+    });
+}
+
 function filtersAjax(filters) {
     console.log(filters);
     $.ajax({
         type: "POST",
-        url: "php/xylysanpham.php",
+        url: "php/xulysanpham.php",
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
@@ -189,6 +213,10 @@ function filtersAjax(filters) {
             filters: filters
         },
         success: function(data, status, xhr) {
+            for (var p of data) {
+                ajaxKhuyenMai(p);
+            }
+            // list_products = data;
             console.log(data);
         },
         error: function(e) {
@@ -197,14 +225,152 @@ function filtersAjax(filters) {
                 title: "Lỗi lấy dữ liệu sản phẩm filters (trangchu.js > filtersAjax)",
                 html: e.responseText
             });
+        }
+    })
+}
+
+function ajaxKhuyenMai(p) {
+    $.ajax({
+        type: "POST",
+        url: "php/xulykhuyenmai.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "theoID",
+            id: p.MaKM
+        },
+        success: function(data, status, xhr) {
+            // p.dataKM = data;
+            danhsachKhuyenMai[p.MaSP] = data;
+            // console.log(p);
+            addToWeb(p);
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu khuyến mãi của sản phẩm " + p + " (trangchu.js > ajaxKhuyenMai)",
+                html: e.responseText
+            });
             console.log(e);
         }
     })
 }
 
-var soLuongSanPhamMaxTrongMotTrang = 15;
+function ajaxThemSanPham(p) {
+    $.ajax({
+        type: "POST",
+        url: "php/xulysanpham.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "addFromWeb1",
+            sanpham: p
+        },
+        success: function(data, status, xhr) {
+            console.log('Thêm thành công ');
+            console.log(data);
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi thêm sản phẩm sản phẩm " + p + " (trangchu.js > ajaxThemSanPham)",
+                html: e.responseText
+            });
+        }
+    })
+}
+
+function addToWeb(p, ele, returnString) {
+    // Chuyển star sang dạng tag html
+    var rating = "";
+    if (p.SoDanhGia >= 0) {
+        for (var i = 1; i <= 5; i++) {
+            if (i <= p.SoSao) {
+                rating += `<i class="fa fa-star"></i>`
+            } else {
+                rating += `<i class="fa fa-star-o"></i>`
+            }
+        }
+        rating += `<span>` + p.SoDanhGia + ` đánh giá</span>`;
+    }
+
+    // Chuyển giá tiền sang dạng tag html
+    var priceConverted = (p.DonGia * 1000000).toLocaleString();
+
+    var price;
+    if (danhsachKhuyenMai[p.MaSP].LoaiKM == "GiaReOnline") {
+        // khuyến mãi 'Giá rẻ online' sẽ có giá thành mới
+        price = `<strong>` + ((p.DonGia - danhsachKhuyenMai[p.MaSP].GiaTriKM) * 1E6).toLocaleString() + `&#8363;</strong>
+                <span>` + (p.DonGia * 1E6).toLocaleString() + `&#8363;</span>`;
+    } else {
+        price = `<strong>` + priceConverted + `&#8363;</strong>`;
+    }
+
+    // tách theo dấu ' ' vào gắn lại bằng dấu '-', code này giúp bỏ hết khoảng trắng và thay vào bằng dấu '-'.
+    // Tạo link tới chi tiết sản phẩm, chuyển tất cả ' ' thành '-'
+    var chitietSp = 'chitietsanpham.php?' + p.TenSP.split(' ').join('-');
+
+    // Cho mọi thứ vào tag <li>... </li>
+    var newLi =
+        `<li class="sanPham">
+        <a href="` + chitietSp + `">
+            <img src="img/products/` + p.HinhAnh + `" alt="">
+            <h3>` + p.TenSP + `</h3>
+            <div class="price">
+                ` + price + `
+            </div>
+            <div class="ratingresult">
+                ` + rating + `
+            </div>
+            ` + (promoToWeb(danhsachKhuyenMai[p.MaSP].LoaiKM, priceConverted)) + `
+            <div class="tooltip">
+                <button class="themvaogio" onclick="themVaoGioHang('` + p.MaSP + `', '` + p.TenSP + `'); return false;">
+                    <span class="tooltiptext" style="font-size: 15px;">Thêm vào giỏ</span>
+                    +
+                </button>
+            </div>
+        </a>
+    </li>`; 
+
+    if (returnString) return newLi;
+
+    // Thêm tag <li> vừa tạo vào <ul> homeproduct (mặc định) , hoặc tag ele truyền vào
+    var products = ele || document.getElementById('products');
+    products.innerHTML += newLi;
+}
+
+function promoToWeb(name, value) { // khuyen mai
+    if (!name || name == "Nothing") return "";
+    var contentLabel = "";
+    switch (name) {
+        case "GiamGia":
+            contentLabel = `<i class="fa fa-bolt"></i> Giảm ` + value + `&#8363;`;
+            break;
+
+        case "TraGop":
+            contentLabel = `Trả góp ` + value + `%`;
+            break;
+
+        case "GiaReOnline":
+            contentLabel = `Giá rẻ online`;
+            break;
+
+        case "MoiRaMat":
+            contentLabel = "Mới ra mắt";
+            break;
+    }
+
+    var label =
+        `<label class=` + name.toLowerCase() + `>
+            ` + contentLabel + `
+        </label>`;
+
+    return label;
+}
 
 // =========== Đọc dữ liệu từ url ============
+var soLuongSanPhamMaxTrongMotTrang = 15;
+
 var filtersFromUrl = { // Các bộ lọc tìm được trên url sẽ đc lưu vào đây
     company: '',
     search: '',
@@ -322,10 +488,10 @@ function phanTich_URL(filters, saveFilter) {
 
 // Thêm sản phẩm vào trang
 function addProduct(p, ele, returnString) {
-    promo = new Promo(p.promo.name, p.promo.value); // class Promo
-    product = new Product(p.masp, p.name, p.img, p.price, p.star, p.rateCount, promo); // Class product
+    // promo = new Promo(p.promo.name, p.promo.value); // class Promo
+    // product = new Product(p.masp, p.name, p.img, p.price, p.star, p.rateCount, promo); // Class product
 
-    return addToWeb(product, ele, returnString);
+    return addToWeb(p, ele, returnString);
 }
 
 // thêm các sản phẩm từ biến mảng nào đó vào trang
@@ -387,13 +553,13 @@ function themNutPhanTrang(soTrang, trangHienTai) {
 
     if (soTrang > 1) // Chỉ hiện nút phân trang nếu số trang > 1
         for (var i = 1; i <= soTrang; i++) {
-            if (i == trangHienTai) {
-                divPhanTrang.innerHTML += `<a href="javascript:;" class="current">` + i + `</a>`
+        if (i == trangHienTai) {
+            divPhanTrang.innerHTML += `<a href="javascript:;" class="current">` + i + `</a>`
 
-            } else {
-                divPhanTrang.innerHTML += `<a href="` + k + `page=` + (i) + `">` + i + `</a>`
-            }
+        } else {
+            divPhanTrang.innerHTML += `<a href="` + k + `page=` + (i) + `">` + i + `</a>`
         }
+    }
 
     if (trangHienTai < soTrang) { // Nút tới phân trang sau
         divPhanTrang.innerHTML += `<a href="` + k + `page=` + (trangHienTai + 1) + `"><i class="fa fa-angle-right"></i></a>`
@@ -666,54 +832,13 @@ function filterProductsStar(num) {
     alertNotHaveProduct(coSanPham);
 }
 
-// ================ Web 2 =====================
-function timNangCao() {
-    console.log('tim nang cao');
-    var priceValue = {
-    	from: document.getElementById("giaTu").value,
-    	to: document.getElementById("giaToi").value
-    }
-    // var promoValue = 
-}
-
-function addCompanysSelect(listCompany) {
-    var s = "";
-    for (var company of listCompany) {
-        s += '<option value="' + company + '">' + company +'</option>';
-    }
-    document.getElementById("slCompany").innerHTML = s;
-}
-
-function addStarSelect() {
-	var s = "";
-	for(var i = 1; i <= 4; i++) {
-		s += '<option value="' + i + '">Trên ' + i +' sao</option>';
-	}
-	document.getElementById("slStar").innerHTML = s;
-}
-
-function addPromoSelect() {
-	var promos = [
-		"Giảm giá", "giamgia",
-		"Trả góp", "tragop",
-		"Mới ra mắt", "moiramat",
-		"Giá rẻ online", "giareonline"
-	];
-	var s = "";
-	for(var i = 0; i < promos.length; i+=2) {
-		s += '<option value="' + promos[i+1] + '">' + promos[i] +'</option>';
-	}
-	document.getElementById("slPromo").innerHTML = s;
-}
-
 // ================= Hàm khác ==================
 
 // Thêm banner
 function addBanner(img, link) {
+    // <a target='_blank' href=` + link + `>
     var newDiv = `<div class='item'>
-						<a target='_blank' href=` + link + `>
-							<img src=` + img + `>
-						</a>
+						<img src=` + img + `>
 					</div>`;
     var banner = document.getElementsByClassName('owl-carousel')[0];
     banner.innerHTML += newDiv;
@@ -728,7 +853,7 @@ function addSmallBanner(img) {
 // Thêm hãng sản xuất
 function addCompany(img, nameCompany) {
     var link = createLinkFilter('add', 'company', nameCompany);
-    var new_tag = `<a href=` + link + `><img src=` + img + `></a>`;
+    var new_tag = `<button onclick="filtersAjax(['company=` + nameCompany + `'])"><img src=` + img + `></button>`;
 
     var khung_hangSanXuat = document.getElementsByClassName('companyMenu')[0];
     khung_hangSanXuat.innerHTML += new_tag;

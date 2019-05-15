@@ -13,6 +13,30 @@
         case 'phanTich_Filters':
             phanTich_Filters();
             break;
+
+        case 'addFromWeb1':
+            $spBUS = new SanPhamBUS();
+
+            $sp = $_POST['sanpham'];
+            $sanphamArr = array(
+                'MaSP' => ($spBUS->getNextID()),
+                'MaLSP' => ((new DB_driver())->get_row("SELECT * FROM LoaiSanPham WHERE TenLSP='".$sp["company"]."'")),
+                'TenSP' => $sp['name'],
+                'DonGia' => $sp['price'],
+                'SoLuong' => $sp['SoLuong'],
+                'HinhAnh' => $sp['HinhAnh'],
+                'MaKM' => $sp['MaKM'],
+                'ManHinh' => $sp['ManHinh'],
+                'HDH' => $sp['HDH'],
+                'CamSau' => $sp['CamSau'],
+                'CamTruoc' => $sp['CamTruoc'],
+                'CPU' => $sp['CPU'],
+                'Ram' => $sp['Ram'],
+                'Rom' => $sp['Rom'],
+                'SDCard' => $sp['Rom'],
+            ); 
+            die ($spBUS->add_new($sp));
+            break;
     	
     	default:
     		# code...
@@ -42,8 +66,8 @@
                     if($giaDen == 0) $giaDen = 1000000000; 
 
                     // đưa về dạng thập phân đúng theo DB
-                    $giaTu = (float)($giaTu/1000000); 
-                    $giaDen = (float)($giaDen/1000000);
+                    // $giaTu = (float)($giaTu/1000000); 
+                    // $giaDen = (float)($giaDen/1000000);
 
                     $sql .= ($sql==$ori?"":" AND ") . " DonGia >= $giaTu AND DonGia <= $giaDen";
                     break;
