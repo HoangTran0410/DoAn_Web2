@@ -20,7 +20,7 @@ class SanPhamBUS extends DB_business
 {
     function __construct()
     {
-        $this->setTable("sanpham", "MaSP");
+        $this->setTable("SanPham", "MaSP");
     }
 }
 
