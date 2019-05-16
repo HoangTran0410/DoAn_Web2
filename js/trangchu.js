@@ -237,8 +237,6 @@ function addProductsFromList(list, filters) {
         behavior: 'smooth',
         block: 'start'
     });
-
-    console.log(list);
 }
 
 function chuyenTrang(vitriTrang) {
@@ -260,7 +258,6 @@ function chuyenTrang(vitriTrang) {
 }
 
 function filtersAjax(filters, callback) {
-    console.log(filters);
     if(filters.length == 0) {
         removeAllFilters();
         return;
@@ -445,24 +442,23 @@ function addKhungSanPham(tenKhung, color, filter, len) {
     // convert color to code
     var gradient = `background-image: linear-gradient(120deg, ` + color[0] + ` 0%, ` + color[1] + ` 50%, ` + color[0] + ` 100%);`
     var borderColor = `border-color: ` + color[0];
-    var borderA = `	border-left: 2px solid ` + color[0] + `; border-right: 2px solid ` + color[0] + `;`;
+    var borderA = ` border-left: 2px solid ` + color[0] + `; border-right: 2px solid ` + color[0] + `;`;
 
     // mở tag
     var s = `<div class="khungSanPham" style="` + borderColor + `">
-				<h3 class="tenKhung" style="` + gradient + `">* ` + tenKhung + ` *</h3>
-				<div class="listSpTrongKhung flexContain" data-tenkhung="` + tenKhung + `">
+                <h3 class="tenKhung" style="` + gradient + `">* ` + tenKhung + ` *</h3>
+                <div class="listSpTrongKhung flexContain" data-tenkhung="` + tenKhung + `">
                     <div class="loader"></div>
                 </div>
-    			<a class="xemTatCa" href="index.php?` + filter.join('&') + `" style="` + borderA + `" data-tenkhung="` + tenKhung + `">
-    			</a>
-		      </div> <hr>`;
+                <a class="xemTatCa" href="index.php?` + filter.join('&') + `" style="` + borderA + `" data-tenkhung="` + tenKhung + `">
+                </a>
+              </div> <hr>`;
 
 
     // thêm khung vào contain-khung
     document.getElementsByClassName('contain-khungSanPham')[0].innerHTML += s;
 
     // lấy dữ liệu cho vào khung
-    console.log(tenKhung);
     filtersAjax(filter, (data) => {
         // thêm các <li> (sản phẩm) vào tag
         var s1 = "";
@@ -548,8 +544,6 @@ function createFilters(type, value) {
         newFilters.push(type + "=" + value);
     }
 
-    console.log(fSplit);
-
     return newFilters;
 }
 
@@ -567,8 +561,6 @@ function craeteRemoveFilters(type) {
             newFilters.push(f);
         }
     }
-
-    console.log(fSplit);
 
     return newFilters;
 }
@@ -718,8 +710,8 @@ function filterProductsName(ele) {
 function addBanner(img, link) {
     // <a target='_blank' href=` + link + `>
     var newDiv = `<div class='item'>
-						<img src=` + img + `>
-					</div>`;
+                        <img src=` + img + `>
+                    </div>`;
     var banner = document.getElementsByClassName('owl-carousel')[0];
     banner.innerHTML += newDiv;
 }
