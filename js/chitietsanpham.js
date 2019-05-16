@@ -9,11 +9,105 @@ window.onload = function() {
     var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
     for (var t of tags) addTags(t, "index.php?search=" + t, true);
 
-    phanTich_URL_chiTietSanPham();
+    phanTichURL_Web2();
 
     // autocomplete cho khung tim kiem
     autocomplete(document.getElementById('search-box'), list_products);
 }
+
+// ======================= Web 2 =======================
+function phanTichURL_Web2() {
+    idProduct = window.location.href.split('?')[1]; // lấy tên
+    if (!idProduct) return; // nếu không tìm thấy tên thì thoát hàm
+
+    $.ajax({
+        type: "POST",
+        url: "php/xulysanpham.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getbyid",
+            id: idProduct
+        },
+        success: function(data, status, xhr) {
+            console.log(data);
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy sản phẩm (chitietSanpham.js > phanTichURL_Web2)",
+                html: e.responseText
+            });
+        }
+    })
+}
+
+function addToWeb(p) {
+    var divChiTiet = document.getElementsByClassName('chitietSanpham')[0];
+
+    // Đổi title
+    document.title = nameProduct + ' - Thế giới điện thoại';
+
+    // Cập nhật tên h1
+    var h1 = divChiTiet.getElementsByTagName('h1')[0];
+    h1.innerHTML += nameProduct;
+
+    // Cập nhật sao
+    var rating = "";
+    if (sanPham.rateCount > 0) {
+        rating = getRateStar(sanPham.rateCount);
+        rating += `<span> ` + sanPham.rateCount + ` đánh giá </span>`;
+    }
+    divChiTiet.getElementsByClassName('rating')[0].innerHTML += rating;
+
+    // Cập nhật giá + label khuyến mãi
+    var price = divChiTiet.getElementsByClassName('area_price')[0];
+    if (sanPham.promo.name != 'giareonline') {
+        price.innerHTML = `<strong>` + sanPham.price + `₫</strong>`;
+        price.innerHTML += new Promo(sanPham.promo.name, sanPham.promo.value).toWeb();
+    } else {
+        document.getElementsByClassName('ship')[0].style.display = ''; // hiển thị 'giao hàng trong 1 giờ'
+        price.innerHTML = `<strong>` + sanPham.promo.value + `&#8363;</strong>
+                            <span>` + sanPham.price + `&#8363;</span>`;
+    }
+
+    // Cập nhật chi tiết khuyến mãi
+    document.getElementById('detailPromo').innerHTML = getDetailPromo(sanPham);
+
+    // Cập nhật thông số
+    var info = document.getElementsByClassName('info')[0];
+    var s = addThongSo('Màn hình', sanPham.detail.screen);
+    s += addThongSo('Hệ điều hành', sanPham.detail.os);
+    s += addThongSo('Camara sau', sanPham.detail.camara);
+    s += addThongSo('Camara trước', sanPham.detail.camaraFront);
+    s += addThongSo('CPU', sanPham.detail.cpu);
+    s += addThongSo('RAM', sanPham.detail.ram);
+    s += addThongSo('Bộ nhớ trong', sanPham.detail.rom);
+    s += addThongSo('Thẻ nhớ', sanPham.detail.microUSB);
+    s += addThongSo('Dung lượng pin', sanPham.detail.battery);
+    info.innerHTML = s;
+
+    // Cập nhật hình
+    var hinh = divChiTiet.getElementsByClassName('picture')[0];
+    hinh = hinh.getElementsByTagName('img')[0];
+    hinh.src = sanPham.img;
+
+    // Test bình luận
+    var s = "";
+    for(var i = 0; i < Math.min(sanPham.rateCount, 20); i++) {
+        s += createComment("Hoàng Trần", `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit.`, 
+                getRateStar(Math.random()*5),  
+                new Date().toShortFormat()
+            );
+    }
+
+    document.getElementsByClassName("comment-content")[0].innerHTML += s;
+}
+
+// =====================================================
 
 function phanTich_URL_chiTietSanPham() {
     nameProduct = window.location.href.split('?')[1]; // lấy tên

@@ -2,20 +2,23 @@
 	margin: 10px 0 30px; 
 }
 
-.companyMenu a {
+.companyMenu button {
+	box-sizing: border-box;
     border: 2px solid #fff;
+    background: transparent;
     height: 40px;
     line-height: 40px;
     transition-duration: .2s;
+    cursor: pointer;
 }
 
-.companyMenu a:hover {
+.companyMenu button:hover {
 	border: 2px solid #aaa;
 	transform: scale(1.1);
 	z-index: 20;
 }
 
-.companyMenu a img{
+.companyMenu button img{
     max-height: 30px;
     vertical-align: middle;
     margin-top: -3px;
@@ -78,6 +81,19 @@
 	    background-color: #3e8e41;
 	}
 /* ============== End From W3 ============== */
+#divSoLuongSanPham {
+	margin: 5px 0;
+	padding: 5px;
+	color: #999;
+	background-color: #333;
+	font-weight: bold;
+	font-size: 1em;
+}
+
+#divSoLuongSanPham span {
+	color: #fff;
+	font-size: 1.25em;
+}
 
 /* Filter by Name */
 .filterName {
@@ -112,6 +128,7 @@
     background: #288ad6;
     border-radius: 4px;
     margin-right: 5px;
+    cursor: pointer;
 }
 
 /* Các khung sản phẩm */

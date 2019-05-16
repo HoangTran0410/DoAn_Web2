@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Thêm topnav vào trang
 function addTopNav()
@@ -56,15 +57,14 @@ function addHeader()
 
             <div class="tools-member">
                 <div class="member">
-                    <a onclick="checkTaiKhoan()">
+                    <a onclick="checkTaiKhoan()" id="btnTaiKhoan">
                         <i class="fa fa-user"></i>
                         Tài khoản
                     </a>
                     <div class="menuMember hide">
                         <a href="nguoidung.php">Trang người dùng</a>
-                        <a onclick="logOut();">Đăng xuất</a>
+                        <a onclick="checkDangXuat();">Đăng xuất</a>
                     </div>
-
                 </div> <!-- End Member -->
 
                 <div class="cart">
@@ -75,12 +75,12 @@ function addHeader()
                     </a>
                 </div> <!-- End Cart -->
 
-                <!--<div class="check-order">
+                <!-- <div class="check-order">
                     <a>
                         <i class="fa fa-truck"></i>
                         <span>Đơn hàng</span>
                     </a>
-                </div> -->
+                </div>  -->
             </div><!-- End Tools Member -->
         </div> <!-- End Content -->
     </div> <!-- End Header -->';
@@ -127,57 +127,22 @@ function addHome()
                 <div class="dropdown-content"></div>
             </div>            
         </div>
+        
+        <div>
+            <input type="text" class="js-range-slider" id="demoSlider">
+        </div>
 
-
-        <!-- <br>
-
-        <fieldset>
-            <legend>Tìm kiếm nâng cao:</legend>
-    
-            <table>
-                <tr>
-                    <td>Hãng</td>
-                    <td><select id="slCompany"></select></td>
-                </tr>
-                <tr>
-                    <td>Giá</td>
-                    <td>
-                        Từ<input type="number" id="giaTu" size="7"> <br> 
-                        Tới<input type="number" id="giaToi" size="7">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Khuyến mãi</td>
-                    <td><select id="slPromo"></select></td>
-                </tr>
-                <tr>
-                    <td>Số sao</td>
-                    <td><select id="slStar"></select></td>
-                </tr>
-                <tr>
-                    <td>Sắp xếp</td>
-                    <td><select id="slSort"></select></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button onclick="timNangCao()">Tìm</button>
-                    </td>
-                </tr>
-            </table>
-        </fieldset> -->
     </div> <!-- End khung chọn bộ lọc -->
 
-    <div class="choosedFilter flexContain">
-    <a id="deleteAllFilter" style="display: none;">
-        <h3>Xóa bộ lọc</h3>
-    </a>
-    </div> <!-- Những bộ lọc đã chọn -->
+    <div class="choosedFilter flexContain"></div> <!-- Những bộ lọc đã chọn -->
     <hr>
 
     <!-- Mặc định mới vào trang sẽ ẩn đi, nế có filter thì mới hiện lên -->
     <div class="contain-products" style="display:none">
     <div class="filterName">
+        <div id="divSoLuongSanPham"></div>
         <input type="text" placeholder="Lọc trong trang theo tên..." onkeyup="filterProductsName(this)">
+        <div class="loader" style="display: none"></div>
     </div> <!-- End FilterName -->
 
     <ul id="products" class="homeproduct group flexContain">
@@ -302,102 +267,90 @@ function addContainTaiKhoan()
 {
     echo '
 	<div class="containTaikhoan">
-        <span class="close" onclick="showTaiKhoan(false);">&times;</span>
-        <div class="taikhoan">
-
+    <span class="close" onclick="showTaiKhoan(false);">&times;</span> 
+        <div class=" taikhoan">
             <ul class="tab-group">
                 <li class="tab active"><a href="#login">Đăng nhập</a></li>
                 <li class="tab"><a href="#signup">Đăng kí</a></li>
             </ul> <!-- /tab group -->
-
             <div class="tab-content">
                 <div id="login">
                     <h1>Chào mừng bạn trở lại!</h1>
-
-                    <form onsubmit="return logIn(this);">
-
+                    <!-- <form onsubmit="return logIn(this);"> -->
+                    <form action="" method="post" name="formDangNhap" onsubmit="return checkDangNhap();">
                         <div class="field-wrap">
                             <label>
                                 Tên đăng nhập<span class="req">*</span>
                             </label>
-                            <input name="username" type="text" required autocomplete="off" />
+                            <input name="username" type="text" id="username" required autocomplete="off" />
                         </div> <!-- /user name -->
-
                         <div class="field-wrap">
                             <label>
                                 Mật khẩu<span class="req">*</span>
                             </label>
-                            <input name="pass" type="password" required autocomplete="off" />
+                            <input name="pass" type="password" id="pass" required autocomplete="off" />
                         </div> <!-- pass -->
-
                         <p class="forgot"><a href="#">Quên mật khẩu?</a></p>
-
                         <button type="submit" class="button button-block" />Tiếp tục</button>
-
                     </form> <!-- /form -->
-
                 </div> <!-- /log in -->
-
                 <div id="signup">
                     <h1>Đăng kí miễn phí</h1>
-
-                    <form onsubmit="return signUp(this);">
-
+                    <!-- <form onsubmit="return signUp(this);"> -->
+                    <form action="" method="post" name="formDangKy" onsubmit="return checkDangKy();">
                         <div class="top-row">
                             <div class="field-wrap">
                                 <label>
                                     Họ<span class="req">*</span>
                                 </label>
-                                <input name="ho" type="text" required autocomplete="off" />
+                                <input name="ho" type="text" id="ho" required autocomplete="off" />
                             </div>
-
                             <div class="field-wrap">
                                 <label>
                                     Tên<span class="req">*</span>
                                 </label>
-                                <input name="ten" type="text" required autocomplete="off" />
+                                <input name="ten" id="ten" type="text" required autocomplete="off" />
                             </div>
                         </div> <!-- / ho ten -->
-
                         <div class="top-row">
                             <div class="field-wrap">
                                 <label>
-                                    Số điện thoại<span class="req">*</span>
+                                    Điện thoại<span class="req">*</span>
                                 </label>
-                                <input name="sdt" type="number" required autocomplete="off" />
+                                <input name="sdt" id="sdt" type="number" required autocomplete="off" />
                             </div> <!-- /sdt -->
-    
                             <div class="field-wrap">
                                 <label>
-                                    Địa chỉ Email<span class="req">*</span>
+                                    Email<span class="req"></span>
                                 </label>
-                                <input name="email" type="email" required autocomplete="off" />
+                                <input name="email" id="email" type="email" autocomplete="off" />
                             </div> <!-- /email -->
                         </div>
-
+                        <div class="field-wrap">
+                            <label>
+                                Địa chỉ<span class="req"></span>
+                            </label>
+                            <input name="diachi" id="diachi" type="text" autocomplete="off" />
+                        </div> <!-- /user name -->
                         <div class="field-wrap">
                             <label>
                                 Tên đăng nhập<span class="req">*</span>
                             </label>
-                            <input name="newUser" type="text" required autocomplete="off" />
+                            <input name="newUser" id="newUser" type="text" required autocomplete="off" />
                         </div> <!-- /user name -->
-
                         <div class="field-wrap">
                             <label>
                                 Mật khẩu<span class="req">*</span>
                             </label>
-                            <input name="newPass" type="password" required autocomplete="off" />
+                            <input name="newPass" id="newPass" type="password" required autocomplete="off" />
                         </div> <!-- /pass -->
-
                         <button type="submit" class="button button-block" />Tạo tài khoản</button>
-
                     </form> <!-- /form -->
-
                 </div> <!-- /sign up -->
             </div><!-- tab-content -->
-
         </div> <!-- /taikhoan -->
-    </div>';
+    </div>
+';
 }
 
 // Thêm plc (phần giới thiệu trước footer)

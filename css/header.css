@@ -27,6 +27,17 @@
 			width: 100%;
 			height: 100%;
 			vertical-align: middle;
+			animation: example 5s infinite ease-in-out;
+		}
+
+		/* Standard syntax */
+		@keyframes example {
+			35%, 100% {
+				transform: scale(1);
+			}
+			10% {
+				transform: rotateX(360deg) scale(1.15);
+			}
 		}
 	/* ======= End logo ======== */
 

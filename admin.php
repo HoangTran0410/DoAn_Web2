@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="css/admin/progress.css">
 
     <script src="data/products.js"></script>
-    <script src="js/classes.js"></script>
+    <!-- <script src="js/classes.js"></script> -->
     <script src="js/dungchung.js"></script>
     <script src="js/admin.js"></script>
 </head>
@@ -41,7 +41,7 @@
         <ul class="nav">
             <li class="nav-title">MENU</li>
             <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Home</a></li>
-            <li class="nav-item" onclick="refreshTableSanPham()"><a class="nav-link"><i class="fa fa-th-large"></i> Sản Phẩm</a></li>
+            <li class="nav-item"><a class="nav-link"><i class="fa fa-th-large"></i> Sản Phẩm</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-address-book-o"></i> Khách Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
@@ -77,39 +77,6 @@
 
             <div class="table-content">
             </div>
-
-            <!--<div class="table-content">
-            <?php
-                require_once('BackEnd/ConnectionDB/DB_classes.php');
-
-                $sp = new SanPhamBUS();
-                $i = 1;
-                echo "<table class='table-outline hideImg'>";
-                foreach ($sp->select_all() as $rowname => $row) {
-                    echo "<tr>
-                        <td style'width: 5%'>" . $i++ . "</td>
-                        <td style='width: 10%'>" . $row['MaSP'] . "</td>
-                        <td style='width: 40%'>
-                            <a title='Xem chi tiết' target='_blank' href='chitietsanpham.php?" . $row['TenSP'] . "'>" . $row['TenSP'] . "</a>
-                            <img src='" . $row['HinhAnh'] . "'></img>
-                        </td>
-                        <td style='width: 15%'>" . $row['DonGia'] . "</td>
-                        <td style='width: 15%'>" . $row['MaKM'] . "</td>
-                        <td style='width: 15%'>
-                            <div class='tooltip'>
-                                <i class='fa fa-wrench' onclick='addKhungSuaSanPham('" . $row['MaSP'] . "')'></i>
-                                <span class='tooltiptext'>Sửa</span>
-                            </div>
-                            <div class='tooltip'>
-                                <i class='fa fa-trash' onclick='xoaSanPham('" . $row['MaSP'] . "', '" . $row['TenSP'] . "')'></i>
-                                <span class='tooltiptext'>Xóa</span>
-                            </div>
-                        </td>
-                    </tr>";
-                }
-                echo "</table>";
-            ?>
-            </div>-->
 
             <div class="table-footer">
                 <select name="kieuTimSanPham">
@@ -166,22 +133,18 @@
                         <td><input type="text"></td>
                     </tr>
                     <tr>
-                        <td>Số lượng:</td>
-                        <td><input type="text" value="0"></td>
-                    </tr>
-                    <tr>
                         <td>Số sao:</td>
-                        <td><input disabled="disabled" value="0" type="text"></td>
+                        <td><input type="text"></td>
                     </tr>
                     <tr>
                         <td>Đánh giá:</td>
-                        <td><input disabled="disabled" value="0" type="text"></td>
+                        <td><input type="text"></td>
                     </tr>
                     <tr>
                         <td>Khuyến mãi:</td>
                         <td>
                             <select>
-                                <option selected="selected" value="">Không</option>
+                                <option value="">Không</option>
                                 <option value="tragop">Trả góp</option>
                                 <option value="giamgia">Giảm giá</option>
                                 <option value="giareonline">Giá rẻ online</option>

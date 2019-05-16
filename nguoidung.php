@@ -12,7 +12,7 @@
 	<!-- Load font awesome icons -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
 
-	<!-- <script src="js/Jquery/Jquery.min.js"></script> -->
+	<script src="lib/Jquery/Jquery.min.js"></script>
 
 	<!-- Sweet Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -27,8 +27,6 @@
 	<link rel="stylesheet" href="css/nguoidung.css">
 	<link rel="stylesheet" href="css/footer.css">
 	<!-- js -->
-	<script src="data/products.js"></script>
-	<script src="js/classes.js"></script>
 	<script src="js/dungchung.js"></script>
 	<script src="js/nguoidung.js"></script>
 
@@ -40,8 +38,6 @@
 
 	<section>
 		<?php addHeader(); ?>
-
-		<img src="img/banners/blackFriday.gif" alt="" style="width: 100%;">
 
 		<div class="infoUser"> </div>
 

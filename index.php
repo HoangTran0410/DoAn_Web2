@@ -4,7 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
 	<title>Thế giới điện thoại</title>
 	<link rel="shortcut icon" href="img/favicon.ico" />
@@ -23,6 +24,11 @@
 	<!-- Sweet Alert -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
+	<!-- Slider -->
+	<link rel="stylesheet" href="lib/ion.rangeSlider-2.2.0/css/ion.rangeSlider.css">
+	<link rel="stylesheet" href="lib/ion.rangeSlider-2.2.0/css/ion.rangeSlider.skinHTML5.css">
+	<script src="lib/ion.rangeSlider-2.2.0/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+
 	<!-- tidio - live chat -->
 	<!-- <script src="//code.tidio.co/bfiiplaaohclhqwes5xivoizqkq56guu.js"></script> -->
 
@@ -38,8 +44,6 @@
 	<link rel="stylesheet" href="css/pagination_phantrang.css">
 	<link rel="stylesheet" href="css/footer.css">
 	<!-- js -->
-	<script src="data/products.js"></script>
-	<script src="js/classes.js"></script>
 	<script src="js/dungchung.js"></script>
 	<script src="js/trangchu.js"></script>
 
@@ -66,6 +70,7 @@
 	</div>
 
 	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
+	<i class="fa fa-arrow-down" id="goto-bot-page" onclick="gotoBot()"></i>
 
 </body>
 

@@ -1,94 +1,18 @@
-var adminInfo = [{
-    "username": "admin",
-    "pass": "adadad"
-}];
-
-function getListAdmin() {
-    return JSON.parse(window.localStorage.getItem('ListAdmin'));
-}
-
-function setListAdmin(l) {
-    window.localStorage.setItem('ListAdmin', JSON.stringify(l));
-}
-
 // Hàm khởi tạo, tất cả các trang đều cần
 function khoiTao() {
     // get data từ localstorage
-    list_products = getListProducts() || list_products;
-    adminInfo = getListAdmin() || adminInfo;
+    // list_products = getListProducts() || list_products;
+    // adminInfo = getListAdmin() || adminInfo;
 
     setupEventTaiKhoan();
-    capNhat_ThongTin_CurrentUser();
-    addEventCloseAlertButton();
+    capNhatThongTinUser();
 }
 
 // ========= Các hàm liên quan tới danh sách sản phẩm =========
-// Localstorage cho dssp: 'ListProducts
-function setListProducts(newList) {
-    window.localStorage.setItem('ListProducts', JSON.stringify(newList));
-}
-
-function getListProducts() {
-    return JSON.parse(window.localStorage.getItem('ListProducts'));
-}
-
-function timKiemTheoTen(list, ten, soluong) {
-    var tempList = copyObject(list);
-    var result = [];
-    ten = ten.split(' ');
-
-    for (var sp of tempList) {
-        var correct = true;
-        for (var t of ten) {
-            if (sp.name.toUpperCase().indexOf(t.toUpperCase()) < 0) {
-                correct = false;
-                break;
-            }
-        }
-        if (correct) {
-            result.push(sp);
-        }
-    }
-
-    return result;
-}
-
-function timKiemTheoMa(list, ma) {
-    for (var l of list) {
-        if (l.masp == ma) return l;
-    }
-}
-
 // copy 1 object, do trong js ko có tham biến , tham trị rõ ràng
 // nên dùng bản copy để chắc chắn ko ảnh hưởng tới bản chính
 function copyObject(o) {
     return JSON.parse(JSON.stringify(o));
-}
-
-// ============== ALert Box ===============
-// div có id alert được tạo trong hàm addFooter
-function addAlertBox(text, bgcolor, textcolor, time) {
-    var al = document.getElementById('alert');
-    al.childNodes[0].nodeValue = text;
-    al.style.backgroundColor = bgcolor;
-    al.style.opacity = 1;
-    al.style.zIndex = 200;
-
-    if (textcolor) al.style.color = textcolor;
-    if (time)
-        setTimeout(function () {
-            al.style.opacity = 0;
-            al.style.zIndex = 0;
-        }, time);
-}
-
-function addEventCloseAlertButton() {
-    document.getElementById('closebtn')
-        .addEventListener('mouseover', (event) => {
-            // event.target.parentElement.style.display = "none";
-            event.target.parentElement.style.opacity = 0;
-            event.target.parentElement.style.zIndex = 0;
-        });
 }
 
 // ================ Cart Number + Thêm vào Giỏ hàng ======================
@@ -98,7 +22,7 @@ function animateCartNumber() {
     cn.style.transform = 'scale(2)';
     cn.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
     cn.style.color = 'white';
-    setTimeout(function () {
+    setTimeout(function() {
         cn.style.transform = 'scale(1)';
         cn.style.backgroundColor = 'transparent';
         cn.style.color = 'red';
@@ -106,8 +30,34 @@ function animateCartNumber() {
 }
 
 function themVaoGioHang(masp, tensp) {
-    var user = getCurrentUser();
-    if (!user) {
+    getCurrentUser((user) => {
+        if(user.TrangThai == 0) {
+            Swal.fire({
+                title: 'Tài Khoản Bị Khóa!',
+                text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
+                type: 'error',
+                grow: 'row',
+                confirmButtonText: 'Trở về',
+                footer: '<a href>Liên hệ với Admin</a>'
+            });
+
+            // addAlertBox('Tài khoản của bạn đã bị khóa bởi Admin.', '#aa0000', '#fff', 10000);
+            return;
+
+        } else {
+            animateCartNumber();
+            // addAlertBox('Đã thêm ' + tensp + ' vào giỏ.', '#17c671', '#fff', 3500);
+            Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                type: 'success',
+                html: ' Đã thêm <strong>' + tensp + '</strong> vào giỏ.',
+                showConfirmButton: true,
+                timer: 5000
+            })
+        }
+
+    }, (error) => {
         // alert('Bạn cần đăng nhập để mua hàng !');
         Swal.fire({
             title: 'Xin chào!',
@@ -118,224 +68,36 @@ function themVaoGioHang(masp, tensp) {
             cancelButtonText: 'Trở về',
             showCancelButton: true
         }).then((result) => {
-            if(result.value) {
+            if (result.value) {
                 showTaiKhoan(true);
             }
         })
 
         return;
-    }
-    if (user.off) {
-        Swal.fire({
-            title: 'Tài Khoản Bị Khóa!',
-            text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
-            type: 'error',
-            grow: 'row',
-            confirmButtonText: 'Trở về',
-            footer: '<a href>Liên hệ với Admin</a>'
-        });
-
-        // addAlertBox('Tài khoản của bạn đã bị khóa bởi Admin.', '#aa0000', '#fff', 10000);
-        return;
-    }
-    var t = new Date();
-    var daCoSanPham = false;
-
-    for (var i = 0; i < user.products.length; i++) { // check trùng sản phẩm
-        if (user.products[i].ma == masp) {
-            user.products[i].soluong++;
-            daCoSanPham = true;
-            break;
-        }
-    }``
-
-    if (!daCoSanPham) { // nếu không trùng thì mới thêm sản phẩm vào user.products
-        user.products.push({
-            "ma": masp,
-            "soluong": 1,
-            "date": t
-        });
-    }
-
-    animateCartNumber();
-    // addAlertBox('Đã thêm ' + tensp + ' vào giỏ.', '#17c671', '#fff', 3500);
-    Swal.fire({
-        toast: true,
-        position: 'bottom-end',
-        type: 'success',
-        html: ' Đã thêm <strong>' + tensp + '</strong> vào giỏ.',
-        showConfirmButton: true,
-        timer: 5000
     })
 
-    setCurrentUser(user); // cập nhật giỏ hàng cho user hiện tại
-    updateListUser(user); // cập nhật list user
-    capNhat_ThongTin_CurrentUser(); // cập nhật giỏ hàng
+    return false;
 }
 
 // ============================== TÀI KHOẢN ============================
 
 // Hàm get set cho người dùng hiện tại đã đăng nhập
-function getCurrentUser() {
-    return JSON.parse(window.localStorage.getItem('CurrentUser')); // Lấy dữ liệu từ localstorage
-}
-
-function setCurrentUser(u) {
-    window.localStorage.setItem('CurrentUser', JSON.stringify(u));
-}
-
-// Hàm get set cho danh sách người dùng
-function getListUser() {
-    var data = JSON.parse(window.localStorage.getItem('ListUser')) || []
-    var l = [];
-    for (var d of data) {
-        l.push(d);
-    }
-    return l;
-}
-
-function setListUser(l) {
-    window.localStorage.setItem('ListUser', JSON.stringify(l));
-}
-
-// Sau khi chỉnh sửa 1 user 'u' thì cần hàm này để cập nhật lại vào ListUser
-function updateListUser(u, newData) {
-    var list = getListUser();
-    for (var i = 0; i < list.length; i++) {
-        if (equalUser(u, list[i])) {
-            list[i] = (newData ? newData : u);
+function getCurrentUser(onSuccess, onFail) {
+    $.ajax({
+        type: "POST",
+        url: "php/xulytaikhoan.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getCurrentUser",
+        },
+        success: function(data, status, xhr) {
+            if(onSuccess) onSuccess(data);
+        },
+        error: function(e) {
+            if(onFail) onFail(e);
         }
-    }
-    setListUser(list);
-}
-
-function logIn(form) {
-    // Lấy dữ liệu từ form
-    var name = form.username.value;
-    var pass = form.pass.value;
-    var newUser = new User(name, pass);
-
-    // Lấy dữ liệu từ danh sách người dùng localstorage
-    var listUser = getListUser();
-
-    // Kiểm tra xem dữ liệu form có khớp với người dùng nào trong danh sách ko
-    for (var u of listUser) {
-        if (equalUser(newUser, u)) {
-            setCurrentUser(u);
-
-            Swal.fire({
-                type: 'success',
-                title: 'Đăng nhập thành công',
-                timer: 1500
-            }).then((result) => {
-                // Reload lại trang -> sau khi reload sẽ cập nhật luôn giỏ hàng khi hàm setupEventTaiKhoan chạy
-                location.reload();
-            })
-
-            return false;
-        }
-    }
-
-    // Đăng nhập vào admin
-    for (var ad of adminInfo) {
-        if (equalUser(newUser, ad)) {
-            Swal.fire({
-                type: 'success',
-                title: 'Xin chào Admin'
-            }).then((result) => {
-                window.localStorage.setItem('admin', true);
-                window.location.assign('admin.php');
-            })
-            return false;
-        }
-    }
-
-    // Trả về thông báo nếu không khớp
-    // alert('Nhập sai tên hoặc mật khẩu !!!');
-    Swal.fire({
-        type: 'error',
-        title: 'Sai tên đăng nhập hoặc mật khẩu'
-    }).then((result) => {
-        form.username.focus();    
     })
-    
-    return false;
-}
-
-function signUp(form) {
-    var ho = form.ho.value;
-    var ten = form.ten.value;
-    var email = form.email.value;
-    var username = form.newUser.value;
-    var pass = form.newPass.value;
-    var newUser = new User(username, pass, ho, ten, email);
-
-    // Lấy dữ liệu các khách hàng hiện có
-    var listUser = getListUser();
-
-    // Kiểm tra trùng admin
-    for (var ad of adminInfo) {
-        if (newUser.username == ad.username) {
-            Swal.fire({
-                type: 'error',
-                text: 'Tên đăng nhập đã có người sử dụng'
-            }).then((result) => {
-                form.newUser.focus();
-            });
-            // alert('Tên đăng nhập đã có người sử dụng !!');
-            return false;
-        }
-    }
-
-    // Kiểm tra xem dữ liệu form có trùng với khách hàng đã có không
-    for (var u of listUser) {
-        if (newUser.username == u.username) {
-            Swal.fire({
-                type: 'error',
-                text: 'Tên đăng nhập đã có người sử dụng'
-            }).then((result) => {
-                form.newUser.focus();
-            });
-            // alert('Tên đăng nhập đã có người sử dụng !!');
-            return false;
-        }
-    }
-
-    // Lưu người mới vào localstorage
-    listUser.push(newUser);
-    window.localStorage.setItem('ListUser', JSON.stringify(listUser));
-
-    // Đăng nhập vào tài khoản mới tạo
-    window.localStorage.setItem('CurrentUser', JSON.stringify(newUser));
-    Swal.fire({
-        type: 'success',
-        title: 'Đăng kí thành công',
-        text: 'Bạn sẽ được đăng nhập tự động',
-        confirmButtonText: 'Tuyệt'
-    }).then((result) => {
-        setTimeout(function(){
-            location.reload();
-        }, 1000);
-    });
-    
-    return false;
-}
-
-function logOut() {
-    Swal.fire({
-        type: 'question',
-        title: 'Xác nhận',
-        text: 'Bạn có chắc muốn đăng xuất?',
-        showCancelButton: true,
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy'
-
-    }).then((result) => {
-        if (result.value) {
-            window.localStorage.removeItem('CurrentUser');
-            location.reload();
-        }
-    });
 }
 
 // Hiển thị form tài khoản, giá trị truyền vào là true hoặc false
@@ -348,10 +110,175 @@ function showTaiKhoan(show) {
 // Check xem có ai đăng nhập hay chưa (CurrentUser có hay chưa)
 // Hàm này chạy khi ấn vào nút tài khoản trên header
 function checkTaiKhoan() {
-    if (!getCurrentUser()) {
-        showTaiKhoan(true);
-    }
+    getCurrentUser((data) => {
+        if(!data) {
+            showTaiKhoan(true);
+        }
+
+    }, (error) => {
+        
+    })
 }
+
+//  ================================ WEB 2 =================================
+function checkDangKy() {
+    var ho = document.getElementById('ho').value;
+    var ten = document.getElementById('ten').value;
+    var sdt = document.getElementById('sdt').value;
+    var email = document.getElementById('email').value;
+    var diachi = document.getElementById('diachi').value;
+    var username = document.getElementById('newUser').value;
+    var pass = document.getElementById('newPass').value;
+
+    $.ajax({
+        url: "php/xulytaikhoan.php",
+        type: "post",
+        dataType: "json",
+        timeout: 1500,
+        data: {
+            request: 'dangky',
+            data_ho: ho,
+            data_ten: ten,
+            data_sdt: sdt,
+            data_email: email,
+            data_diachi: diachi,
+            data_newUser: username,
+            data_newPass: pass
+        },
+        success: function(kq) {
+            if(kq != null) {
+                Swal.fire({
+                    type: 'success',
+                    title: 'Đăng kí thành công ' + kq.TaiKhoan,
+                    text: 'Bạn sẽ được đăng nhập tự động',
+                    confirmButtonText: 'Tuyệt'
+
+                }).then((result) => {
+                    capNhatThongTinUser();
+                    showTaiKhoan(false);
+                });
+            }
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi",
+                html: e.responseText
+            });
+        }
+    });
+
+    return false;
+}
+
+function checkDangNhap() {
+    var a = document.getElementById('username').value;
+    var b = document.getElementById('pass').value;
+
+    console.log(a, b);
+
+    $.ajax({
+        url: "php/xulytaikhoan.php",
+        type: "post",
+        dataType: "json",
+        timeout: 1500,
+        data: {
+            request: 'dangnhap',
+            data_username: a,
+            data_pass: b
+        },
+        success: function(data, status, xhr) {
+            console.log(data);
+
+            if(data != null) {
+                Swal.fire({
+                    type: "success",
+                    title: "Đăng nhập thành công",
+                    text: "Chào " + data.Ho + " " + data.Ten
+                }).then((result) => {
+                    capNhatThongTinUser();
+                });
+                showTaiKhoan(false);
+
+            } else {
+                Swal.fire({
+                    type: "error",
+                    title: "Tên tài khoản hoăc mật khẩu không đúng"
+                });
+            }
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi khi đăng nhập",
+                html: e.responseText
+            });
+        }
+    });
+    return false;
+}
+
+function checkDangXuat() {
+    Swal.fire({
+        type: 'question',
+        title: 'Xác nhận',
+        text: 'Bạn có chắc muốn đăng xuất?',
+        showCancelButton: true,
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy'
+
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "POST",
+                url: "php/xulytaikhoan.php",
+                dataType: "text",
+                timeout: 1500,
+                data: {
+                    request: 'dangxuat'
+                },
+                success: function(data) {
+                    if(data == 'ok') {
+                        Swal.fire({
+                            type: "success",
+                            title: "Đăng xuất thành công"
+                        }).then((result) => {
+                            capNhatThongTinUser();
+                        });
+
+                    } else {
+                        Swal.fire({
+                            type: "error",
+                            title: "Chưa có ai đăng nhập"
+                        })
+                    }
+                },
+                error: function(e) {
+                    Swal.fire({
+                        type: "error",
+                        title: "Có lỗi khi đăng xuất",
+                        html: e.responseText
+                    })
+                }
+            })
+        }
+    });
+}
+
+function capNhatThongTinUser() {
+    getCurrentUser((data) => {
+        if(!data) {
+            document.getElementById("btnTaiKhoan").innerHTML = '<i class="fa fa-user"></i> Tài khoản';
+            document.getElementsByClassName("menuMember")[0].classList.add('hide');
+
+        } else {
+            document.getElementById("btnTaiKhoan").innerHTML = '<i class="fa fa-user"></i> ' + data['TaiKhoan'];
+            document.getElementsByClassName("menuMember")[0].classList.remove('hide');
+        }
+    })
+}
+
+//  ================================ END WEB 2 =================================
 
 // Tạo event, hiệu ứng cho form tài khoản
 function setupEventTaiKhoan() {
@@ -360,9 +287,9 @@ function setupEventTaiKhoan() {
 
     // Tạo eventlistener cho input để tạo hiệu ứng label
     // Gồm 2 event onblur, onfocus được áp dụng cho từng input trong list bên trên
-    ['blur', 'focus'].forEach(function (evt) {
+    ['blur', 'focus'].forEach(function(evt) {
         for (var i = 0; i < list.length; i++) {
-            list[i].addEventListener(evt, function (e) {
+            list[i].addEventListener(evt, function(e) {
                 var label = this.previousElementSibling; // lấy element ĐỨNG TRƯỚC this, this ở đây là input
                 if (e.type === 'blur') { // khi ấn chuột ra ngoài
                     if (this.value === '') { // không có value trong input thì đưa label lại như cũ
@@ -383,7 +310,7 @@ function setupEventTaiKhoan() {
     var tab = document.getElementsByClassName('tab');
     for (var i = 0; i < tab.length; i++) {
         var a = tab[i].getElementsByTagName('a')[0];
-        a.addEventListener('click', function (e) {
+        a.addEventListener('click', function(e) {
             e.preventDefault(); // tắt event mặc định
 
             // Thêm active(màu xanh lá) cho li chứa tag a này => ấn login thì login xanh, signup thì signup sẽ xanh
@@ -413,39 +340,6 @@ function setupEventTaiKhoan() {
     // Code jquery cho phần tài khoản được lưu ở cuối file này
 }
 
-// Cập nhật số lượng hàng trong giỏ hàng + Tên current user
-function capNhat_ThongTin_CurrentUser() {
-    var u = getCurrentUser();
-    if (u) {
-        // Cập nhật số lượng hàng vào header
-        document.getElementsByClassName('cart-number')[0].innerHTML = getTongSoLuongSanPhamTrongGioHang(u);
-        // Cập nhật tên người dùng
-        document.getElementsByClassName('member')[0]
-            .getElementsByTagName('a')[0].childNodes[2].nodeValue = ' ' + u.username;
-        // bỏ class hide của menu người dùng
-        document.getElementsByClassName('menuMember')[0]
-            .classList.remove('hide');
-    }
-}
-
-// tính tổng số lượng các sản phẩm của user u truyền vào
-function getTongSoLuongSanPhamTrongGioHang(u) {
-    var soluong = 0;
-    for (var p of u.products) {
-        soluong += p.soluong;
-    }
-    return soluong;
-}
-
-// lấy số lương của sản phẩm NÀO ĐÓ của user NÀO ĐÓ được truyền vào
-function getSoLuongSanPhamTrongUser(tenSanPham, user) {
-    for (var p of user.products) {
-        if (p.name == tenSanPham)
-            return p.soluong;
-    }
-    return 0;
-}
-
 // ==================== Những hàm khác ===================== 
 function numToString(num, char) {
     return num.toLocaleString().split(',').join(char || '.');
@@ -459,7 +353,7 @@ function stringToNum(str, char) {
 function autocomplete(inp, arr) {
     var currentFocus;
 
-    inp.addEventListener("keyup", function (e) {
+    inp.addEventListener("keyup", function(e) {
         if (e.keyCode != 13 && e.keyCode != 40 && e.keyCode != 38) { // not Enter,Up,Down arrow
             var a, b, i, val = this.value;
 
@@ -494,7 +388,7 @@ function autocomplete(inp, arr) {
                     b.innerHTML += "<input type='hidden' value='" + arr[i].name + "'>";
 
                     /*execute a function when someone clicks on the item value (DIV element):*/
-                    b.addEventListener("click", function (e) {
+                    b.addEventListener("click", function(e) {
                         /*insert the value for the autocomplete text field:*/
                         inp.value = this.getElementsByTagName("input")[0].value;
                         inp.focus();
@@ -510,7 +404,7 @@ function autocomplete(inp, arr) {
 
     });
     /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function (e) {
+    inp.addEventListener("keydown", function(e) {
         var x = document.getElementById(this.id + "autocomplete-list");
         if (x) x = x.getElementsByTagName("div");
         if (e.keyCode == 40) {
@@ -565,7 +459,7 @@ function autocomplete(inp, arr) {
         }
     }
     /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function (e) {
+    document.addEventListener("click", function(e) {
         closeAllLists(e.target);
     });
 }
@@ -595,7 +489,7 @@ function smallmenu(number) {
 }
 
 function checkLocalStorage() {
-    if (typeof (Storage) == "undefined") {
+    if (typeof(Storage) == "undefined") {
         alert('Máy tính không hỗ trợ LocalStorage. Không thể lưu thông tin sản phẩm, khách hàng!!');
     } else {
         console.log('LocaStorage OKE!');
@@ -607,9 +501,24 @@ function gotoTop() {
     if (window.jQuery) {
         jQuery('html,body').animate({
             scrollTop: 0
-        }, 300);
+        }, 1000);
     } else {
         document.getElementsByClassName('top-nav')[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+}
+
+function gotoBot() {
+    if (window.jQuery) {
+        jQuery('html,body').animate({
+            scrollTop: $(document).height()
+        }, 1000);
+    } else {
+        document.getElementsByClassName('footer')[0].scrollIntoView({
             behavior: 'smooth',
             block: 'start'
         });
@@ -654,7 +563,7 @@ function auto_Get_Database() {
 }
 
 function getThongTinSanPhamFrom_TheGioiDiDong() {
-    javascript: (function () {
+    javascript: (function() {
         var s = document.createElement('script');
         s.innerHTML = `
 			(function () {
@@ -746,3 +655,25 @@ function getThongTinSanPhamFrom_TheGioiDiDong() {
 //     $(target).fadeIn(600);
 
 // });
+
+// for(var p of list_products) {
+//     switch(p.promo.name) {
+//         case 'tragop':
+//             p.MaKM = 4;
+//         break;
+
+//         case 'giareonline':
+//             p.MaKM = 3;
+//         break;
+
+//         case 'giamgia':
+//             p.MaKM = 2;
+//         break;
+
+//         case 'moiramat':
+//             p.MaKM = 5;
+//         break;
+
+//         default: p.MaKM = 1;
+//     }  
+// } 

@@ -2,7 +2,7 @@ var list_products = [{
     "name": "SamSung Galaxy J4+",
     "company": "Samsung",
     "img": "img/products/samsung-galaxy-j4-plus-pink-400x400.jpg",
-    "price": "3.490.000",
+    "price": 3490000,
     "star": 3,
     "rateCount": 26,
     "promo": {
@@ -20,12 +20,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3300 mAh"
     },
-    "masp": "Sam0"
+    "masp": "Sam0",
+    "MaKM": 1
 }, {
     "name": "Xiaomi Mi 8 Lite",
     "company": "Xiaomi",
     "img": "img/products/xiaomi-mi-8-lite-black-1-600x600.jpg",
-    "price": "6.690.000",
+    "price": 6690000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -43,12 +44,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 512 GB",
         "battery": "3300 mAh, có sạc nhanh"
     },
-    "masp": "Xia0"
+    "masp": "Xia0",
+    "MaKM": 3
 }, {
     "name": "Oppo F9",
     "company": "Oppo",
     "img": "img/products/oppo-f9-red-600x600.jpg",
-    "price": "7.690.000",
+    "price": 7690000,
     "star": 5,
     "rateCount": 188,
     "promo": {
@@ -66,12 +68,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3500 mAh, có sạc nhanh"
     },
-    "masp": "Opp0"
+    "masp": "Opp0",
+    "MaKM": 3
 }, {
     "name": "Nokia 5.1 Plus",
     "company": "Nokia",
     "img": "img/products/nokia-51-plus-black-18thangbh-400x400.jpg",
-    "price": "4.790.000",
+    "price": 4790000,
     "star": 5,
     "rateCount": 7,
     "promo": {
@@ -89,12 +92,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3060 mAh, có sạc nhanh"
     },
-    "masp": "Nok0"
+    "masp": "Nok0",
+    "MaKM": 4
 }, {
     "name": "Samsung Galaxy A8+ (2018)",
     "company": "Samsung",
     "img": "img/products/samsung-galaxy-a8-plus-2018-gold-600x600.jpg",
-    "price": "11.990.000",
+    "price": 11990000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -112,12 +116,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3500 mAh, có sạc nhanh"
     },
-    "masp": "Sam1"
+    "masp": "Sam1",
+    "MaKM": 4
 }, {
     "name": "iPhone X 256GB Silver",
     "company": "Apple",
     "img": "img/products/iphone-x-256gb-silver-400x400.jpg",
-    "price": "31.990.000",
+    "price": 31990000,
     "star": 4,
     "rateCount": 10,
     "promo": {
@@ -135,12 +140,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "2716 mAh, có sạc nhanh"
     },
-    "masp": "App0"
+    "masp": "App0",
+    "MaKM": 0
 }, {
     "name": "Oppo A3s 32GB",
     "company": "Oppo",
     "img": "img/products/oppo-a3s-32gb-600x600.jpg",
-    "price": "4.690.000",
+    "price": 4690000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -158,12 +164,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "4230 mAh"
     },
-    "masp": "Opp1"
+    "masp": "Opp1",
+    "MaKM": 4
 }, {
     "name": "Samsung Galaxy J8",
     "company": "Samsung",
     "img": "img/products/samsung-galaxy-j8-600x600-600x600.jpg",
-    "price": "6.290.000",
+    "price": 6290000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -181,12 +188,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3500 mAh"
     },
-    "masp": "Sam2"
+    "masp": "Sam2",
+    "MaKM": 2
 }, {
     "name": "iPad 2018 Wifi 32GB",
     "company": "Apple",
     "img": "img/products/ipad-wifi-32gb-2018-thumb-600x600.jpg",
-    "price": "8.990.000",
+    "price": 8990000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -204,12 +212,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "Chưa có thông số cụ thể"
     },
-    "masp": "App1"
+    "masp": "App1",
+    "MaKM": 3
 }, {
     "name": "iPhone 7 Plus 32GB",
     "company": "Apple",
     "img": "img/products/iphone-7-plus-32gb-hh-600x600.jpg",
-    "price": "17.000.000",
+    "price": 17000000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -227,12 +236,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "2900 mAh"
     },
-    "masp": "App2"
+    "masp": "App2",
+    "MaKM": 1
 }, {
     "name": "Xiaomi Mi 8",
     "company": "Xiaomi",
     "img": "img/products/xiaomi-mi-8-1-600x600.jpg",
-    "price": "12.990.000",
+    "price": 12990000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -250,12 +260,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 512 GB",
         "battery": "3300 mAh, có sạc nhanh"
     },
-    "masp": "Xia1"
+    "masp": "Xia1",
+    "MaKM": 3
 }, {
     "name": "Mobiistar X",
     "company": "Mobiistar",
     "img": "img/products/mobiistar-x-3-600x600.jpg",
-    "price": "3.490.000",
+    "price": 3490000,
     "star": 4,
     "rateCount": 16,
     "promo": {
@@ -273,12 +284,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3000 mAh"
     },
-    "masp": "Mob0"
+    "masp": "Mob0",
+    "MaKM": 1
 }, {
     "name": "Mobiistar Zumbo S2 Dual",
     "company": "Mobiistar",
     "img": "img/products/mobiistar-zumbo-s2-dual-300x300.jpg",
-    "price": "2.850.000",
+    "price": 2850000,
     "star": 4,
     "rateCount": 104,
     "promo": {
@@ -296,12 +308,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 128 GB",
         "battery": "3000 mAh"
     },
-    "masp": "Mob1"
+    "masp": "Mob1",
+    "MaKM": 4
 }, {
     "name": "Mobiistar E Selfie",
     "company": "Mobiistar",
     "img": "img/products/mobiistar-e-selfie-300-1copy-600x600.jpg",
-    "price": "2.490.000",
+    "price": 2490000,
     "star": 4,
     "rateCount": 80,
     "promo": {
@@ -319,12 +332,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 128 GB",
         "battery": "3900 mAh"
     },
-    "masp": "Mob2"
+    "masp": "Mob2",
+    "MaKM": 2
 }, {
     "name": "Mobiistar B310",
     "company": "Mobiistar",
     "img": "img/products/mobiistar-b310-orange-600x600.jpg",
-    "price": "260.000",
+    "price": 260000,
     "star": 5,
     "rateCount": 87,
     "promo": {
@@ -342,12 +356,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "800 mAh"
     },
-    "masp": "Mob3"
+    "masp": "Mob3",
+    "MaKM": 3
 }, {
     "name": "Xiaomi Redmi Note 5",
     "company": "Xiaomi",
     "img": "img/products/xiaomi-redmi-note-5-pro-600x600.jpg",
-    "price": "5.690.000",
+    "price": 5690000,
     "star": 4,
     "rateCount": 372,
     "promo": {
@@ -365,12 +380,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 128 GB",
         "battery": "4000 mAh, có sạc nhanh"
     },
-    "masp": "Xia2"
+    "masp": "Xia2",
+    "MaKM": 2
 }, {
     "name": "Xiaomi Redmi 5 Plus 4GB",
     "company": "Xiaomi",
     "img": "img/products/xiaomi-redmi-5-plus-600x600.jpg",
-    "price": "4.790.000",
+    "price": 4790000,
     "star": 4,
     "rateCount": 347,
     "promo": {
@@ -388,12 +404,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "4000 mAh"
     },
-    "masp": "Xia3"
+    "masp": "Xia3",
+    "MaKM": 1
 }, {
     "name": "Huawei Mate 20 Pro",
     "company": "Huawei",
     "img": "img/products/huawei-mate-20-pro-green-600x600.jpg",
-    "price": "21.990.000",
+    "price": 21990000,
     "star": 5,
     "rateCount": 4,
     "promo": {
@@ -411,12 +428,13 @@ var list_products = [{
         "microUSB": "NM card, hỗ trợ tối đa 512 GB",
         "battery": "4200 mAh, có sạc nhanh"
     },
-    "masp": "Hua0"
+    "masp": "Hua0",
+    "MaKM": 2
 }, {
     "name": "Huawei Nova 3",
     "company": "Huawei",
     "img": "img/products/huawei-nova-3-2-600x600.jpg",
-    "price": "9.990.000",
+    "price": 9990000,
     "star": 4,
     "rateCount": 22,
     "promo": {
@@ -434,12 +452,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3750 mAh, có sạc nhanh"
     },
-    "masp": "Hua1"
+    "masp": "Hua1",
+    "MaKM": 2
 }, {
     "name": "Huawei Y5 2017",
     "company": "Huawei",
     "img": "img/products/huawei-y5-2017-300x300.jpg",
-    "price": "1.990.000",
+    "price": 1990000,
     "star": 5,
     "rateCount": 54,
     "promo": {
@@ -457,12 +476,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 128 GB",
         "battery": "3000 mAh"
     },
-    "masp": "Hua2"
+    "masp": "Hua2",
+    "MaKM": 4
 }, {
     "name": "Nokia black future",
     "company": "Nokia",
     "img": "https://cdn.tgdd.vn/Products/Images/42/22701/dien-thoai-di-dong-Nokia-1280-dienmay.com-l.jpg",
-    "price": "999.999.000",
+    "price": 999999000,
     "star": 5,
     "rateCount": 9999,
     "promo": {
@@ -480,12 +500,13 @@ var list_products = [{
         "microUSB": "Không cần",
         "battery": "Không cần sạc"
     },
-    "masp": "Nok1"
+    "masp": "Nok1",
+    "MaKM": 3
 }, {
     "name": "Samsung Galaxy A7 (2018)",
     "company": "Samsung",
     "img": "https://cdn.tgdd.vn/Products/Images/42/194327/samsung-galaxy-a7-2018-128gb-black-400x400.jpg",
-    "price": "8.990.000",
+    "price": 8990000,
     "star": 4,
     "rateCount": 22,
     "promo": {
@@ -503,12 +524,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 512 GB",
         "battery": "3300 mAh"
     },
-    "masp": "Sam3"
+    "masp": "Sam3",
+    "MaKM": 4
 }, {
     "name": "Realme 2 Pro 8GB/128GB",
     "company": "Realme",
     "img": "https://cdn.tgdd.vn/Products/Images/42/192002/oppo-realme-2-pro-black-600x600.jpg",
-    "price": "6.990.000",
+    "price": 6990000,
     "star": 5,
     "rateCount": 16,
     "promo": {
@@ -526,12 +548,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3500 mAh"
     },
-    "masp": "Rea0"
+    "masp": "Rea0",
+    "MaKM": 2
 }, {
     "name": "Realme 2 4GB/64GB",
     "company": "Realme",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193462/realme-2-4gb-64gb-docquyen-600x600.jpg",
-    "price": "4.490.000",
+    "price": 4490000,
     "star": 5,
     "rateCount": 7,
     "promo": {
@@ -549,12 +572,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "4230 mAh"
     },
-    "masp": "Rea1"
+    "masp": "Rea1",
+    "MaKM": 0
 }, {
     "name": "Realme C1",
     "company": "Realme",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193286/realme-c1-black-600x600.jpg",
-    "price": "2.490.000",
+    "price": 2490000,
     "star": 4,
     "rateCount": 4,
     "promo": {
@@ -572,12 +596,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "4230 mAh"
     },
-    "masp": "Rea2"
+    "masp": "Rea2",
+    "MaKM": 2
 }, {
     "name": "Realme 2 Pro 4GB/64GB",
     "company": "Realme",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193464/realme-2-pro-4gb-64gb-blue-600x600.jpg",
-    "price": "5.590.000",
+    "price": 5590000,
     "star": 4,
     "rateCount": 11,
     "promo": {
@@ -595,12 +620,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3500 mAh"
     },
-    "masp": "Rea3"
+    "masp": "Rea3",
+    "MaKM": 2
 }, {
     "name": "Philips E331",
     "company": "Philips",
     "img": "https://cdn.tgdd.vn/Products/Images/42/139742/philips-e331-xenium-300-300x300.jpg",
-    "price": "890.000",
+    "price": 890000,
     "star": 5,
     "rateCount": 6,
     "promo": {
@@ -618,12 +644,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 16 GB",
         "battery": "1600 mAh"
     },
-    "masp": "Phi0"
+    "masp": "Phi0",
+    "MaKM": 3
 }, {
     "name": "Philips S329",
     "company": "Philips",
     "img": "https://cdn.tgdd.vn/Products/Images/42/143146/philips-s329-2-300x300.jpg",
-    "price": "2.390.000",
+    "price": 2390000,
     "star": 3,
     "rateCount": 30,
     "promo": {
@@ -641,12 +668,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 64 GB",
         "battery": "3000 mAh"
     },
-    "masp": "Phi1"
+    "masp": "Phi1",
+    "MaKM": 4
 }, {
     "name": "Philips E103",
     "company": "Philips",
     "img": "https://cdn.tgdd.vn/Products/Images/42/73727/philips-e103-9-300x300.jpg",
-    "price": "260.000",
+    "price": 260000,
     "star": 5,
     "rateCount": 126,
     "promo": {
@@ -664,12 +692,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "1050 mAh"
     },
-    "masp": "Phi2"
+    "masp": "Phi2",
+    "MaKM": 4
 }, {
     "name": "Vivo V11",
     "company": "Vivo",
     "img": "https://cdn.tgdd.vn/Products/Images/42/188828/vivo-v11-600x600.jpg",
-    "price": "10.990.000",
+    "price": 10990000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -687,12 +716,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3400 mAh, có sạc nhanh"
     },
-    "masp": "Viv0"
+    "masp": "Viv0",
+    "MaKM": 2
 }, {
     "name": "Vivo V9",
     "company": "Vivo",
     "img": "https://cdn.tgdd.vn/Products/Images/42/155047/vivo-v9-2-1-600x600-600x600.jpg",
-    "price": "7.490.000",
+    "price": 7490000,
     "star": 5,
     "rateCount": 168,
     "promo": {
@@ -710,12 +740,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3260 mAh"
     },
-    "masp": "Viv1"
+    "masp": "Viv1",
+    "MaKM": 1
 }, {
     "name": "Vivo Y85",
     "company": "Vivo",
     "img": "https://cdn.tgdd.vn/Products/Images/42/156205/vivo-y85-red-docquyen-600x600.jpg",
-    "price": "4.990.000",
+    "price": 4990000,
     "star": 4,
     "rateCount": 60,
     "promo": {
@@ -733,12 +764,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3260 mAh"
     },
-    "masp": "Viv2"
+    "masp": "Viv2",
+    "MaKM": 2
 }, {
     "name": "Vivo Y71",
     "company": "Vivo",
     "img": "https://cdn.tgdd.vn/Products/Images/42/158585/vivo-y71-docquyen-600x600.jpg",
-    "price": "3.290.000",
+    "price": 3290000,
     "star": 4,
     "rateCount": 60,
     "promo": {
@@ -756,12 +788,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 256 GB",
         "battery": "3360 mAh"
     },
-    "masp": "Viv3"
+    "masp": "Viv3",
+    "MaKM": 3
 }, {
     "name": "Mobell M789",
     "company": "Mobell",
     "img": "https://cdn.tgdd.vn/Products/Images/42/92016/mobell-m789-8-300x300.jpg",
-    "price": "550.000",
+    "price": 550000,
     "star": 4,
     "rateCount": 37,
     "promo": {
@@ -779,12 +812,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "1200 mAh"
     },
-    "masp": "Mob0"
+    "masp": "Mob0",
+    "MaKM": 5
 }, {
     "name": "Mobell Rock 3",
     "company": "Mobell",
     "img": "https://cdn.tgdd.vn/Products/Images/42/112837/mobell-rock-3-2-300x300.jpg",
-    "price": "590.000",
+    "price": 590000,
     "star": 4,
     "rateCount": 58,
     "promo": {
@@ -802,12 +836,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "5000 mAh"
     },
-    "masp": "Mob1"
+    "masp": "Mob1",
+    "MaKM": 4
 }, {
     "name": "Mobell S60",
     "company": "Mobell",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193271/mobell-s60-red-1-600x600.jpg",
-    "price": "1.790.000",
+    "price": 1790000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -825,12 +860,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "2650 mAh"
     },
-    "masp": "Mob2"
+    "masp": "Mob2",
+    "MaKM": 1
 }, {
     "name": "Itel P32",
     "company": "Itel",
     "img": "https://cdn.tgdd.vn/Products/Images/42/186851/itel-p32-gold-600x600.jpg",
-    "price": "1.890.000",
+    "price": 1890000,
     "star": 4,
     "rateCount": 12,
     "promo": {
@@ -848,12 +884,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "4000 mAh"
     },
-    "masp": "Ite0"
+    "masp": "Ite0",
+    "MaKM": 4
 }, {
     "name": "Itel A32F",
     "company": "Itel",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193990/itel-a32f-pink-gold-600x600.jpg",
-    "price": "1.350.000",
+    "price": 1350000,
     "star": 5,
     "rateCount": 3,
     "promo": {
@@ -871,12 +908,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "2050 mAh"
     },
-    "masp": "Ite1"
+    "masp": "Ite1",
+    "MaKM": 2
 }, {
     "name": "Itel it2123",
     "company": "Itel",
     "img": "https://cdn.tgdd.vn/Products/Images/42/146651/itel-it2123-d-300-300x300.jpg",
-    "price": "160.000",
+    "price": 160000,
     "star": 5,
     "rateCount": 302,
     "promo": {
@@ -894,12 +932,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "1000 mAh"
     },
-    "masp": "Ite2"
+    "masp": "Ite2",
+    "MaKM": 5
 }, {
     "name": "Itel it2161",
     "company": "Itel",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193989/itel-it2161-600x600.jpg",
-    "price": "170.000",
+    "price": 170000,
     "star": 5,
     "rateCount": 33,
     "promo": {
@@ -917,12 +956,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "1000 mAh"
     },
-    "masp": "Ite3"
+    "masp": "Ite3",
+    "MaKM": 4
 }, {
     "name": "Coolpad N3D",
     "company": "Coolpad",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193504/coolpad-n3d-blue-600x600.jpg",
-    "price": "2.390.000",
+    "price": 2390000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -940,12 +980,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "2500 mAh"
     },
-    "masp": "Coo0"
+    "masp": "Coo0",
+    "MaKM": 1
 }, {
     "name": "Coolpad N3",
     "company": "Coolpad",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193502/coolpad-n3-gray-1-600x600.jpg",
-    "price": "1.890.000",
+    "price": 1890000,
     "star": 3,
     "rateCount": 3,
     "promo": {
@@ -963,12 +1004,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "2300 mAh"
     },
-    "masp": "Coo1"
+    "masp": "Coo1",
+    "MaKM": 0
 }, {
     "name": "Coolpad N3 mini",
     "company": "Coolpad",
     "img": "https://cdn.tgdd.vn/Products/Images/42/193503/coolpad-n3-mini-600x600.jpg",
-    "price": "1.390.000",
+    "price": 1390000,
     "star": 4,
     "rateCount": 2,
     "promo": {
@@ -986,12 +1028,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "2000 mAh"
     },
-    "masp": "Coo2"
+    "masp": "Coo2",
+    "MaKM": 2
 }, {
     "name": "HTC U12 life",
     "company": "HTC",
     "img": "https://cdn.tgdd.vn/Products/Images/42/186397/htc-u12-life-1-600x600.jpg",
-    "price": "7.690.000",
+    "price": 7690000,
     "star": 4,
     "rateCount": 12,
     "promo": {
@@ -1009,12 +1052,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 512 GB",
         "battery": "3600 mAh"
     },
-    "masp": "HTC0"
+    "masp": "HTC0",
+    "MaKM": 0
 }, {
     "name": "Motorola Moto C 4G",
     "company": "Motorola",
     "img": "https://cdn.tgdd.vn/Products/Images/42/109099/motorola-moto-c-4g-300-300x300.jpg",
-    "price": "1.290.000",
+    "price": 1290000,
     "star": 4,
     "rateCount": 14,
     "promo": {
@@ -1032,12 +1076,13 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 32 GB",
         "battery": "2350 mAh"
     },
-    "masp": "Mot0"
+    "masp": "Mot0",
+    "MaKM": 0
 }, {
     "name": "iPhone Xr 128GB",
     "company": "Apple",
     "img": "https://cdn.tgdd.vn/Products/Images/42/191483/iphone-xr-128gb-red-600x600.jpg",
-    "price": "24.990.000",
+    "price": 24990000,
     "star": 0,
     "rateCount": 0,
     "promo": {
@@ -1055,12 +1100,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "2942 mAh, có sạc nhanh"
     },
-    "masp": "App3"
+    "masp": "App3",
+    "MaKM": 0
 }, {
     "name": "iPhone 8 Plus 64GB",
     "company": "Apple",
     "img": "https://cdn.tgdd.vn/Products/Images/42/114110/iphone-8-plus-hh-600x600.jpg",
-    "price": "20.990.000",
+    "price": 20990000,
     "star": 5,
     "rateCount": 230,
     "promo": {
@@ -1078,12 +1124,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "2691 mAh, có sạc nhanh"
     },
-    "masp": "App4"
+    "masp": "App4",
+    "MaKM": 2
 }, {
     "name": "iPhone 8 Plus 256GB",
     "company": "Apple",
     "img": "https://cdn.tgdd.vn/Products/Images/42/114114/iphone-8-plus-256gb-red-600x600.jpg",
-    "price": "25.790.000",
+    "price": 25790000,
     "star": 5,
     "rateCount": 16,
     "promo": {
@@ -1101,12 +1148,13 @@ var list_products = [{
         "microUSB": "Không",
         "battery": "1821 mAh, có sạc nhanh"
     },
-    "masp": "App5"
+    "masp": "App5",
+    "MaKM": 3
 }, {
     "name": "iPhone Xr 64GB",
     "company": "Apple",
     "img": "https://cdn.tgdd.vn/Products/Images/42/190325/iphone-xr-black-400x460.png",
-    "price": "22.990.000",
+    "price": 22990000,
     "star": 4,
     "rateCount": 5,
     "promo": {
@@ -1123,12 +1171,13 @@ var list_products = [{
         "rom": "64 GB",
         "battery": "2942 mAh, có sạc nhanh"
     },
-    "masp": "App6"
+    "masp": "App6",
+    "MaKM": 1
 }, {
     "name": "Huawei Nova 2i",
     "company": "Huawei",
     "img": "https://cdn.tgdd.vn/Products/Images/42/157031/samsung-galaxy-a6-2018-2-600x600.jpg",
-    "price": "4.490.000",
+    "price": 4490000,
     "star": 4,
     "rateCount": 804,
     "promo": {
@@ -1146,5 +1195,6 @@ var list_products = [{
         "microUSB": "MicroSD, hỗ trợ tối đa 128 GB",
         "battery": "3340 mAh"
     },
-    "masp": "Hua3"
+    "masp": "Hua3",
+    "MaKM": 5
 }]
