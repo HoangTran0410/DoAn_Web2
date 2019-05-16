@@ -66,7 +66,7 @@ class DB_driver
         $sql = '';
         // Lặp qua data
         foreach ($data as $key => $value) {
-            $sql .= "$key = '" . mysql_escape_string($value) . "',";
+            $sql .= "$key = '" . mysqli_escape_string($this->__conn, $value) . "',";
         }
 
         // Vì sau vòng lặp biến $sql sẽ thừa một dấu , nên ta sẽ dùng hàm trim để xóa đi

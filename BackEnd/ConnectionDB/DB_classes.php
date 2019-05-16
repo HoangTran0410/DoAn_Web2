@@ -22,6 +22,13 @@ class SanPhamBUS extends DB_business
     {
         $this->setTable("SanPham", "MaSP");
     }
+
+    function capNhapTrangThai($trangthai, $id) {
+        $sanpham = $this->select_by_id("*", $id);
+        $sanpham["TrangThai"] = $trangthai;
+
+        return $this->update_by_id($sanpham, $id);
+    }
 }
 
 // Lớp loại sản phẩm

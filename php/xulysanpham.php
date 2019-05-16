@@ -7,6 +7,12 @@
     	// lấy tất cả sản phẩm
     	case 'getall':
 				$dssp = (new SanPhamBUS())->select_all();
+                for($i = 0; $i < sizeof($dssp); $i++) {
+                    // thêm thông tin khuyến mãi
+                    $dssp[$i]["KM"] = (new KhuyenMaiBUS())->select_by_id('*', $dssp[$i]['MaKM']);
+                    // thêm thông tin hãng
+                    $dssp[$i]["LSP"] = (new LoaiSanPhamBUS())->select_by_id('*', $dssp[$i]['MaLSP']);
+                }
 		    	die (json_encode($dssp));
     		break;
 
@@ -25,6 +31,48 @@
 
         case 'addFromWeb1':
             addFromWeb1();
+            break;
+
+        //thêm
+        case 'add':
+                $data = $_POST['dataAdd'];
+                $spAddArr = array(
+                    'MaSP' => $data['masp'],
+                    'MaLSP' => $data['company'],
+                    'TenSP' => $data['name'],
+                    'DonGia' => $data['price'],
+                    'SoLuong' => $data['amount'],
+                    'HinhAnh' => $data['img'],
+                    'MaKM' => $data['promo']['name'],
+                    'ManHinh' => $data['detail']['screen'],
+                    'HDH' => $data['detail']['os'],
+                    'CamSau' => $data['detail']['camara'],
+                    'CamTruoc' => $data['detail']['camaraFront'],
+                    'CPU' => $data['detail']['cpu'],
+                    'Ram' => $data['detail']['ram'],
+                    'Rom' => $data['detail']['rom'],
+                    'SDCard' => $data['detail']['microUSB'],
+                    'Pin' => $data['detail']['battery'],
+                    'SoSao' => $data['star'],
+                    'SoDanhGia' => $data['rateCount'],
+                    'TrangThai' => 0
+                );
+
+                $spBUS = new SanPhamBUS();
+                die (json_encode($spBUS->add_new($spAddArr)));
+            break;
+
+        // xóa
+        case 'delete':
+                $spBUS = new SanPhamBUS();
+                $maSPDel = $_POST['maspdelete'];
+                die (json_encode($spBUS->delete_by_id($maSPDel)));
+            break;
+
+        case 'hide' :
+            $id = $_POST["id"];
+            $trangthai = $_POST["trangthai"];
+            die (json_encode((new SanPhamBUS())->capNhapTrangThai($trangthai, $id)));
             break;
     	
     	default:
