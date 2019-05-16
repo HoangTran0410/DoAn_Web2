@@ -244,6 +244,7 @@ function addProductsFromList(list, filters) {
 function chuyenTrang(vitriTrang) {
     // xóa các sản phẩm trang cũ
     $("#products li.sanPham").remove();
+    pushState(createFilters('page', vitriTrang));
 
     var sanPhamDu = DanhSachSanPham.length % ProductsPerPage;
     var soTrang = parseInt(DanhSachSanPham.length / ProductsPerPage) + (sanPhamDu ? 1 : 0);
@@ -287,6 +288,7 @@ function filtersAjax(filters, callback) {
             else {
                 addProductsFromList(data, filters);
                 addAllChoosedFilter(filters);
+                pushState(filters);
                 $(".loader").css("display", "none");
             }
         },
@@ -503,6 +505,25 @@ function themNutPhanTrang(soTrang, trangHienTai) {
         divPhanTrang.innerHTML += `<a onclick="chuyenTrang(` + (trangHienTai + 1) + `)"><i class="fa fa-angle-right"></i></a>`;
         divPhanTrang.innerHTML += `<a onclick="chuyenTrang(` + (soTrang) + `)"><i class="fa fa-angle-double-right"></i></a>`;
     }
+}
+
+function pushState(filters) {
+    var str = "index.php?";
+    var fsort = "";
+    for(var f of filters) {
+        if(f.split('=')[0] != 'sort') {
+            str += f + "&";
+        } else {
+            fsort = f;
+        }
+    }
+    if(fsort != '') {
+        str += fsort;
+    } else {
+        str = str.slice(0, str.length - 1); // loại bỏ "&" dư thừa
+    }
+
+    history.pushState("", "", str);
 }
 
 // ========== LỌC ===============
