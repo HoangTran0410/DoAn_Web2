@@ -29,6 +29,13 @@ class SanPhamBUS extends DB_business
 
         return $this->update_by_id($sanpham, $id);
     }
+
+    function themDanhGia($id) {
+        $sanpham = $this->select_by_id("*", $id);
+        $sanpham["SoDanhGia"] = $sanpham["SoDanhGia"] + 1;
+
+        return $this->update_by_id($sanpham, $id);
+    }
 }
 
 // Lớp loại sản phẩm

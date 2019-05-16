@@ -1,11 +1,9 @@
 // Hàm khởi tạo, tất cả các trang đều cần
 function khoiTao() {
-    // get data từ localstorage
-    // list_products = getListProducts() || list_products;
-    // adminInfo = getListAdmin() || adminInfo;
-
     setupEventTaiKhoan();
     capNhatThongTinUser();
+
+    document.getElementsByClassName('cart-number')[0].innerHTML = getSoLuongGioHang();;
 }
 
 // ========= Các hàm liên quan tới danh sách sản phẩm =========
@@ -16,12 +14,59 @@ function copyObject(o) {
 }
 
 // ================ Cart Number + Thêm vào Giỏ hàng ======================
+function getListGioHang() {
+    return JSON.parse(localStorage.getItem('giohang')); 
+}
+
+function setListGioHang(list) {
+    localStorage.setItem('giohang', JSON.stringify(list));
+}
+
+function addToGioHang(masp) {
+    var currentList = getListGioHang();
+
+    if(!currentList) {
+        currentList = [];
+    }
+
+    var daCo = false;
+    for(var sp of currentList) {
+        if(sp.masp == masp) {
+            sp.soLuong++;
+            daCo = true;
+        }
+    }
+
+    if(!daCo) {
+        currentList.push({
+            masp: masp,
+            soLuong: 1
+        })
+    }
+
+    setListGioHang(currentList);
+}
+
+function getSoLuongGioHang() {
+    var currentList = getListGioHang();
+
+    var soLuong = 0;
+    if(currentList != null) {
+        for(var sp of currentList) {
+            soLuong += sp.soLuong;
+        }
+    }
+
+    return soLuong;
+}
+
 function animateCartNumber() {
     // Hiệu ứng cho icon giỏ hàng
     var cn = document.getElementsByClassName('cart-number')[0];
     cn.style.transform = 'scale(2)';
     cn.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
     cn.style.color = 'white';
+    cn.innerHTML = getSoLuongGioHang();
     setTimeout(function() {
         cn.style.transform = 'scale(1)';
         cn.style.backgroundColor = 'transparent';
@@ -31,7 +76,7 @@ function animateCartNumber() {
 
 function themVaoGioHang(masp, tensp) {
     getCurrentUser((user) => {
-        if(user.TrangThai == 0) {
+        if(user && user.TrangThai == 0) {
             Swal.fire({
                 title: 'Tài Khoản Bị Khóa!',
                 text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
@@ -41,12 +86,11 @@ function themVaoGioHang(masp, tensp) {
                 footer: '<a href>Liên hệ với Admin</a>'
             });
 
-            // addAlertBox('Tài khoản của bạn đã bị khóa bởi Admin.', '#aa0000', '#fff', 10000);
             return;
 
         } else {
+            addToGioHang(masp);
             animateCartNumber();
-            // addAlertBox('Đã thêm ' + tensp + ' vào giỏ.', '#17c671', '#fff', 3500);
             Swal.fire({
                 toast: true,
                 position: 'bottom-end',
@@ -57,23 +101,21 @@ function themVaoGioHang(masp, tensp) {
             })
         }
 
-    }, (error) => {
-        // alert('Bạn cần đăng nhập để mua hàng !');
-        Swal.fire({
-            title: 'Xin chào!',
-            text: 'Bạn cần đăng nhập để mua hàng',
-            type: 'error',
-            grow: 'row',
-            confirmButtonText: 'Đăng nhập',
-            cancelButtonText: 'Trở về',
-            showCancelButton: true
-        }).then((result) => {
-            if (result.value) {
-                showTaiKhoan(true);
-            }
-        })
 
-        return;
+    }, (error) => {
+        // Swal.fire({
+        //     title: 'Xin chào!',
+        //     text: 'Bạn cần đăng nhập để mua hàng',
+        //     type: 'error',
+        //     grow: 'row',
+        //     confirmButtonText: 'Đăng nhập',
+        //     cancelButtonText: 'Trở về',
+        //     showCancelButton: true
+        // }).then((result) => {
+        //     if (result.value) {
+        //         showTaiKhoan(true);
+        //     }
+        // })
     })
 
     return false;
@@ -89,7 +131,7 @@ function getCurrentUser(onSuccess, onFail) {
         dataType: "json",
         timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
-            request: "getCurrentUser",
+            request: "getCurrentUser"
         },
         success: function(data, status, xhr) {
             if(onSuccess) onSuccess(data);
@@ -163,8 +205,9 @@ function checkDangKy() {
             Swal.fire({
                 type: "error",
                 title: "Lỗi",
-                html: e.responseText
+                // html: e.responseText
             });
+            console.log(e.responseText)
         }
     });
 
@@ -174,8 +217,6 @@ function checkDangKy() {
 function checkDangNhap() {
     var a = document.getElementById('username').value;
     var b = document.getElementById('pass').value;
-
-    console.log(a, b);
 
     $.ajax({
         url: "php/xulytaikhoan.php",
@@ -211,8 +252,9 @@ function checkDangNhap() {
             Swal.fire({
                 type: "error",
                 title: "Lỗi khi đăng nhập",
-                html: e.responseText
+                // html: e.responseText
             });
+            console.log(e.responseText)
         }
     });
     return false;
@@ -244,6 +286,8 @@ function checkDangXuat() {
                             title: "Đăng xuất thành công"
                         }).then((result) => {
                             capNhatThongTinUser();
+                            setListGioHang(null);
+                            animateCartNumber();
                         });
 
                     } else {
@@ -257,8 +301,9 @@ function checkDangXuat() {
                     Swal.fire({
                         type: "error",
                         title: "Có lỗi khi đăng xuất",
-                        html: e.responseText
+                        // html: e.responseText
                     })
+                    console.log(e.responseText)
                 }
             })
         }
@@ -276,6 +321,35 @@ function capNhatThongTinUser() {
             document.getElementsByClassName("menuMember")[0].classList.remove('hide');
         }
     })
+}
+
+function promoToWeb(name, value) { // khuyen mai
+    if (!name || name == "Nothing") return "";
+    var contentLabel = "";
+    switch (name) {
+        case "GiamGia":
+            contentLabel = `<i class="fa fa-bolt"></i> Giảm ` + value.toLocaleString() + `&#8363;`;
+            break;
+
+        case "TraGop":
+            contentLabel = `Trả góp ` + value.toLocaleString() + `%`;
+            break;
+
+        case "GiaReOnline":
+            contentLabel = `Giá rẻ online`;
+            break;
+
+        case "MoiRaMat":
+            contentLabel = "Mới ra mắt";
+            break;
+    }
+
+    var label =
+        `<label class=` + name.toLowerCase() + `>
+            ` + contentLabel + `
+        </label>`;
+
+    return label;
 }
 
 //  ================================ END WEB 2 =================================
@@ -488,9 +562,9 @@ function smallmenu(number) {
     }
 }
 
-function checkLocalStorage() {
+function checklocalStorage() {
     if (typeof(Storage) == "undefined") {
-        alert('Máy tính không hỗ trợ LocalStorage. Không thể lưu thông tin sản phẩm, khách hàng!!');
+        alert('Máy tính không hỗ trợ localStorage. Không thể lưu thông tin sản phẩm, khách hàng!!');
     } else {
         console.log('LocaStorage OKE!');
     }
@@ -676,4 +750,4 @@ function getThongTinSanPhamFrom_TheGioiDiDong() {
 
 //         default: p.MaKM = 1;
 //     }  
-// } 
+// }
