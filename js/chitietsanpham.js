@@ -144,7 +144,7 @@ function guiBinhLuan(nguoidung) {
         Swal.fire({
             title: 'Thiếu!',
             text: 'Bạn vui lòng đánh số sao',
-            type: 'wảning',
+            type: 'warning',
             grow: 'row'
         })
         return;
@@ -154,7 +154,7 @@ function guiBinhLuan(nguoidung) {
         Swal.fire({
             title: 'Thiếu!',
             text: 'Bạn vui lòng để lại bình luận',
-            type: 'wảning',
+            type: 'warning',
             grow: 'row'
         })
         $("#inpBinhLuan")[0].focus();

@@ -18,7 +18,9 @@
 				"NgayLap" => $thoigian
 			));
 
-			die (json_encode((new SanPhamBUS())->themDanhGia($masp)));
+			$spBUS = new SanPhamBUS();
+
+			die (json_encode($spBUS->themDanhGia($masp)));
 			break;
 
 		case 'getbinhluan':
