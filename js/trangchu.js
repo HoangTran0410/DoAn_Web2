@@ -237,8 +237,6 @@ function addProductsFromList(list, filters) {
         behavior: 'smooth',
         block: 'start'
     });
-
-    console.log(list);
 }
 
 function chuyenTrang(vitriTrang) {
@@ -260,7 +258,6 @@ function chuyenTrang(vitriTrang) {
 }
 
 function filtersAjax(filters, callback) {
-    console.log(filters);
     if(filters.length == 0) {
         removeAllFilters();
         return;
@@ -462,7 +459,6 @@ function addKhungSanPham(tenKhung, color, filter, len) {
     document.getElementsByClassName('contain-khungSanPham')[0].innerHTML += s;
 
     // lấy dữ liệu cho vào khung
-    console.log(tenKhung);
     filtersAjax(filter, (data) => {
         // thêm các <li> (sản phẩm) vào tag
         var s1 = "";
@@ -548,8 +544,6 @@ function createFilters(type, value) {
         newFilters.push(type + "=" + value);
     }
 
-    console.log(fSplit);
-
     return newFilters;
 }
 
@@ -567,8 +561,6 @@ function craeteRemoveFilters(type) {
             newFilters.push(f);
         }
     }
-
-    console.log(fSplit);
 
     return newFilters;
 }

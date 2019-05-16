@@ -50,7 +50,7 @@
 		    $_SESSION['currentUser']=$result;
 		    die (json_encode($result)); 
 		}  
-		die ();
+		die (json_encode(null));
 	}
 
 	function dangKy() {
