@@ -515,7 +515,7 @@ function pushState(filters) {
     }
     if(fsort != '') {
         str += fsort;
-    } else {
+    } else if(str.indexOf("&") >= 0) {
         str = str.slice(0, str.length - 1); // loại bỏ "&" dư thừa
     }
 
@@ -568,6 +568,7 @@ function craeteRemoveFilters(type) {
 function removeAllFilters() {
     CurrentFilters = [];
     hienThiKhungSanPhamMacDinh();
+    pushState([]);
     $(".choosedFilter").css("display", "none");
     $(".contain-khungSanPham").css("display", "block");
     $(".contain-products").css("display", "none");
