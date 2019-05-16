@@ -41,6 +41,7 @@ function refreshTableSanPham() {
     });
 }
 
+
 function logOutAdmin() {
     window.localStorage.removeItem('admin');
 }
@@ -168,7 +169,7 @@ function addTableProducts(list_products) {
             <td style="width: 5%">` + (i + 1) + `</td>
             <td style="width: 10%">` + p.MaSP + `</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP /*.split(' ').join('-')*/ + `">` + p.TenSP + `</a>
+                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` + p.TenSP.split(' ').join('-') + `">` + p.TenSP + `</a>
                 <img src="` + p.HinhAnh + `"></img>
             </td>
             <td style="width: 15%">` + p.DonGia + `</td>
@@ -302,22 +303,6 @@ function themSanPham() {
         return false;
     }
 
-    var newSp = layThongTinSanPhamTuTable('khungThemSanPham')
-    for (var p of list_products) {
-        if (p.MaSP == newSp.MaSP) {
-            alert('Mã sản phẩm bị trùng !!');
-            return false;
-        }
-    }
-    // Them san pham vao list_products
-    list_products.push(newSp);
-
-    // Lưu vào localstorage
-    setListProducts(list_products);
-
-    // Vẽ lại table
-    addTableProducts();
-
     //kt số lượng
     var pattCheckSL = /[0-9]{1,}$/;
     if (pattCheckSL.test(newSp.amount) == false)
@@ -373,16 +358,6 @@ function autoMaSanPham(company) {
     // hàm tự tạo mã cho sản phẩm mới
     var autoMaSP = list_products.length+1;
     document.getElementById('maspThem').value = "SP" + autoMaSP;
-
-    if (!company) company = document.getElementsByName('chonCompany')[0].value;
-    var index = 0;
-    for (var i = 0; i < list_products.length; i++) {
-        if (list_products[i].company == company) {
-            index++;
-        }
-    }
-    document.getElementById('maspThem').value = company.substring(0, 3) + index;
-
 }
 
 // Xóa

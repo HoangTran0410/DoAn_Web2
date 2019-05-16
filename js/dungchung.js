@@ -40,7 +40,7 @@ function timKiemTheoTen(list, ten, soluong) {
     for (var sp of tempList) {
         var correct = true;
         for (var t of ten) {
-            if (sp.TenSP.toUpperCase().indexOf(t.toUpperCase()) < 0) {
+            if (sp.name.toUpperCase().indexOf(t.toUpperCase()) < 0) {
                 correct = false;
                 break;
             }
@@ -607,24 +607,9 @@ function gotoTop() {
     if (window.jQuery) {
         jQuery('html,body').animate({
             scrollTop: 0
-        }, 1000);
+        }, 300);
     } else {
         document.getElementsByClassName('top-nav')[0].scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-    }
-}
-
-function gotoBot() {
-    if (window.jQuery) {
-        jQuery('html,body').animate({
-            scrollTop: $(document).height()
-        }, 1000);
-    } else {
-        document.getElementsByClassName('footer')[0].scrollIntoView({
             behavior: 'smooth',
             block: 'start'
         });
