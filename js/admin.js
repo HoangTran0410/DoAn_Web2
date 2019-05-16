@@ -9,9 +9,9 @@ window.onload = function() {
 
     if (window.localStorage.getItem('admin')) {
         //addTableProducts();
-        addTableDonHang();
-        addTableKhachHang();
-        addThongKe();
+        //addTableDonHang();
+        //addTableKhachHang();
+        //addThongKe();
 
         openTab('Home')
     } else {
@@ -223,7 +223,8 @@ function layThongTinSanPhamTuTable(id) {
     var masp = tr[1].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     var name = tr[2].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     var company = tr[3].getElementsByTagName('td')[1].getElementsByTagName('select')[0].value;
-    var img = tr[4].getElementsByTagName('td')[1].getElementsByTagName('img')[0].src;
+    var duoifile = document.getElementById("hinhanh").value;
+    var img = tr[1].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value + "." + duoifile;
     var price = tr[5].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     var amount = tr[6].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
     var star = tr[7].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
@@ -242,11 +243,13 @@ function layThongTinSanPhamTuTable(id) {
     var battery = tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value;
 
     return {
-        "masp": masp,
         "name": name,
         "img": img,
+        "price": price,
         "company": company,
         "amount": amount,
+        "star": star,
+        "rateCount": rateCount,
         "promo": {
             "name": promoName,
             "value": promoValue
@@ -269,6 +272,8 @@ function layThongTinSanPhamTuTable(id) {
 function themSanPham() {
     var newSp = layThongTinSanPhamTuTable('khungThemSanPham');
     var check = 1;// biến kt hợp lệ
+
+    console.log(newSp.img);
 
     //kt mã sp
     var pattCheckMaSP = /^(SP)([0-9]{1,})$/;
@@ -295,6 +300,14 @@ function themSanPham() {
         return false;
     }
 
+    //kt hình
+    var pattCheckHinh= /^SP([0-9]{1,})[.](png|jpeg|jpg)$/;
+    if (pattCheckHinh.test(newSp.img) == false)
+    {
+        alert ("Ảnh không hợp lệ");
+        return false;
+    }
+
     //kt giá tiền
     var pattCheckGia = /^([0-9]){1,}(000)$/;
     if (pattCheckGia.test(newSp.price) == false)
@@ -312,7 +325,6 @@ function themSanPham() {
     }
 
     $.ajax({
-        traditional: true,
         type: "POST",
         url: "php/xylysanpham.php",
         dataType: "json",
@@ -352,6 +364,8 @@ function themSanPham() {
 
     alert('Thêm sản phẩm "' + newSp.name + '" thành công.');
     document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
+
+    refreshTableSanPham();
 }
 
 function autoMaSanPham(company) {

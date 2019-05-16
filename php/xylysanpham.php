@@ -12,7 +12,31 @@
 
         case 'add':
                 $data = $_POST['dataAdd'];
-                $sp = (new SanPhamBUS())->add_new($data);
+
+                $spAddArr = array(
+                    'MaSP' => $data['masp'],
+                    'MaLSP' => $data['company'],
+                    'TenSP' => $data['name'],
+                    'DonGia' => $data['price'],
+                    'SoLuong' => $data['amount'],
+                    'HinhAnh' => $data['img'],
+                    'MaKM' => $data['promo']['name'],
+                    'ManHinh' => $data['detail']['screen'],
+                    'HDH' => $data['detail']['os'],
+                    'CamSau' => $data['detail']['camara'],
+                    'CamTruoc' => $data['detail']['camaraFront'],
+                    'CPU' => $data['detail']['cpu'],
+                    'Ram' => $data['detail']['ram'],
+                    'Rom' => $data['detail']['rom'],
+                    'SDCard' => $data['detail']['microUSB'],
+                    'Pin' => $data['detail']['battery'],
+                    'SoSao' => $data['star'],
+                    'SoDanhGia' => $data['rateCount'],
+                    'TrangThai' => 0
+                );
+
+                $spBUS = new SanPhamBUS();
+                die (json_encode($spBUS->add_new($spAddArr)));
             break;
     	
     	default:

@@ -129,113 +129,138 @@
 
             <div id="khungThemSanPham" class="overlay">
                 <span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
-                <table class="overlayTable table-outline table-content table-header">
-                    <tr>
-                        <th colspan="2">Thêm Sản Phẩm</th>
-                    </tr>
-                    <tr>
-                        <td>Mã sản phẩm:</td>
-                        <td><input type="text" id="maspThem"></td>
-                    </tr>
-                    <tr>
-                        <td>Tên sản phẩm:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Hãng:</td>
-                        <td>
-                            <select name="chonCompany" onchange="autoMaSanPham(this.value)">
-                                <script>
-                                    var company = ["Apple", "Samsung", "Oppo", "Nokia", "Huawei", "Xiaomi", "Realme", "Vivo", "Philips", "Mobell", "Mobiistar", "Itel", "Coolpad", "HTC", "Motorola"];
-                                    for (var c of company) {
-                                        document.writeln(`<option value="` + c + `">` + c + `</option>`);
+                <form method="post" action="" enctype="multipart/form-data" onsubmit="return (themSanPham())">
+                    <table class="overlayTable table-outline table-content table-header">
+                        <tr>
+                            <th colspan="2">Thêm Sản Phẩm</th>
+                        </tr>
+                        <tr>
+                            <td>Mã sản phẩm:</td>
+                            <td><input type="text" id="maspThem" name="maspThem"></td>
+                        </tr>
+                        <tr>
+                            <td>Tên sản phẩm:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Hãng:</td>
+                            <td>
+                                <select name="chonCompany" onchange="autoMaSanPham(this.value)">
+                                    <script>
+                                        var i = 1;
+                                        var company = ["Apple", "Oppo", "Samsung", "Philips", "Nokia", "Blackbery", "Huawei", "Vivo", "Xiaomi"];
+                                        for (var c of company) {
+                                            document.writeln(`<option value="` + 'LSP' + i++ + `">` + c + `</option>`);
+                                        }
+                                    </script>
+                                </select>
+                            </td>
+                        </tr>
+                        <?php
+                            if (isset($_POST["submit"]))
+                            {
+                                if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
+                                {
+                                    if ($_FILES["file"]["error"] > 0)
+                                    {
+                                        echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau");
                                     }
-                                </script>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Hình:</td>
-                        <td>
-                            <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                            <input type="file" accept="image/*" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem')">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Giá tiền:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Số lượng:</td>
-                        <td><input type="text" value="0"></td>
-                    </tr>
-                    <tr>
-                        <td>Số sao:</td>
-                        <td><input disabled="disabled" value="0" type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Đánh giá:</td>
-                        <td><input disabled="disabled" value="0" type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Khuyến mãi:</td>
-                        <td>
-                            <select>
-                                <option selected="selected" value="">Không</option>
-                                <option value="tragop">Trả góp</option>
-                                <option value="giamgia">Giảm giá</option>
-                                <option value="giareonline">Giá rẻ online</option>
-                                <option value="moiramat">Mởi ra mắt</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Giá trị khuyến mãi:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">Thông số kĩ thuật</th>
-                    </tr>
-                    <tr>
-                        <td>Màn hình:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Hệ điều hành:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Camara sau:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Camara trước:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>CPU:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>RAM:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Bộ nhớ trong:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Thẻ nhớ:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td>Dung lượng Pin:</td>
-                        <td><input type="text"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="table-footer"> <button onclick="themSanPham()">THÊM</button> </td>
-                    </tr>
-                </table>
+                                    else
+                                    {
+                                        $tmp = explode(".", $_FILES["hinhanh"]["name"]);
+                                        $duoifile = end($tmp);
+                                        $masp = $_POST['maspThem'];
+                                        $tenfilemoi = $masp . "." . $duoifile;
+                                        move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], "img/products/" . $tenfilemoi);
+                                    }
+                                }
+                            }
+                        ?>
+                        <tr>
+                            <td>Hình:</td>
+                            <td>
+                                <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
+                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem')">
+                                <input style="display: none;" type="text" id="hinhanh" value="<?php echo $duoifile; ?>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Giá tiền:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Số lượng:</td>
+                            <td><input type="text" value="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Số sao:</td>
+                            <td><input disabled="disabled" value="0" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Đánh giá:</td>
+                            <td><input disabled="disabled" value="0" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Khuyến mãi:</td>
+                            <td>
+                                <select>
+                                    <option selected="selected" value="">Không</option>
+                                    <option value="tragop">Trả góp</option>
+                                    <option value="giamgia">Giảm giá</option>
+                                    <option value="giareonline">Giá rẻ online</option>
+                                    <option value="moiramat">Mởi ra mắt</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Giá trị khuyến mãi:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Thông số kĩ thuật</th>
+                        </tr>
+                        <tr>
+                            <td>Màn hình:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Hệ điều hành:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Camara sau:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Camara trước:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>CPU:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>RAM:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Bộ nhớ trong:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Thẻ nhớ:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Dung lượng Pin:</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="table-footer"> <button name="submit">THÊM</button> </td>
+                        </tr>
+                    </table>
+                </form>
+                <div style="display: none;" id="hinhanh"></div>
             </div>
             <div id="khungSuaSanPham" class="overlay"></div>
         </div> <!-- // sanpham -->
