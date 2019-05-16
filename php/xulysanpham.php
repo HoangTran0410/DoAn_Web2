@@ -10,32 +10,21 @@
 		    	die (json_encode($dssp));
     		break;
 
+        case 'getbyid':
+            $sp = (new SanPhamBUS())->select_by_id("*", $_POST['id']);
+            // thêm thông tin khuyến mãi và hãng
+            $sp["KM"] = (new KhuyenMaiBUS())->select_by_id('*', $sp['MaKM']);
+            $sp["LSP"] = (new LoaiSanPhamBUS())->select_by_id('*', $sp['MaLSP']);
+
+            die (json_encode($sp));
+            break;
+
         case 'phanTich_Filters':
             phanTich_Filters();
             break;
 
         case 'addFromWeb1':
-            $spBUS = new SanPhamBUS();
-
-            $sp = $_POST['sanpham'];
-            $sanphamArr = array(
-                'MaSP' => ($spBUS->getNextID()),
-                'MaLSP' => ((new DB_driver())->get_row("SELECT * FROM LoaiSanPham WHERE TenLSP='".$sp["company"]."'")),
-                'TenSP' => $sp['name'],
-                'DonGia' => $sp['price'],
-                'SoLuong' => $sp['SoLuong'],
-                'HinhAnh' => $sp['HinhAnh'],
-                'MaKM' => $sp['MaKM'],
-                'ManHinh' => $sp['ManHinh'],
-                'HDH' => $sp['HDH'],
-                'CamSau' => $sp['CamSau'],
-                'CamTruoc' => $sp['CamTruoc'],
-                'CPU' => $sp['CPU'],
-                'Ram' => $sp['Ram'],
-                'Rom' => $sp['Rom'],
-                'SDCard' => $sp['Rom'],
-            ); 
-            die ($spBUS->add_new($sp));
+            addFromWeb1();
             break;
     	
     	default:
@@ -47,6 +36,10 @@
         $filters = $_POST['filters'];
         $ori = "SELECT * FROM SanPham WHERE ";
         $sql = $ori;
+
+        // $page = null;
+        $tenThanhPhanCanSort = null;
+        $typeSort = null;
 
         forEach($filters as $filter) {
             $dauBang = explode("=", $filter);
@@ -65,19 +58,11 @@
                     // nếu giá đến = 0 thì cho giá đến = 100 triệu
                     if($giaDen == 0) $giaDen = 1000000000; 
 
-                    // đưa về dạng thập phân đúng theo DB
-                    // $giaTu = (float)($giaTu/1000000); 
-                    // $giaDen = (float)($giaDen/1000000);
-
                     $sql .= ($sql==$ori?"":" AND ") . " DonGia >= $giaTu AND DonGia <= $giaDen";
                     break;
 
                 case 'company':
-                    // lấy ra id của company truyền vào
-                    $tenlsp = $dauBang[1];
-                    $company = (new DB_driver())->get_row("SELECT * FROM LoaiSanPham WHERE TenLSP='$tenlsp'");
-                    $companyID = $company["MaLSP"];
-
+                    $companyID = $dauBang[1];
                     $sql .= ($sql==$ori?"":" AND ") . " MaLSP='$companyID'";
                     break;
 
@@ -99,10 +84,11 @@
                     $s = explode("-", $dauBang[1]);
                     $tenThanhPhanCanSort = $s[0];
                     $typeSort = ($s[1]=="asc"?"ASC":"DESC");
-
-                    $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ where
-                    $sql .= " ORDER BY $tenThanhPhanCanSort $typeSort";
                     break;
+
+                // case 'page':
+                //     $page = $dauBang[1];
+                //     break;
                 
                 default:
                     # code...
@@ -110,7 +96,61 @@
             }
         }
 
+        // sort phải để cuối
+        if($tenThanhPhanCanSort != null && $typeSort != null) {
+            $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ where
+            $sql .= " ORDER BY $tenThanhPhanCanSort $typeSort";
+        }
+
+        // Phân trang
+        // if($page != 0 || $page == null) { // nếu == 0 thì trả về hết
+        //     if($page == null) $page = 1; // mặc định là trang 1 (nếu không ghi gì hết)
+        //     $productsPerPage = 10; // số lượng sản phẩm trong 1 trang
+        //     $startIndex = ($page-1)*$productsPerPage;
+        //     $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ where
+        //     $sql .= " LIMIT $startIndex,$productsPerPage";
+        // }
+
+        // chạy sql
         $result = (new DB_driver())->get_list($sql);
+
+        for($i = 0; $i < sizeof($result); $i++) {
+            // thêm thông tin khuyến mãi
+            $result[$i]["KM"] = (new KhuyenMaiBUS())->select_by_id('*', $result[$i]['MaKM']);
+            // thêm thông tin hãng
+            $result[$i]["LSP"] = (new LoaiSanPhamBUS())->select_by_id('*', $result[$i]['MaLSP']);
+        }
         die (json_encode($result));
+    }
+
+    function addFromWeb1() {
+        $spBUS = new SanPhamBUS();
+
+        $sp = $_POST['sanpham'];
+        $loaisanpham = (new DB_driver())->get_row("SELECT * FROM LoaiSanPham WHERE TenLSP='".$sp["company"]."'");
+
+        $sanphamArr = array(
+            'MaSP' => "",
+            'MaLSP' => $loaisanpham['MaLSP'],
+            'TenSP' => $sp['name'],
+            'DonGia' => $sp['price'],
+            'SoLuong' => 10,
+            'HinhAnh' => $sp['img'],
+            'MaKM' => $sp['MaKM'],
+            'ManHinh' => $sp['detail']['screen'],
+            'HDH' => $sp['detail']['os'],
+            'CamSau' => $sp['detail']['camara'],
+            'CamTruoc' => $sp['detail']['camaraFront'],
+            'CPU' => $sp['detail']['cpu'],
+            'Ram' => $sp['detail']['ram'],
+            'Rom' => $sp['detail']['rom'],
+            'SDCard' => $sp['detail']['microUSB'],
+            'Pin' => $sp['detail']['battery'],
+            'SoSao' => 0,
+            'SoDanhGia' => 0,
+            'TrangThai' => 1
+        ); 
+        
+        die (json_encode($spBUS->add_new($sanphamArr)));
     }
 ?>

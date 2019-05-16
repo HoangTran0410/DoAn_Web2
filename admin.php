@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="css/admin/progress.css">
 
     <script src="data/products.js"></script>
-    <script src="js/classes.js"></script>
+    <!-- <script src="js/classes.js"></script> -->
     <script src="js/dungchung.js"></script>
     <script src="js/admin.js"></script>
 </head>

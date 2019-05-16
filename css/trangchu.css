@@ -81,6 +81,19 @@
 	    background-color: #3e8e41;
 	}
 /* ============== End From W3 ============== */
+#divSoLuongSanPham {
+	margin: 5px 0;
+	padding: 5px;
+	color: #999;
+	background-color: #333;
+	font-weight: bold;
+	font-size: 1em;
+}
+
+#divSoLuongSanPham span {
+	color: #fff;
+	font-size: 1.25em;
+}
 
 /* Filter by Name */
 .filterName {
@@ -115,6 +128,7 @@
     background: #288ad6;
     border-radius: 4px;
     margin-right: 5px;
+    cursor: pointer;
 }
 
 /* Các khung sản phẩm */

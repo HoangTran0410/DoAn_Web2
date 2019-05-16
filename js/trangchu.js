@@ -1,11 +1,17 @@
+var SoLuongTrangHienThi = 4;
+var ProductsPerPage = 4;
+var DanhSachSanPham = [];
+var DataCompany = [];
+var CurrentFilters = [];
+
 window.onload = function() {
     khoiTao();
 
     // autocomplete cho khung tim kiem
-    autocomplete(document.getElementById('search-box'), list_products);
+    // autocomplete(document.getElementById('search-box'), list_products);
 
     // thêm tags (từ khóa) vào khung tìm kiếm
-    var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
+    var tags = ["Samsung", "iPhone", "Coolpad", "Oppo", "Mobi"];
     for (var t of tags) addTags(t, "index.php?search=" + t);
 
     // =================== web 2 tìm nâng cao ================
@@ -15,9 +21,6 @@ window.onload = function() {
     // Thêm danh sách hãng điện thoại
     setupCompany();
 
-    // test ajax tìm kiếm
-    filtersAjax(['sort=DonGia-asc']);
-
     // slider chọn khoảng giá
     $("#demoSlider").ionRangeSlider({
         type: "double",
@@ -25,45 +28,26 @@ window.onload = function() {
         min: 0,
         max: 50,
         from: 0,
-        to: 5,
+        to: 50,
         step: 0.5,
         drag_interval: true,
         postfix: " triệu",
         prettify_enabled: true,
         prettify_separator: ",",
-        values_separator: " →   "
+        values_separator: " →   ",
+        onFinish: function(data) {
+            filtersAjax(createFilters('price', data.from * 1E6 + "-" + data.to * 1E6));
+        },
     });
     // ==================== End ===========================
 
     // Thêm sản phẩm vào trang
-    var sanPhamPhanTich
-    var sanPhamPhanTrang;
-
     var filters = getFilterFromURL();
     if (filters.length) { // có filter
-        // sanPhamPhanTich = phanTich_URL(filters, true);
-        // sanPhamPhanTrang = tinhToanPhanTrang(sanPhamPhanTich, filtersFromUrl.page || 1);
-        // if (!sanPhamPhanTrang.length) alertNotHaveProduct(false);
-        // else addProductsFrom(sanPhamPhanTrang);
-
-        // hiển thị list sản phẩm
-        document.getElementsByClassName('contain-products')[0].style.display = '';
+        filtersAjax(filters);
 
     } else { // ko có filter : trang chính mặc định sẽ hiển thị các sp hot, ...
-        var soLuong = (window.innerWidth < 1200 ? 4 : 5); // màn hình nhỏ thì hiển thị 4 sp, to thì hiển thị 5
-
-        // Các màu
-        var yellow_red = ['#ff9c00', '#ec1f1f'];
-        var blue = ['#42bcf4', '#004c70'];
-        var green = ['#5de272', '#007012'];
-
-        // Thêm các khung sản phẩm
-        addKhungSanPham('NỔI BẬT NHẤT', yellow_red, ['star=3', 'sort=rateCount-decrease'], soLuong);
-        addKhungSanPham('SẢN PHẨM MỚI', blue, ['promo=moiramat', 'sort=rateCount-decrease'], soLuong);
-        addKhungSanPham('TRẢ GÓP 0%', yellow_red, ['promo=tragop'], soLuong);
-        addKhungSanPham('GIÁ SỐC ONLINE', green, ['promo=giareonline'], soLuong);
-        addKhungSanPham('GIẢM GIÁ LỚN', yellow_red, ['promo=giamgia'], soLuong);
-        addKhungSanPham('GIÁ RẺ CHO MỌI NHÀ', green, ['price=0-3000000', 'sort=price'], soLuong);
+        hienThiKhungSanPhamMacDinh();
     }
 
     // Thêm chọn mức giá
@@ -74,33 +58,51 @@ window.onload = function() {
     addPricesRange(13000000, 0);
 
     // Thêm chọn khuyến mãi
+    addPromotion('Nothing');
     addPromotion('giamgia');
     addPromotion('tragop');
     addPromotion('moiramat');
     addPromotion('giareonline');
 
     // Thêm chọn số sao
+    addStarFilter(0);
+    addStarFilter(1);
+    addStarFilter(2);
     addStarFilter(3);
     addStarFilter(4);
     addStarFilter(5);
 
     // Thêm chọn sắp xếp
-    addSortFilter('ascending', 'price', 'Giá tăng dần');
-    addSortFilter('decrease', 'price', 'Giá giảm dần');
-    addSortFilter('ascending', 'star', 'Sao tăng dần');
-    addSortFilter('decrease', 'star', 'Sao giảm dần');
-    addSortFilter('ascending', 'rateCount', 'Đánh giá tăng dần');
-    addSortFilter('decrease', 'rateCount', 'Đánh giá giảm dần');
-    addSortFilter('ascending', 'name', 'Tên A-Z');
-    addSortFilter('decrease', 'name', 'Tên Z-A');
-
-    // Thêm filter đã chọn
-    addAllChoosedFilter();
+    addSortFilter('asc', 'DonGia', 'Giá tăng dần');
+    addSortFilter('des', 'DonGia', 'Giá giảm dần');
+    addSortFilter('asc', 'SoSao', 'Sao tăng dần');
+    addSortFilter('des', 'SoSao', 'Sao giảm dần');
+    addSortFilter('asc', 'SoDanhGia', 'Đánh giá tăng dần');
+    addSortFilter('des', 'SoDanhGia', 'Đánh giá giảm dần');
+    addSortFilter('asc', 'TenSP', 'Tên A-Z');
+    addSortFilter('des', 'TenSP', 'Tên Z-A');
 };
 
 // ============================== web2 ===========================
-var danhSachCompany; // lưu danh sách sản phẩm lấy được từ ajax trong setupCompany()
-var danhsachKhuyenMai = {};
+function hienThiKhungSanPhamMacDinh() {
+
+    $('contain-khungSanPham').html('');
+
+    var soLuong = (window.innerWidth < 1200 ? 4 : 5); // màn hình nhỏ thì hiển thị 4 sp, to thì hiển thị 5
+
+    // Các màu
+    var yellow_red = ['#ff9c00', '#ec1f1f'];
+    var blue = ['#42bcf4', '#004c70'];
+    var green = ['#5de272', '#007012'];
+
+    // Thêm các khung sản phẩm
+    addKhungSanPham('NỔI BẬT NHẤT', yellow_red, ['star=0', 'sort=SoDanhGia-desc', 'page=0'], soLuong);
+    addKhungSanPham('SẢN PHẨM MỚI', blue, ['promo=moiramat', 'sort=SoDanhGia-desc', 'page=0'], soLuong);
+    addKhungSanPham('TRẢ GÓP 0%', yellow_red, ['promo=tragop', 'page=0'], soLuong);
+    addKhungSanPham('GIÁ SỐC ONLINE', green, ['promo=giareonline', 'page=0'], soLuong);
+    addKhungSanPham('GIẢM GIÁ LỚN', yellow_red, ['promo=giamgia', 'page=0'], soLuong);
+    addKhungSanPham('GIÁ RẺ CHO MỌI NHÀ', green, ['price=0-3000000', 'sort=DonGia-asc', 'page=0'], soLuong);
+}
 
 function setupBanner() {
     $.ajax({
@@ -186,12 +188,12 @@ function setupCompany() {
             request: "getall",
         },
         success: function(data, status, xhr) {
-            danhSachCompany = data;
+            DataCompany = data;
             for (var c of data) {
-                addCompany("img/company/" + c.HinhAnh, c.TenLSP);
+                addCompany("img/company/" + c.HinhAnh, c.MaLSP);
             }
         },
-        error: function() {
+        error: function(e) {
             Swal.fire({
                 type: "error",
                 title: "Lỗi lấy dữ liệu loại sản phẩm (trangchu.js > setupCompany)",
@@ -201,8 +203,75 @@ function setupCompany() {
     });
 }
 
-function filtersAjax(filters) {
+function addProductsFromList(list, filters) {
+    DanhSachSanPham = list; // lưu danh sách hiện thời
+    $("#divSoLuongSanPham").html("Tìm thấy <span>"+ list.length + "</span> sản phẩm")
+
+    if (list.length == 0) {
+        alertNotHaveProduct(false); // nếu length = 0 thì hiện ko có sản phẩm
+        return;
+    } else {
+        alertNotHaveProduct(true);
+    }
+
+    var phantrang = 1;
+    for (var f of filters) {
+        var splitValue = f.split('=');
+        var left = splitValue[0];
+        if (left == 'page') {
+            phantrang = parseInt(splitValue[1]) || 1;
+            break;
+        }
+    }
+
+    if (phantrang) {
+        chuyenTrang(phantrang);
+
+    } else {
+        for (var p of list) {
+            addToWeb(p);
+        }
+    }
+
+    document.getElementById("divSoLuongSanPham").scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+
+    console.log(list);
+}
+
+function chuyenTrang(vitriTrang) {
+    // xóa các sản phẩm trang cũ
+    $("#products li.sanPham").remove();
+
+    var sanPhamDu = DanhSachSanPham.length % ProductsPerPage;
+    var soTrang = parseInt(DanhSachSanPham.length / ProductsPerPage) + (sanPhamDu ? 1 : 0);
+    var trangHienTai = parseInt(vitriTrang < soTrang ? vitriTrang : soTrang);
+
+    themNutPhanTrang(soTrang, trangHienTai);
+    var start = ProductsPerPage * (trangHienTai - 1);
+    var temp = copyObject(DanhSachSanPham);
+    temp = temp.splice(start, ProductsPerPage);
+    for (var p of temp) {
+        addToWeb(p);
+    }
+}
+
+function filtersAjax(filters, callback) {
     console.log(filters);
+    if(filters.length == 0) {
+        removeAllFilters();
+        return;
+    }
+
+    if (!callback) { // ko có call back -> mặc định là thêm vào contain-products
+        // hiển thị list sản phẩm
+        $(".contain-products").css("display", "block");
+        $(".contain-khungSanPham").css("display", "none");
+        $(".contain-products li.sanPham").remove(); // xóa các sản phẩm hiện tại
+        $(".loader").css("display", "block");
+    }
     $.ajax({
         type: "POST",
         url: "php/xulysanpham.php",
@@ -213,11 +282,13 @@ function filtersAjax(filters) {
             filters: filters
         },
         success: function(data, status, xhr) {
-            for (var p of data) {
-                ajaxKhuyenMai(p);
+
+            if (callback) callback(data);
+            else {
+                addProductsFromList(data, filters);
+                addAllChoosedFilter(filters);
+                $(".loader").css("display", "none");
             }
-            // list_products = data;
-            console.log(data);
         },
         error: function(e) {
             Swal.fire({
@@ -229,34 +300,7 @@ function filtersAjax(filters) {
     })
 }
 
-function ajaxKhuyenMai(p) {
-    $.ajax({
-        type: "POST",
-        url: "php/xulykhuyenmai.php",
-        dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
-        data: {
-            request: "theoID",
-            id: p.MaKM
-        },
-        success: function(data, status, xhr) {
-            // p.dataKM = data;
-            danhsachKhuyenMai[p.MaSP] = data;
-            // console.log(p);
-            addToWeb(p);
-        },
-        error: function(e) {
-            Swal.fire({
-                type: "error",
-                title: "Lỗi lấy dữ liệu khuyến mãi của sản phẩm " + p + " (trangchu.js > ajaxKhuyenMai)",
-                html: e.responseText
-            });
-            console.log(e);
-        }
-    })
-}
-
-function ajaxThemSanPham(p) {
+function ajaxThemSanPham(p, onSuccess, onFail) {
     $.ajax({
         type: "POST",
         url: "php/xulysanpham.php",
@@ -267,15 +311,21 @@ function ajaxThemSanPham(p) {
             sanpham: p
         },
         success: function(data, status, xhr) {
-            console.log('Thêm thành công ');
-            console.log(data);
+            if (onSuccess) onSuccess(data);
+            else {
+                console.log('Thêm thành công ');
+                console.log(data);
+            }
         },
         error: function(e) {
-            Swal.fire({
-                type: "error",
-                title: "Lỗi thêm sản phẩm sản phẩm " + p + " (trangchu.js > ajaxThemSanPham)",
-                html: e.responseText
-            });
+            if (onFail) onFail(e);
+            else {
+                Swal.fire({
+                    type: "error",
+                    title: "Lỗi thêm sản phẩm sản phẩm " + p + " (trangchu.js > ajaxThemSanPham)",
+                    html: e.responseText
+                });
+            }
         }
     })
 }
@@ -295,42 +345,48 @@ function addToWeb(p, ele, returnString) {
     }
 
     // Chuyển giá tiền sang dạng tag html
-    var priceConverted = (p.DonGia * 1000000).toLocaleString();
+    var giaTri = parseInt(p.DonGia);
+    var giaTrikhuyenMai = parseInt(p.KM.GiaTriKM);
+    var giaTriSauKM = giaTri - giaTrikhuyenMai;
 
-    var price;
-    if (danhsachKhuyenMai[p.MaSP].LoaiKM == "GiaReOnline") {
-        // khuyến mãi 'Giá rẻ online' sẽ có giá thành mới
-        price = `<strong>` + ((p.DonGia - danhsachKhuyenMai[p.MaSP].GiaTriKM) * 1E6).toLocaleString() + `&#8363;</strong>
-                <span>` + (p.DonGia * 1E6).toLocaleString() + `&#8363;</span>`;
+    var pricediv, khuyenmaidiv;
+
+    if (p.KM.LoaiKM == "GiaReOnline") {
+
+        khuyenmaidiv = promoToWeb(p.KM.LoaiKM, giaTriSauKM);
+        pricediv = `<strong>` + giaTriSauKM.toLocaleString() + `&#8363;</strong>
+                <span>` + giaTri.toLocaleString() + `&#8363;</span>`;
     } else {
-        price = `<strong>` + priceConverted + `&#8363;</strong>`;
+
+        khuyenmaidiv = promoToWeb(p.KM.LoaiKM, giaTrikhuyenMai);
+        pricediv = `<strong>` + giaTri.toLocaleString() + `&#8363;</strong>`;
     }
 
     // tách theo dấu ' ' vào gắn lại bằng dấu '-', code này giúp bỏ hết khoảng trắng và thay vào bằng dấu '-'.
     // Tạo link tới chi tiết sản phẩm, chuyển tất cả ' ' thành '-'
-    var chitietSp = 'chitietsanpham.php?' + p.TenSP.split(' ').join('-');
+    var chitietSp = 'chitietsanpham.php?' + p.MaSP;
 
     // Cho mọi thứ vào tag <li>... </li>
     var newLi =
         `<li class="sanPham">
         <a href="` + chitietSp + `">
-            <img src="img/products/` + p.HinhAnh + `" alt="">
+            <img src="` + p.HinhAnh + `" alt="">
             <h3>` + p.TenSP + `</h3>
             <div class="price">
-                ` + price + `
+                ` + pricediv + `
             </div>
             <div class="ratingresult">
                 ` + rating + `
             </div>
-            ` + (promoToWeb(danhsachKhuyenMai[p.MaSP].LoaiKM, priceConverted)) + `
+            ` + (promoToWeb(p.KM.LoaiKM, giaTrikhuyenMai)) + `
             <div class="tooltip">
-                <button class="themvaogio" onclick="themVaoGioHang('` + p.MaSP + `', '` + p.TenSP + `'); return false;">
+                <button class="themvaogio" onclick="return themVaoGioHang('` + p.MaSP + `', '` + p.TenSP + `');">
                     <span class="tooltiptext" style="font-size: 15px;">Thêm vào giỏ</span>
                     +
                 </button>
             </div>
         </a>
-    </li>`; 
+    </li>`;
 
     if (returnString) return newLi;
 
@@ -344,11 +400,11 @@ function promoToWeb(name, value) { // khuyen mai
     var contentLabel = "";
     switch (name) {
         case "GiamGia":
-            contentLabel = `<i class="fa fa-bolt"></i> Giảm ` + value + `&#8363;`;
+            contentLabel = `<i class="fa fa-bolt"></i> Giảm ` + value.toLocaleString() + `&#8363;`;
             break;
 
         case "TraGop":
-            contentLabel = `Trả góp ` + value + `%`;
+            contentLabel = `Trả góp ` + value.toLocaleString() + `%`;
             break;
 
         case "GiaReOnline":
@@ -369,21 +425,6 @@ function promoToWeb(name, value) { // khuyen mai
 }
 
 // =========== Đọc dữ liệu từ url ============
-var soLuongSanPhamMaxTrongMotTrang = 15;
-
-var filtersFromUrl = { // Các bộ lọc tìm được trên url sẽ đc lưu vào đây
-    company: '',
-    search: '',
-    price: '',
-    promo: '',
-    star: '',
-    page: '',
-    sort: {
-        by: '',
-        type: 'ascending'
-    }
-}
-
 function getFilterFromURL() { // tách và trả về mảng bộ lọc trên url
     var fullLocation = window.location.href;
     fullLocation = decodeURIComponent(fullLocation);
@@ -397,340 +438,188 @@ function getFilterFromURL() { // tách và trả về mảng bộ lọc trên ur
     return [];
 }
 
-function phanTich_URL(filters, saveFilter) {
-    // var filters = getFilterFromURL();
-    var result = copyObject(list_products);
-
-    for (var i = 0; i < filters.length; i++) {
-        var dauBang = filters[i].split('=');
-
-        switch (dauBang[0]) {
-            case 'search':
-                dauBang[1] = dauBang[1].split('+').join(' ');
-                result = timKiemTheoTen(result, dauBang[1]);
-                if (saveFilter) filtersFromUrl.search = dauBang[1];
-                break;
-
-            case 'price':
-                if (saveFilter) filtersFromUrl.price = dauBang[1];
-
-                var prices = dauBang[1].split('-');
-                prices[1] = Number(prices[1]) || 1E10;
-                result = timKiemTheoGiaTien(result, prices[0], prices[1]);
-                break;
-
-            case 'company':
-                result = timKiemTheoCongTySanXuat(result, dauBang[1]);
-                if (saveFilter) filtersFromUrl.company = dauBang[1];
-                break;
-
-            case 'star':
-                result = timKiemTheoSoLuongSao(result, dauBang[1]);
-                if (saveFilter) filtersFromUrl.star = dauBang[1];
-                break;
-
-            case 'promo':
-                result = timKiemTheoKhuyenMai(result, dauBang[1]);
-                if (saveFilter) filtersFromUrl.promo = dauBang[1];
-                break;
-
-            case 'page': // page luôn ở cuối đường link
-                if (saveFilter) filtersFromUrl.page = dauBang[1];
-                break;
-
-            case 'sort':
-                var s = dauBang[1].split('-');
-                var tenThanhPhanCanSort = s[0];
-
-                switch (tenThanhPhanCanSort) {
-                    case 'price':
-                        if (saveFilter) filtersFromUrl.sort.by = 'price';
-                        result.sort(function(a, b) {
-                            var giaA = parseInt(a.price.split('.').join(''));
-                            var giaB = parseInt(b.price.split('.').join(''));
-                            return giaA - giaB;
-                        });
-                        break;
-
-                    case 'star':
-                        if (saveFilter) filtersFromUrl.sort.by = 'star';
-                        result.sort(function(a, b) {
-                            return a.star - b.star;
-                        });
-                        break;
-
-                    case 'rateCount':
-                        if (saveFilter) filtersFromUrl.sort.by = 'rateCount';
-                        result.sort(function(a, b) {
-                            return a.rateCount - b.rateCount;
-                        });
-                        break;
-
-                    case 'name':
-                        if (saveFilter) filtersFromUrl.sort.by = 'name';
-                        result.sort(function(a, b) {
-                            return a.name.localeCompare(b.name);
-                        });
-                        break;
-                }
-
-                if (s[1] == 'decrease') {
-                    if (saveFilter) filtersFromUrl.sort.type = 'decrease';
-                    result.reverse();
-                }
-
-                break;
-        }
-    }
-
-    return result;
-}
-
-// Thêm sản phẩm vào trang
-function addProduct(p, ele, returnString) {
-    // promo = new Promo(p.promo.name, p.promo.value); // class Promo
-    // product = new Product(p.masp, p.name, p.img, p.price, p.star, p.rateCount, promo); // Class product
-
-    return addToWeb(p, ele, returnString);
-}
-
-// thêm các sản phẩm từ biến mảng nào đó vào trang
-function addProductsFrom(list, vitri, soluong) {
-    var start = vitri || 0;
-    var end = (soluong ? start + soluong : list.length);
-    for (var i = start; i < end; i++) {
-        addProduct(list[i]);
-    }
-}
-
-function clearAllProducts() {
-    document.getElementById('products').innerHTML = "";
-}
-
 // Thêm sản phẩm vào các khung sản phẩm
 function addKhungSanPham(tenKhung, color, filter, len) {
     // convert color to code
     var gradient = `background-image: linear-gradient(120deg, ` + color[0] + ` 0%, ` + color[1] + ` 50%, ` + color[0] + ` 100%);`
     var borderColor = `border-color: ` + color[0];
-    var borderA = `	border-left: 2px solid ` + color[0] + `;
-					border-right: 2px solid ` + color[0] + `;`;
+    var borderA = `	border-left: 2px solid ` + color[0] + `; border-right: 2px solid ` + color[0] + `;`;
 
     // mở tag
     var s = `<div class="khungSanPham" style="` + borderColor + `">
 				<h3 class="tenKhung" style="` + gradient + `">* ` + tenKhung + ` *</h3>
-				<div class="listSpTrongKhung flexContain">`;
+				<div class="listSpTrongKhung flexContain" data-tenkhung="` + tenKhung + `">
+                    <div class="loader"></div>
+                </div>
+    			<a class="xemTatCa" href="index.php?` + filter.join('&') + `" style="` + borderA + `" data-tenkhung="` + tenKhung + `">
+    			</a>
+		      </div> <hr>`;
 
-    // thêm các <li> (sản phẩm) vào tag
-    var spResult = phanTich_URL(filter, false);
-    if (spResult.length < len) len = spResult.length;
-
-    for (var i = 0; i < len; i++) {
-        s += addProduct(spResult[i], null, true);
-        // truyền vào 'true' để trả về chuỗi rồi gán vào s
-    }
-
-    // thêm nút xem tất cả rồi đóng tag
-    s += `	</div>
-			<a class="xemTatCa" href="index.php?` + filter.join('&') + `" style="` + borderA + `">
-				Xem tất cả ` + spResult.length + ` sản phẩm
-			</a>
-		</div> <hr>`;
 
     // thêm khung vào contain-khung
     document.getElementsByClassName('contain-khungSanPham')[0].innerHTML += s;
+
+    // lấy dữ liệu cho vào khung
+    console.log(tenKhung);
+    filtersAjax(filter, (data) => {
+        // thêm các <li> (sản phẩm) vào tag
+        var s1 = "";
+        var spResult = data;
+        if (spResult.length < len) len = spResult.length;
+
+        for (var i = 0; i < len; i++) {
+            s1 += addToWeb(spResult[i], null, true);
+            // truyền vào 'true' để trả về chuỗi rồi gán vào s
+        }
+
+        $("div.listSpTrongKhung[data-tenkhung='" + tenKhung + "']").html(s1);
+        $("a.xemTatCa[data-tenkhung='" + tenKhung + "']").html("Xem tất cả " + spResult.length + " sản phẩm");
+    })
 }
 
 // Nút phân trang
 function themNutPhanTrang(soTrang, trangHienTai) {
     var divPhanTrang = document.getElementsByClassName('pagination')[0];
 
-    var k = createLinkFilter('remove', 'page'); // xóa phân trang cũ
-    if (k.indexOf('?') > 0) k += '&';
-    else k += '?'; // thêm dấu
+    divPhanTrang.innerHTML = ""; // xóa phân trang cũ
 
-    if (trangHienTai > 1) // Nút về phân trang trước
-        divPhanTrang.innerHTML = `<a href="` + k + `page=` + (trangHienTai - 1) + `"><i class="fa fa-angle-left"></i></a>`;
+    if (trangHienTai > 1) { // Nút về phân trang trước
+        divPhanTrang.innerHTML += `<a onclick="chuyenTrang(1)"><i class="fa fa-angle-double-left"></i></a>`;
+        divPhanTrang.innerHTML += `<a onclick="chuyenTrang(` + (trangHienTai - 1) + `)"><i class="fa fa-angle-left"></i></a>`;
+    }
 
-    if (soTrang > 1) // Chỉ hiện nút phân trang nếu số trang > 1
-        for (var i = 1; i <= soTrang; i++) {
-        if (i == trangHienTai) {
-            divPhanTrang.innerHTML += `<a href="javascript:;" class="current">` + i + `</a>`
+    if (soTrang > 1) { // Chỉ hiện nút phân trang nếu số trang > 1
+        for (var i = trangHienTai - (SoLuongTrangHienThi - 2); i <= trangHienTai + (SoLuongTrangHienThi - 2); i++) {
+            if (i == trangHienTai) {
+                divPhanTrang.innerHTML += `<a href="javascript:;" class="current">` + i + `</a>`
 
-        } else {
-            divPhanTrang.innerHTML += `<a href="` + k + `page=` + (i) + `">` + i + `</a>`
+            } else if (i >= 1 && i <= soTrang) {
+                divPhanTrang.innerHTML += `<a onclick="chuyenTrang(` + i + `)">` + i + `</a>`
+            }
         }
     }
 
     if (trangHienTai < soTrang) { // Nút tới phân trang sau
-        divPhanTrang.innerHTML += `<a href="` + k + `page=` + (trangHienTai + 1) + `"><i class="fa fa-angle-right"></i></a>`
+        divPhanTrang.innerHTML += `<a onclick="chuyenTrang(` + (trangHienTai + 1) + `)"><i class="fa fa-angle-right"></i></a>`;
+        divPhanTrang.innerHTML += `<a onclick="chuyenTrang(` + (soTrang) + `)"><i class="fa fa-angle-double-right"></i></a>`;
     }
-}
-
-// Tính toán xem có bao nhiêu trang + trang hiện tại,
-// Trả về mảng sản phẩm trong trang hiện tại tính được
-function tinhToanPhanTrang(list, vitriTrang) {
-    var sanPhamDu = list.length % soLuongSanPhamMaxTrongMotTrang;
-    var soTrang = parseInt(list.length / soLuongSanPhamMaxTrongMotTrang) + (sanPhamDu ? 1 : 0);
-    var trangHienTai = parseInt(vitriTrang < soTrang ? vitriTrang : soTrang);
-
-    themNutPhanTrang(soTrang, trangHienTai);
-    var start = soLuongSanPhamMaxTrongMotTrang * (trangHienTai - 1);
-
-    var temp = copyObject(list);
-
-    return temp.splice(start, soLuongSanPhamMaxTrongMotTrang);
-}
-
-// ======== TÌM KIẾM (Từ mảng list truyền vào, trả về 1 mảng kết quả) ============
-
-// function timKiemTheoTen(list, ten, soluong) {}
-// hàm Tìm-kiếm-theo-tên được đặt trong dungchung.js , do trang chitietsanpham cũng cần dùng tới nó
-
-function timKiemTheoCongTySanXuat(list, maLSP, soluong) {
-    var count, result = [];
-    if (soluong < list.length) count = soluong;
-    else count = list.length;
-
-    for (var i = 0; i < list.length; i++) {
-        if (list[i].MaLSP == maLSP) {
-            result.push(list[i]);
-            count--;
-            if (count <= 0) break;
-        }
-    }
-
-    return result;
-}
-
-function timKiemTheoSoLuongSao(list, soLuongSaoToiThieu, soluong) {
-    var count, result = [];
-    if (soluong < list.length) count = soluong;
-    else count = list.length;
-
-    for (var i = 0; i < list.length; i++) {
-        if (list[i].soSao >= soLuongSaoToiThieu) {
-            result.push(list[i]);
-            count--;
-            if (count <= 0) break;
-        }
-    }
-
-    return result;
-}
-
-function timKiemTheoGiaTien(list, giaMin, giaMax, soluong) {
-    var count, result = [];
-    if (soluong < list.length) count = soluong;
-    else count = list.length;
-
-    for (var i = 0; i < list.length; i++) {
-        var gia = list[i].DonGia;
-        if (gia >= giaMin && gia <= giaMax) {
-            result.push(list[i]);
-            count--;
-            if (count <= 0) break;
-        }
-    }
-
-    return result;
-}
-
-function timKiemTheoKhuyenMai(list, maKhuyenMai, soluong) {
-    var count, result = [];
-    if (soluong < list.length) count = soluong;
-    else count = list.length;
-
-    for (var i = 0; i < list.length; i++) {
-        if (list[i].MaKM == maKhuyenMai) {
-            result.push(list[i]);
-            count--;
-            if (count <= 0) break;
-        }
-    }
-
-    return result;
 }
 
 // ========== LỌC ===============
+function createFilters(type, value) {
+    var newFilters = [];
+
+    var chuaCo = true;
+    for (var f of CurrentFilters) {
+        var fSplit = f.split('=');
+        var fType = fSplit[0];
+        var fValue = fSplit[1];
+
+        if (fType == type) {
+            newFilters.push(type + "=" + value);
+            chuaCo = false;
+        } else {
+            newFilters.push(f);
+        }
+    }
+
+    if (chuaCo) {
+        newFilters.push(type + "=" + value);
+    }
+
+    console.log(fSplit);
+
+    return newFilters;
+}
+
+function craeteRemoveFilters(type) {
+    var newFilters = [];
+
+    for (var f of CurrentFilters) {
+        var fSplit = f.split('=');
+        var fType = fSplit[0];
+        var fValue = fSplit[1];
+
+        if (fType == type) {
+            // không thêm cái cần remove
+        } else {
+            newFilters.push(f);
+        }
+    }
+
+    console.log(fSplit);
+
+    return newFilters;
+}
+
+function removeAllFilters() {
+    CurrentFilters = [];
+    hienThiKhungSanPhamMacDinh();
+    $(".choosedFilter").css("display", "none");
+    $(".contain-khungSanPham").css("display", "block");
+    $(".contain-products").css("display", "none");
+}
+
 // Thêm bộ lọc đã chọn vào html
 function addChoosedFilter(type, textInside) {
-    var link = createLinkFilter('remove', type);
-    var tag_a = `<a href="` + link + `"><h3>` + textInside + ` <i class="fa fa-close"></i> </h3></a>`;
-
     var divChoosedFilter = document.getElementsByClassName('choosedFilter')[0];
-    divChoosedFilter.innerHTML += tag_a;
-
-    var deleteAll = document.getElementById('deleteAllFilter');
-    deleteAll.style.display = "block";
-    deleteAll.href = window.location.href.split('?')[0];
+    divChoosedFilter.innerHTML += (`<a onclick="filtersAjax(craeteRemoveFilters('`+type+`'))">
+        <h3>` + textInside + ` <i class="fa fa-close"></i></h3>
+        </a>`);
 }
 
 // Thêm nhiều bộ lọc cùng lúc 
-function addAllChoosedFilter() {
-    // Thêm từ biến lưu giữ bộ lọc 'filtersFromUrl'
+function addAllChoosedFilter(filters) {
+    // xóa tất cả bộ lọc cũ
+    $(".choosedFilter").html(`<a onclick="removeAllFilters()"><h3>Xóa bộ lọc <i class="fa fa-close"></i></h3></a>`);
+    $(".choosedFilter").css("display", "");
 
-    if (filtersFromUrl.company != '')
-        addChoosedFilter('company', filtersFromUrl.company);
+    // Lưu bộ lọc mới
+    CurrentFilters = filters;
 
-    if (filtersFromUrl.search != '')
-        addChoosedFilter('search', '"' + filtersFromUrl.search + '"');
+    if (filters.length) {
 
-    if (filtersFromUrl.price != '') {
-        var prices = filtersFromUrl.price.split('-');
-        addChoosedFilter('price', priceToString(prices[0], prices[1]));
-    }
+        for (var f of filters) {
+            var data = f.split('=');
+            var type = data[0];
+            var value = data[1];
 
-    if (filtersFromUrl.promo != '')
-        addChoosedFilter('promo', promoToString(filtersFromUrl.promo));
+            switch (type) {
+                case 'company':
+                    var tenHang = "";
+                    for (var c of DataCompany) {
+                        if (c.MaLSP == value) {
+                            tenHang = c.TenLSP;
+                        }
+                    }
+                    addChoosedFilter('company', "Hãng " + tenHang);
+                    break;
 
-    if (filtersFromUrl.star != '')
-        addChoosedFilter('star', starToString(filtersFromUrl.star));
-
-    if (filtersFromUrl.sort.by != '') {
-        var sortBy = sortToString(filtersFromUrl.sort.by);
-        var kieuSapXep = (filtersFromUrl.sort.type == 'decrease' ? 'giảm dần' : 'tăng dần');
-        addChoosedFilter('sort', sortBy + kieuSapXep);
-    }
-}
-
-// Tạo link cho bộ lọc
-// type là 'add' hoặc 'remove',
-// tương ứng 'thêm' bộ lọc mới có giá trị = valueAdd, hoặc 'xóa' bộ lọc đã có
-function createLinkFilter(type, nameFilter, valueAdd) {
-    var o = copyObject(filtersFromUrl);
-    o.page = ''; // reset phân trang
-
-    if (nameFilter == 'sort') {
-        if (type == 'add') {
-            o.sort.by = valueAdd.by;
-            o.sort.type = valueAdd.type;
-
-        } else if (type == 'remove') {
-            o.sort.by = '';
-        }
-
-    } else {
-        if (type == 'add') o[nameFilter] = valueAdd;
-        else if (type == 'remove') o[nameFilter] = '';
-    }
-
-    var link = 'index.php'; //window.location.href.split('?')[0].replace('#', '');
-    var h = false; // Đã có dấu hỏi hay chưa
-
-    // thêm những filter trước sort
-    for (var i in o) {
-        if (i != 'sort' && o[i]) {
-            link += (h ? '&' : '?') + i + '=' + o[i];
-            h = true;
+                case 'search':
+                    addChoosedFilter('search', searchToString(value));
+                    break;
+                case 'price':
+                    var prices = value.split('-');
+                    addChoosedFilter('price', priceToString(prices[0], prices[1]));
+                    break;
+                case 'promo':
+                    addChoosedFilter('promo', promoToString(value));
+                    break;
+                case 'star':
+                    addChoosedFilter('star', starToString(value));
+                    break;
+                case 'sort':
+                    var sorts = value.split('-');
+                    var sortBy = sortToString(sorts[0]);
+                    var kieuSapXep = (sorts[1] == 'asc' ? 'tăng dần' : 'giảm dần');
+                    addChoosedFilter('sort', sortBy + kieuSapXep);
+                    break;
+                default:
+                    // statements_def
+                    break;
+            }
         }
     }
-
-    // thêm sort (do sort trong filtersFromUrl là kiểu object, khác với kiểu string của những loại còn lại)
-    // nên lúc tạo link sẽ khác những loại trên
-    if (o.sort.by != '')
-        link += (h ? '&' : '?') + 'sort=' + o.sort.by + '-' + o.sort.type;
-
-    return link;
 }
 
 // Thông báo nếu không có sản phẩm
@@ -802,36 +691,6 @@ function filterProductsName(ele) {
     alertNotHaveProduct(coSanPham);
 }
 
-// lọc theo số lượng sao
-function getStarFromLi(li) {
-    var a = li.getElementsByTagName('a')[0];
-    var divRate = a.getElementsByClassName('ratingresult');
-    if (!divRate) return 0;
-
-    divRate = divRate[0];
-    var starCount = divRate.getElementsByClassName('fa-star').length;
-
-    return starCount;
-}
-
-function filterProductsStar(num) {
-    var listLi = getLiArray();
-    var coSanPham = false;
-
-    for (var i = 0; i < listLi.length; i++) {
-        if (getStarFromLi(listLi) >= num) {
-            showLi(listLi[i]);
-            coSanPham = true;
-
-        } else {
-            hideLi(listLi[i]);
-        }
-    }
-
-    // Thông báo nếu không có sản phẩm
-    alertNotHaveProduct(coSanPham);
-}
-
 // ================= Hàm khác ==================
 
 // Thêm banner
@@ -852,7 +711,6 @@ function addSmallBanner(img) {
 
 // Thêm hãng sản xuất
 function addCompany(img, nameCompany) {
-    var link = createLinkFilter('add', 'company', nameCompany);
     var new_tag = `<button onclick="filtersAjax(['company=` + nameCompany + `'])"><img src=` + img + `></button>`;
 
     var khung_hangSanXuat = document.getElementsByClassName('companyMenu')[0];
@@ -862,43 +720,41 @@ function addCompany(img, nameCompany) {
 // Thêm chọn mức giá
 function addPricesRange(min, max) {
     var text = priceToString(min, max);
-    var link = createLinkFilter('add', 'price', min + '-' + max);
+    var a = `<a onclick="filtersAjax(createFilters('price', '` + (min + "-" + max) + `'))">` + text + `</a>`
 
-    var mucgia = `<a href="` + link + `">` + text + `</a>`;
     document.getElementsByClassName('pricesRangeFilter')[0]
-        .getElementsByClassName('dropdown-content')[0].innerHTML += mucgia;
+        .getElementsByClassName('dropdown-content')[0].innerHTML += a;
 }
 
 // Thêm chọn khuyến mãi
 function addPromotion(name) {
-    var link = createLinkFilter('add', 'promo', name);
-
     var text = promoToString(name);
-    var promo = `<a href="` + link + `">` + text + `</a>`;
+    var promo = `<a onclick="filtersAjax(createFilters('promo', '` + name + `'))">` + text + `</a>`;
+
     document.getElementsByClassName('promosFilter')[0]
         .getElementsByClassName('dropdown-content')[0].innerHTML += promo;
 }
 
 // Thêm chọn số lượng sao
 function addStarFilter(value) {
-    var link = createLinkFilter('add', 'star', value);
-
     var text = starToString(value);
-    var star = `<a href="` + link + `">` + text + `</a>`;
+    var star = `<a onclick="filtersAjax(createFilters('star', '` + value + `'))">` + text + `</a>`;
+
     document.getElementsByClassName('starFilter')[0]
         .getElementsByClassName('dropdown-content')[0].innerHTML += star;
 }
 
 // Thêm chọn sắp xếp theo giá
 function addSortFilter(type, nameFilter, text) {
-    var link = createLinkFilter('add', 'sort', {
-        by: nameFilter,
-        type: type
-    });
-    var sortTag = `<a href="` + link + `">` + text + `</a>`;
+    var sortTag = `<a onclick="filtersAjax(createFilters('sort', '` + (nameFilter + "-" + type) + `'))">` + text + `</a>`;
 
     document.getElementsByClassName('sortFilter')[0]
         .getElementsByClassName('dropdown-content')[0].innerHTML += sortTag;
+}
+
+//  =================== ToString ====================
+function searchToString(value) {
+    return "Tìm '" + value + "'";
 }
 
 // Chuyển mức giá về dạng chuỗi tiếng việt
@@ -919,24 +775,26 @@ function promoToString(name) {
             return 'Giá rẻ online';
         case 'moiramat':
             return 'Mới ra mắt';
+        case 'Nothing':
+            return 'Không khuyến mãi';
     }
 }
 
 // Chuyển số sao về dạng chuỗi tiếng việt
 function starToString(star) {
-    return 'Trên ' + (star - 1) + ' sao';
+    return 'Từ ' + star + ' sao trở lên';
 }
 
 // Chuyển các loại sắp xếp về dạng chuỗi tiếng việt
 function sortToString(sortBy) {
     switch (sortBy) {
-        case 'price':
+        case 'DonGia':
             return 'Giá ';
-        case 'star':
+        case 'SoSao':
             return 'Sao ';
-        case 'rateCount':
+        case 'SoDanhGia':
             return 'Đánh giá ';
-        case 'name':
+        case 'TenSP':
             return 'Tên ';
         default:
             return '';
