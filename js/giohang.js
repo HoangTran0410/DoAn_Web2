@@ -1,3 +1,4 @@
+var TotalPrice = 0;
 window.onload = function() {
     khoiTao();
 
@@ -10,10 +11,10 @@ window.onload = function() {
 }
 
 function getListFromDB(list) {
-	if(!list || !list.length) {
-		addProductToTable(list);
-		return;
-	};
+    if (!list || !list.length) {
+        addProductToTable(list);
+        return;
+    };
 
     var listID = [];
     for (var p of list) {
@@ -34,7 +35,21 @@ function getListFromDB(list) {
             for (var p of data) {
                 for (var g of list) {
                     if (p.MaSP == g.masp) {
-                        p.SoLuongTrongGio = g.soLuong;
+                    	if(p.SoLuong >= g.soLuong) { // check đủ hàng
+                        	p.SoLuongTrongGio = g.soLuong;
+                    	} else {
+                    		p.SoLuongTrongGio = p.SoLuong;
+
+                    		g.soLuong = Number(p.SoLuong); // thay dổi trong localstorage luôn 
+                    		setListGioHang(list); // cập nhật localstorage
+            				animateCartNumber();
+
+                    		Swal.fire({
+                    			title: "Không đủ sản phẩm",
+                    			type: "error",
+                    			text: "Số lượng sản phẩm " + p.TenSP + " trong kho không đủ(" + p.SoLuong + ")"
+                    		})
+                    	}
                     }
                 }
             }
@@ -90,7 +105,7 @@ function addProductToTable(listProduct) {
 						` + p.TenSP + `
 					</a>
 				</td>
-				<td class="alignRight">` + price + ` ₫</td>
+				<td class="alignRight">` + numToString(price) + ` ₫</td>
 				<td class="soluong" >
 					<button onclick="giamSoLuong('` + masp + `')"><i class="fa fa-minus"></i></button>
 					<input size="1" onchange="capNhatSoLuongFromInput(this, '` + masp + `')" value=` + soluongSp + `>
@@ -106,15 +121,23 @@ function addProductToTable(listProduct) {
         totalPrice += thanhtien;
     }
 
+    TotalPrice = totalPrice;
+
     s += `
-			<tr>
-				<td colspan="4"></td>
-				<td class="xoaHet" onclick="xoaHet()"><i class="fa fa-trash-o"></i> Xóa hết </td>
-			</tr>
 			<tr style="font-weight:bold; text-align:center">
 				<td colspan="3">TỔNG TIỀN: </td>
-				<td class="alignRight">` + numToString(totalPrice) + ` ₫</td>
-				<td class="thanhtoan" onclick="thanhToan()"><i class="fa fa-usd"></i> Thanh Toán </td>
+				<td class="alignRight" style="color:red">` + numToString(totalPrice) + ` ₫</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="5">
+					<button class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="thanhToan()">
+						<i class="fa fa-usd"></i> Thanh Toán 
+					</button> 
+					<button class="btn btn-danger" onclick="xoaHet()">
+						<i class="fa fa-trash-o"></i> Xóa hết 
+					</button>
+				</td>
 			</tr>
 		</tbody>
 	`;
@@ -149,8 +172,8 @@ function xoaSanPhamTrongGioHang(masp, tensp) {
 }
 
 function thanhToan() {
-	var listProduct = getListGioHang();
-	if (!listProduct.length) {
+    var listProduct = getListGioHang();
+    if (!listProduct.length) {
         Swal.fire({
             type: 'info',
             title: "Rỗng",
@@ -160,70 +183,107 @@ function thanhToan() {
         return;
     }
 
-    getCurrentUser((user)=>{
-    	if(user == null) {
-    		Swal.fire({
-	            title: 'Xin chào!',
-	            text: 'Bạn cần đăng nhập để mua hàng',
-	            type: 'info',
-	            grow: 'row',
-	            confirmButtonText: 'Đăng nhập',
-	            cancelButtonText: 'Trở về',
-	            showCancelButton: true
-	        }).then((result) => {
-	            if (result.value) {
-	                showTaiKhoan(true);
-	            }
-	        })
+    getCurrentUser((user) => {
+        if (user == null) {
+            Swal.fire({
+                title: 'Xin chào!',
+                text: 'Bạn cần đăng nhập để mua hàng',
+                type: 'info',
+                grow: 'row',
+                confirmButtonText: 'Đăng nhập',
+                cancelButtonText: 'Trở về',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.value) {
+                    showTaiKhoan(true);
+                }
+            })
 
-    	} else if (user.TrangThai == 0) {
-	        Swal.fire({
-	            title: 'Tài Khoản Bị Khóa!',
-	            text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
-	            type: 'error',
-	            grow: 'row',
-	            confirmButtonText: 'Trở về',
-	            footer: '<a href>Liên hệ với Admin</a>'
-	        });
-	    } else {
+        } else if (user.TrangThai == 0) {
+            Swal.fire({
+                title: 'Tài Khoản Bị Khóa!',
+                text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
+                type: 'error',
+                grow: 'row',
+                confirmButtonText: 'Trở về',
+                footer: '<a href>Liên hệ với Admin</a>'
+            });
+        } else {
+        	UserHienTai = user;  // biến toàn cục
+        	htmlThanhToan(user);
+        }
 
-	    }
-	    
-    }, (error)=> {
-    	console.log(error.responseText);
+    }, (error) => {
+        console.log(error.responseText);
     });
+}
 
+function htmlThanhToan(userHienTai) {
+	console.log('abc')
 
-    // Swal.fire({
-    //     type: 'question',
-    //     title: "Thanh toán giỏ hàng?",
-    //     confirmButtonText: "Đồng ý",
-    //     cancelButtonText: "Để sau",
-    //     showCancelButton: true,
-    //     grow: 'row',
-    // }).then((result) => {
-    //     if (result.value) {
-    //         currentuser.donhang.push({
-    //             "sp": currentuser.products,
-    //             "ngaymua": new Date(),
-    //             "tinhTrang": 'Đang chờ xử lý'
-    //         });
+	$("#thongtinthanhtoan").html(`
+		<form>
+		  	<div class="form-group">
+		    <p>Tổng tiền : <h2>` + TotalPrice.toLocaleString() + `đ </h2></p>
+		  </div>
+		  <div class="form-group">
+		    <label for="inputTen">Tên người nhận</label>
+		    <input class="form-control input-sm" id="inputTen" required type="text" value="` + (userHienTai.Ho + " " + userHienTai.Ten) + `">
+		  </div>
+		   <div class="form-group">
+		    <label for="inputSDT">SDT người nhận</label>
+		    <input class="form-control input-sm" id="inputSDT" required type="text" pattern="\\d*" minlength="10" maxlength="12" value="` + userHienTai.SDT + `">
+		  </div>
+		  <div class="form-group">
+		    <label for="inputDiaChi">Địa chỉ giao hàng</label>
+		    <input class="form-control input-sm" id="inputDiaChi" required type="text" value="` + userHienTai.DiaChi + `">
+		  </div>
+		  <div class="form-group">
+		    <select class="browser-default custom-select" id="selectHinhThucTT">
+		      <option value="" disabled selected>Hình thức thanh toán</option>
+			  <option value="Trực tiếp khi nhận hàng">Trực tiếp khi nhận hàng</option>
+			  <option value="Qua thẻ ngân hàng">Qua thẻ ngân hàng</option>
+			</select>
+		  </div>
+		</form>
+	 `);
+}
 
-    //         currentuser.products = [];
-    //         capNhatMoiThu();
+function xacNhanThanhToan() {
+	var dulieu = {
+		maNguoiDung: UserHienTai.MaND,
+		tenNguoiNhan: $("#inputTen").val(),
+		sdtNguoiNhan: $("#inputSDT").val(),
+		diaChiNguoiNhan: $("#inputDiaChi").val(),
+		phuongThucTT: $("#selectHinhThucTT").val(),
+		dssp: getListGioHang(),
+		tongTien: TotalPrice,
+		ngayLap: new Date().toMysqlFormat()
+	}
 
-    //         Swal.fire({
-    //             type: 'success',
-    //             title: "Xong",
-    //             grow: 'row',
-    //             text: 'Các sản phẩm đã được gửi vào đơn hàng và chờ xử lý.'
-    //         });
-    //     }
-    // });
+	$.ajax({
+		type: "POST",
+		url: "php/xulythanhtoan.php",
+		dataType: "json",
+		data: {
+			request: "themdonhang",
+			dulieu: dulieu
+		},
+		success: function(data) {
+			setListGioHang([]);
+			capNhatMoiThu();
+		},
+		error: function(e) {
+			console.log(e.responseText)
+		}
+
+	})
+
+	return false;
 }
 
 function xoaHet() {
-	var listProduct = getListGioHang();
+    var listProduct = getListGioHang();
 
     if (listProduct.length) {
         Swal.fire({
