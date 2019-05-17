@@ -107,6 +107,92 @@ function addThongKe() {
     addChart('myChart4', lineChart);
 }
 
+function ajaxLoaiSanPham() {
+    $.ajax({
+        type: "POST",
+        url: "php/xulyloaisanpham.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getall"
+        },
+        success: function(data, status, xhr) {
+            showLoaiSanPham(data);
+        },
+        error: function(e) {
+
+        }
+    });
+}
+
+function showLoaiSanPham(data) {
+    var s="";
+    for (var i = 0; i < data.length; i++) {
+            var p = data[i];
+                s +=`<option value="` + p.MaLSP + `">` + p.TenLSP + `</option>`;
+        }
+    document.getElementsByName("chonCompany")[0].innerHTML = s;
+}
+
+function ajaxKhuyenMai() {
+    $.ajax({
+        type: "POST",
+        url: "php/xulykhuyenmai.php",
+        dataType: "json",
+        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getall"
+        },
+        success: function(data, status, xhr) {
+            showKhuyenMai(data);
+            showGTKM(data);
+        },
+        error: function(e) {
+
+        }
+    });
+}
+
+function showKhuyenMai(data) {
+    var s=`
+        <option selected="selected" value="`+data[0].MaKM+`">Không</option>
+        <option value="`+data[1].MaKM+`">Trả góp</option>
+        <option value="`+data[2].MaKM+`">Giảm giá</option>
+        <option value="`+data[3].MaKM+`">Giá rẻ online</option>
+        <option value="`+data[4].MaKM+`">Mởi ra mắt</option>`;
+    document.getElementsByName("chonKhuyenMai")[0].innerHTML = s;
+
+}
+
+function showGTKM() {
+    var giaTri = document.getElementsByName("chonKhuyenMai")[0].value;
+    switch (giaTri) {
+        // lấy tất cả khuyến mãi
+        case '1':
+                document.getElementById("giatrikm").value = 0;
+            break;
+
+        case '2':
+                document.getElementById("giatrikm").value = 500000;
+            break;
+
+        case '3':
+                document.getElementById("giatrikm").value = 650000;
+            break;
+
+        case '4':
+                document.getElementById("giatrikm").value = 0;
+            break;
+
+        case '5':
+                document.getElementById("giatrikm").value = 0;
+            break;
+
+        default:
+            break;
+    }
+}
+
 // ======================= Các Tab =========================
 function addEventChangeTab() {
     var sidebar = document.getElementsByClassName('sidebar')[0];
@@ -266,29 +352,13 @@ function layThongTinSanPhamTuTable(id) {
             "microUSB": microUSB,
             "battery": battery
         },
-        "masp": masp
+        "masp": masp,
+        "TrangThai": 1
     };
 }
 
 function themSanPham() {
     var newSp = layThongTinSanPhamTuTable('khungThemSanPham');
-
-    //kt mã sp
-    var pattCheckMaSP = /^(SP)([0-9]{1,})$/;
-    if (pattCheckMaSP.test(newSp.masp) != false)
-    {
-        for (var p of list_products) {
-            if (p.MaSP == newSp.masp) {
-                alert('Mã sản phẩm bị trùng !!');
-                return false;
-            }
-        }
-    }
-    else
-    {
-        alert ("Mã sản phẩm không hợp lệ");
-        return false;
-    }
 
     //kt tên sp
     var pattCheckTenSP = /([a-z A-Z0-9&():.'_-]{2,})$/;
@@ -299,12 +369,12 @@ function themSanPham() {
     }
 
     //kt hình
-    var pattCheckHinh= /^SP([0-9]{1,})[.](png|jpeg|jpg)$/;
+    /*var pattCheckHinh= /^([0-9]{1,})[.](png|jpeg|jpg)$/;
     if (pattCheckHinh.test(newSp.img) == false)
     {
         alert ("Ảnh không hợp lệ");
         return false;
-    }
+    }*/
 
     //kt giá tiền
     var pattCheckGia = /^([0-9]){1,}(000)$/;
@@ -336,6 +406,8 @@ function themSanPham() {
                 type: 'success',
                 title: 'Thêm thành công'
             })
+            resetForm();
+            document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
             refreshTableSanPham();
         },
         error: function(e) {
@@ -347,6 +419,13 @@ function themSanPham() {
         }
     });
 
+    
+
+    alert('Thêm sản phẩm "' + newSp.name + '" thành công.');
+    refreshTableSanPham();
+
+}
+function resetForm() {
     var khung = document.getElementById('khungThemSanPham');
     var tr = khung.getElementsByTagName('tr');
 
@@ -364,17 +443,12 @@ function themSanPham() {
     tr[18].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
     tr[19].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
     tr[20].getElementsByTagName('td')[1].getElementsByTagName('input')[0].value ="";
-
-    alert('Thêm sản phẩm "' + newSp.name + '" thành công.');
-    document.getElementById('khungThemSanPham').style.transform = 'scale(0)';
-
-    refreshTableSanPham();
 }
 
 function autoMaSanPham(company) {
     // hàm tự tạo mã cho sản phẩm mới
-    var autoMaSP = list_products.length+1;
-    document.getElementById('maspThem').value = "SP" + autoMaSP;
+    var autoMaSP = list_products[list_products.length-1].MaSP;
+    document.getElementById('maspThem').value = parseInt(autoMaSP)+1;
 }
 
 // Xóa
@@ -448,6 +522,9 @@ function xoaSanPham(trangthai, masp, tensp) {
 
 // Sửa
 function suaSanPham(masp) {
+    var Sp = layThongTinSanPhamTuTable('khungSuaSanPham');
+    console.log(Sp);
+    return false;
 }
 
 function addKhungSuaSanPham(masp) {
@@ -459,14 +536,14 @@ function addKhungSuaSanPham(masp) {
     }
 
     var s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
-    <form method="post" action="" enctype="multipart/form-data" onsubmit="return (suaSanPham('` + sp.MaSP + `'))">
+    <form method="post" action="" enctype="multipart/form-data" onsubmit="return suaSanPham('` + sp.MaSP + `')">
         <table class="overlayTable table-outline table-content table-header">
             <tr>
                 <th colspan="2">` + sp.TenSP + `</th>
             </tr>
             <tr>
                 <td>Mã sản phẩm:</td>
-                <td><input type="text" id="maspSua" name="maspSua" value="` + sp.MaSP + `"></td>
+                <td><input disabled="disabled" type="text" id="maspSua" name="maspSua" value="` + sp.MaSP + `"></td>
             </tr>
             <tr>
                 <td>Tên sẩn phẩm:</td>
@@ -477,53 +554,49 @@ function addKhungSuaSanPham(masp) {
                 <td>
                     <select name="chonCompany" onchange="autoMaSanPham(this.value)">`
 
-        var company = ["Apple", "Oppo", "Samsung", "Philips", "Nokia", "Blackbery", "Huawei", "Vivo", "Xiaomi"];
-        var i = 1;
-        for (var c of company) {
-            var masp = "LSP"+ i++;
-            if (sp.MaLSP == masp)
-                s += (`<option value="` + sp.company + `" selected="selected">` + c + `</option>`);
-            else s += (`<option value="` + masp + `">` + c + `</option>`);
-        }
-
-        s += `
-                    </select>
+                    var company = ["Apple", "Coolpad", "HTC", "Itel", "Mobell", "Vivo", "Oppo", "SamSung", "Phillips", "Nokia", "Motorola", "Motorola", "Xiaomi"];
+                    var i = 1;
+                    for (var c of company) {
+                        var masp = i++;
+                        if (sp.MaLSP == masp)
+                            s += (`<option value="` + sp.MaLSP + `" selected="selected">` + c + `</option>`);
+                        else s += (`<option value="` + masp + `">` + c + `</option>`);
+                    }
+                    s+=`</select>
                 </td>
             </tr>
             <?php
-                            if (isset($_POST["submit"]))
-                            {
-                                if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
+                            $tenfilemoi= "";
+                                if (isset($_POST["submit"]))
                                 {
-                                    if ($_FILES["file"]["error"] > 0)
+                                    if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
                                     {
-                                        echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau");
-                                    }
-                                    else
-                                    {
-                                        unlink("img/products/`+sp.HinhAnh+`");
-                                        $tmp = explode(".", $_FILES["hinhanh"]["name"]);
-                                        $duoifile = end($tmp);
-                                        $masp = `+sp.MaSP+`;
-                                        $tenfilemoi = $masp . "." . $duoifile;
-                                        move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], "img/products/" . $tenfilemoi);
-
+                                        if ($_FILES["file"]["error"] > 0 || file_exists("img/products/" . basename($_FILES["hinhanh"]["name"]))) 
+                                        {
+                                            echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau)");
+                                        }
+                                        else
+                                        {
+                                            /*$tmp = explode(".", $_FILES["hinhanh"]["name"]);
+                                            $duoifile = end($tmp);
+                                            $masp = $_POST['maspThem'];
+                                            $tenfilemoi = $masp . "." . $duoifile;*/
+                                            $file = $_FILES["hinhanh"]["name"];
+                                            $tenfilemoi = "img/products/" .$_FILES["hinhanh"]["name"];
+                                            move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], $tenfilemoi);
+                                        }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                $tenfilemoi = `+sp.HinhAnh+`;
-                            }
+                        // require_once ("php/uploadfile.php");
                         ?>
             <tr>
-                <td>Hình:</td>
-                <td>
-                    <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                    <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem')">
-                    <input style="display: none;" type="text" id="hinhanh" value="<?php echo $tenfilemoi; ?>">
-                </td>
-            </tr>
+                            <td>Hình:</td>
+                            <td>
+                                <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
+                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                                <input style="display: none;" type="text" id="hinhanh" value="">
+                            </td>
+                        </tr>
             <tr>
                 <td>Giá tiền:</td>
                 <td><input type="text" value="` + sp.DonGia + `"></td>
@@ -539,18 +612,20 @@ function addKhungSuaSanPham(masp) {
             <tr>
                 <td>Khuyến mãi:</td>
                 <td>
-                    <select>
-                        <option value="">Không</option>
-                        <option value="tragop" ` + (sp.MaKM == 'tragop' ? 'selected' : '') + `>Trả góp</option>
-                        <option value="giamgia" ` + (sp.MaKM == 'giamgia' ? 'selected' : '') + `>Giảm giá</option>
-                        <option value="giareonline" ` + (sp.MaKM == 'giareonline' ? 'selected' : '') + `>Giá rẻ online</option>
-                        <option value="moiramat" ` + (sp.MaKM== 'moiramat' ? 'selected' : '') + `>Mới ra mắt</option>
+                    <select name="chonKhuyenMai" onchange="showGTKM()">`
+                            var i = 1;
+                            s += (`<option selected="selected" value="` + i++ + `">Không</option>`);
+                            s += (`<option value="` + i++ + `">Giảm giá</option>`);
+                            s += (`<option value="` + i++ + `">Giá rẻ online</option>`);
+                            s += (`<option value="` + i++ + `">Trả góp</option>`);
+                            s += (`<option value="` + i++ + `">Mới ra mắt</option>`);
+                        s+=`</script>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>Giá trị khuyến mãi:</td>
-                <td><input type="text" value=""></td>
+                <td><input id="giatrikm" type="text" value="0"></td>
             </tr>
             <tr>
                 <th colspan="2">Thông số kĩ thuật</th>
@@ -592,20 +667,22 @@ function addKhungSuaSanPham(masp) {
                 <td><input type="text" value="` + sp.Pin + `"></td>
             </tr>
             <tr>
-                <td colspan="2"  class="table-footer"> <button name="submit" onclick="suaSanPham('` + sp.MaSP + `')">SỬA</button> </td>
+                <td colspan="2"  class="table-footer"> <button name="submit">SỬA</button> </td>
             </tr>
         </table>`
+
     var khung = document.getElementById('khungSuaSanPham');
     khung.innerHTML = s;
     khung.style.transform = 'scale(1)';
 }
 
 // Cập nhật ảnh sản phẩm
-function capNhatAnhSanPham(files, id) {
+function capNhatAnhSanPham(files, id, anh) {
     var url = '';
     if (files.length) url = window.URL.createObjectURL(files[0]);
 
     document.getElementById(id).src = url;
+    document.getElementById('hinhanh').value = anh;
 }
 
 // Sắp Xếp sản phẩm
@@ -624,7 +701,7 @@ function getValueOfTypeInTable_SanPham(tr, loai) {
         case 'stt':
             return Number(td[0].innerHTML);
         case 'masp':
-            return td[1].innerHTML.toLowerCase();
+            return Number(td[1].innerHTML);
         case 'ten':
             return td[2].innerHTML.toLowerCase();
         case 'gia':

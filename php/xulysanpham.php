@@ -55,7 +55,7 @@
                     'Pin' => $data['detail']['battery'],
                     'SoSao' => $data['star'],
                     'SoDanhGia' => $data['rateCount'],
-                    'TrangThai' => 0
+                    'TrangThai' => $data['TrangThai']
                 );
 
                 $spBUS = new SanPhamBUS();
