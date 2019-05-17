@@ -79,7 +79,7 @@ function themVaoGioHang(masp, tensp) {
         if(user && user.TrangThai == 0) {
             Swal.fire({
                 title: 'Tài Khoản Bị Khóa!',
-                text: 'Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!',
+                text: 'Tài khoản của bạn hiện đang bị khóa nên không thể thêm hàng!',
                 type: 'error',
                 grow: 'row',
                 confirmButtonText: 'Trở về',
@@ -103,19 +103,7 @@ function themVaoGioHang(masp, tensp) {
 
 
     }, (error) => {
-        // Swal.fire({
-        //     title: 'Xin chào!',
-        //     text: 'Bạn cần đăng nhập để mua hàng',
-        //     type: 'error',
-        //     grow: 'row',
-        //     confirmButtonText: 'Đăng nhập',
-        //     cancelButtonText: 'Trở về',
-        //     showCancelButton: true
-        // }).then((result) => {
-        //     if (result.value) {
-        //         showTaiKhoan(true);
-        //     }
-        // })
+       console.log(error.responseText)
     })
 
     return false;

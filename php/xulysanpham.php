@@ -25,6 +25,27 @@
             die (json_encode($sp));
             break;
 
+        case 'getlistbyids':
+            $listID = $_POST['listID'];
+            $sql = "SELECT * FROM SanPham WHERE ";
+
+            forEach($listID as $id) {
+                $sql .= "MaSP=".$id." OR ";
+            }
+            $sql.=" 1=0";
+
+            $result = (new DB_driver())->get_list($sql);
+            
+            for($i = 0; $i < sizeof($result); $i++) {
+                // thêm thông tin khuyến mãi
+                $result[$i]["KM"] = (new KhuyenMaiBUS())->select_by_id('*', $result[$i]['MaKM']);
+                // thêm thông tin hãng
+                $result[$i]["LSP"] = (new LoaiSanPhamBUS())->select_by_id('*', $result[$i]['MaLSP']);
+            }
+
+            die (json_encode($result));
+            break;
+
         case 'phanTich_Filters':
             phanTich_Filters();
             break;
@@ -82,7 +103,7 @@
 
     function phanTich_Filters() {
         $filters = $_POST['filters'];
-        $ori = "SELECT * FROM SanPham WHERE ";
+        $ori = "SELECT * FROM SanPham WHERE TrangThai=1 AND SoLuong>0 AND ";
         $sql = $ori;
 
         // $page = null;
@@ -104,7 +125,7 @@
                     $giaDen = (int)$prices[1];
 
                     // nếu giá đến = 0 thì cho giá đến = 100 triệu
-                    if($giaDen == 0) $giaDen = 1000000000; 
+                    if($giaDen == 0) $giaDen = 1000000000;
 
                     $sql .= ($sql==$ori?"":" AND ") . " DonGia >= $giaTu AND DonGia <= $giaDen";
                     break;
@@ -146,7 +167,7 @@
 
         // sort phải để cuối
         if($tenThanhPhanCanSort != null && $typeSort != null) {
-            $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ where
+            // $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ where
             $sql .= " ORDER BY $tenThanhPhanCanSort $typeSort";
         }
 
