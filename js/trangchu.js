@@ -538,7 +538,9 @@ function craeteRemoveFilters(type) {
 
 function removeAllFilters() {
     CurrentFilters = [];
-    // hienThiKhungSanPhamMacDinh();
+    if($('.contain-khungSanPham').html() == "") {
+        hienThiKhungSanPhamMacDinh();
+    }
     pushState([]);
     $(".choosedFilter").css("display", "none");
     $(".contain-khungSanPham").css("display", "block");
@@ -662,7 +664,7 @@ function filterProductsName(ele) {
 
     for (var i = 0; i < listLi.length; i++) {
         if (getNameFromLi(listLi[i]).toUpperCase().indexOf(filter) > -1 &&
-            soLuong < soLuongSanPhamMaxTrongMotTrang) {
+            soLuong < ProductsPerPage) {
             showLi(listLi[i]);
             coSanPham = true;
             soLuong++;

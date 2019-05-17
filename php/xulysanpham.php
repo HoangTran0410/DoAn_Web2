@@ -105,6 +105,8 @@
         $filters = $_POST['filters'];
         $ori = "SELECT * FROM SanPham WHERE TrangThai=1 AND SoLuong>0 AND ";
         $sql = $ori;
+        $db = new DB_driver();
+        $db->connect();
 
         // $page = null;
         $tenThanhPhanCanSort = null;
@@ -116,6 +118,7 @@
                 case 'search':
                     $dauBang[1] = explode("+", $dauBang[1]);
                     $dauBang[1] = join(" ", $dauBang[1]);
+                    $dauBang[1] = mysqli_escape_string($db->__conn, $dauBang[1]);
                     $sql .= ($sql==$ori?"":" AND ") . " TenSP LIKE '%$dauBang[1]%' ";
                     break;
 
@@ -181,7 +184,8 @@
         // }
 
         // chạy sql
-        $result = (new DB_driver())->get_list($sql);
+        $result = $db->get_list($sql);
+        $db->dis_connect();
 
         for($i = 0; $i < sizeof($result); $i++) {
             // thêm thông tin khuyến mãi
