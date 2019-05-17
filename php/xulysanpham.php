@@ -170,7 +170,7 @@
 
         // sort phải để cuối
         if($tenThanhPhanCanSort != null && $typeSort != null) {
-            // $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ where
+            $sql .= ($sql==$ori?" 1=1 ":""); // fix lỗi dư chữ AND 
             $sql .= " ORDER BY $tenThanhPhanCanSort $typeSort";
         }
 

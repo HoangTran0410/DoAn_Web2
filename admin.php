@@ -40,14 +40,14 @@
     <aside class="sidebar">
         <ul class="nav">
             <li class="nav-title">MENU</li>
-            <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Home</a></li>
+            <!-- <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Home</a></li> -->
             <li class="nav-item" onclick="refreshTableSanPham()"><a class="nav-link"><i class="fa fa-th-large"></i> Sản Phẩm</a></li>
-            <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
+            <li class="nav-item" onclick="refreshTableDonHang()"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
             <li class="nav-item" onclick="refreshTableKhachHang()"><a class="nav-link"><i class="fa fa-address-book-o"></i> Khách Hàng</a></li>
             <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
             <hr>
             <li class="nav-item">
-                <a href="index.php" class="nav-link" onclick="logOutAdmin(); return true;">
+                <a class="nav-link" id="btnDangXuat">
                     <i class="fa fa-arrow-left"></i>
                     Đăng xuất
                 </a>

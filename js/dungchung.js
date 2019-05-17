@@ -248,7 +248,7 @@ function checkDangNhap() {
     return false;
 }
 
-function checkDangXuat() {
+function checkDangXuat(onSuccess) {
     Swal.fire({
         type: 'question',
         title: 'Xác nhận',
@@ -277,6 +277,8 @@ function checkDangXuat() {
                             setListGioHang(null);
                             animateCartNumber();
                         });
+
+                        if(onSuccess) onSuccess();
 
                     } else {
                         Swal.fire({
