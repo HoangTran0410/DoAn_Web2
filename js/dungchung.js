@@ -15,9 +15,7 @@ function copyObject(o) {
 
 // ================ Cart Number + Thêm vào Giỏ hàng ======================
 function getListGioHang() {
-    var list = localStorage.getItem('giohang');
-    if(!list) return null;
-    return JSON.parse(list); 
+    return JSON.parse(localStorage.getItem('giohang')); 
 }
 
 function setListGioHang(list) {
