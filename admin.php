@@ -130,14 +130,14 @@
 
             <div id="khungThemSanPham" class="overlay">
                 <span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
-                <form method="post" action="" enctype="multipart/form-data" onsubmit="return (themSanPham())">
+                <form method="post" action="" enctype="multipart/form-data" onsubmit="return themSanPham();">
                     <table class="overlayTable table-outline table-content table-header">
                         <tr>
                             <th colspan="2">Thêm Sản Phẩm</th>
                         </tr>
                         <tr>
                             <td>Mã sản phẩm:</td>
-                            <td><input type="text" id="maspThem" name="maspThem"></td>
+                            <td><input disabled="disabled" type="text" id="maspThem" name="maspThem"></td>
                         </tr>
                         <tr>
                             <td>Tên sản phẩm:</td>
@@ -148,42 +148,41 @@
                             <td>
                                 <select name="chonCompany" onchange="autoMaSanPham(this.value)">
                                     <script>
-                                        var i = 1;
-                                        var company = ["Apple", "Oppo", "Samsung", "Philips", "Nokia", "Blackbery", "Huawei", "Vivo", "Xiaomi"];
-                                        for (var c of company) {
-                                            document.writeln(`<option value="` + 'LSP' + i++ + `">` + c + `</option>`);
-                                        }
+                                        ajaxLoaiSanPham();
                                     </script>
                                 </select>
                             </td>
                         </tr>
                         <?php
-                            if (isset($_POST["submit"]))
-                            {
-                                if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
+                            $tenfilemoi= "";
+                                if (isset($_POST["submit"]))
                                 {
-                                    if ($_FILES["file"]["error"] > 0)
+                                    if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
                                     {
-                                        echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau");
-                                    }
-                                    else
-                                    {
-                                        $tmp = explode(".", $_FILES["hinhanh"]["name"]);
-                                        $duoifile = end($tmp);
-                                        $masp = $_POST['maspThem'];
-                                        $tenfilemoi = $masp . "." . $duoifile;
-                                        move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], "img/products/" . $tenfilemoi);
-
+                                        if ($_FILES["file"]["error"] > 0 || file_exists("img/products/" . basename($_FILES["hinhanh"]["name"]))) 
+                                        {
+                                            echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau)");
+                                        }
+                                        else
+                                        {
+                                            /*$tmp = explode(".", $_FILES["hinhanh"]["name"]);
+                                            $duoifile = end($tmp);
+                                            $masp = $_POST['maspThem'];
+                                            $tenfilemoi = $masp . "." . $duoifile;*/
+                                            $file = $_FILES["hinhanh"]["name"];
+                                            $tenfilemoi = "img/products/" .$_FILES["hinhanh"]["name"];
+                                            move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], $tenfilemoi);
+                                        }
                                     }
                                 }
-                            }
+                        // require_once ("php/uploadfile.php");
                         ?>
                         <tr>
                             <td>Hình:</td>
                             <td>
                                 <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem')">
-                                <input style="display: none;" type="text" id="hinhanh" value="<?php echo $tenfilemoi; ?>">
+                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                                <input style="display: none;" type="text" id="hinhanh" value="">
                             </td>
                         </tr>
                         <tr>
@@ -205,18 +204,16 @@
                         <tr>
                             <td>Khuyến mãi:</td>
                             <td>
-                                <select>
-                                    <option selected="selected" value="">Không</option>
-                                    <option value="tragop">Trả góp</option>
-                                    <option value="giamgia">Giảm giá</option>
-                                    <option value="giareonline">Giá rẻ online</option>
-                                    <option value="moiramat">Mởi ra mắt</option>
+                                <select name="chonKhuyenMai" onchange="showGTKM()">
+                                    <script type="text/javascript">
+                                        ajaxKhuyenMai();
+                                    </script>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>Giá trị khuyến mãi:</td>
-                            <td><input type="text"></td>
+                            <td><input id="giatrikm" type="text"></td>
                         </tr>
                         <tr>
                             <th colspan="2">Thông số kĩ thuật</th>

@@ -56,6 +56,7 @@ class DB_driver
         $sql = 'INSERT INTO ' . $table . ' VALUES (' . trim($value_list, ',') . ')';
 
         return mysqli_query($this->__conn, $sql);
+        //return $sql;
     }
 
     // Hàm Update
