@@ -90,6 +90,11 @@ class HoaDonBUS extends DB_business
     {
         $this->setTable("HoaDon", "MaHD");
     }
+
+    function getHoaDonCuaNguoiDung($mand) {
+        $sql = "SELECT * FROM hoadon WHERE MaND=$mand";
+        $dsdh = (new HoaDonBUS())->get_list($sql);
+    }
 }
 
 // Lớp tài khoản
