@@ -270,8 +270,7 @@ function xacNhanThanhToan() {
 			dulieu: dulieu
 		},
 		success: function(data) {
-			setListGioHang([]);
-			capNhatMoiThu();
+			capNhatMoiThu([]);
 		},
 		error: function(e) {
 			console.log(e.responseText)
