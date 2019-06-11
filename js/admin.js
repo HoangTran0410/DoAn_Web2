@@ -1,22 +1,26 @@
 var TONGTIEN = 0;
 
 window.onload = function() {
-    // get data từ localstorage
-    // list_products = getListProducts() || list_products;
-    // adminInfo = getListAdmin() || adminInfo;
 
-    addEventChangeTab();
-
-    if (window.localStorage.getItem('admin')) {
-        //addTableProducts();
-        // addTableDonHang();
-        // addTableKhachHang();
-        // addThongKe();
-
-        openTab('Home')
-    } else {
-        document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
+    document.getElementById("btnDangXuat").onclick = function() {
+        checkDangXuat(()=>{
+            window.location.href = "login.php"
+        });
     }
+
+    getCurrentUser((user)=>{
+        if(user != null) {
+            if(user.MaQuyen != 1) {
+                addEventChangeTab();
+                addThongKe();
+                openTab('Home');
+            }
+        } else {
+            document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
+        }
+    }, (e)=> {
+        document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
+    });
 }
 
 function refreshTableSanPham() {
@@ -24,7 +28,7 @@ function refreshTableSanPham() {
         type: "POST",
         url: "php/xulysanpham.php",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             request: "getall",
         },
@@ -38,13 +42,9 @@ function refreshTableSanPham() {
                 title: "Lỗi lấy dữ liệu sản phẩm (admin.js > refreshTableSanPham)",
                 html: e.responseText
             });
+            console.log(e.responseText)
         }
     });
-}
-
-
-function logOutAdmin() {
-    window.localStorage.removeItem('admin');
 }
 
 function addChart(id, chartOption) {
@@ -112,7 +112,7 @@ function ajaxLoaiSanPham() {
         type: "POST",
         url: "php/xulyloaisanpham.php",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             request: "getall"
         },
@@ -139,7 +139,7 @@ function ajaxKhuyenMai() {
         type: "POST",
         url: "php/xulykhuyenmai.php",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             request: "getall"
         },
@@ -396,7 +396,7 @@ function themSanPham() {
         type: "POST",
         url: "php/xulysanpham.php",
         dataType: "json",
-        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
         data: {
             request: "add",
             dataAdd: newSp
@@ -466,7 +466,7 @@ function xoaSanPham(trangthai, masp, tensp) {
                     type: "POST",
                     url: "php/xulysanpham.php",
                     dataType: "json",
-                    timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+                    // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
                     data: {
                         request: "hide",
                         id: masp,
@@ -498,7 +498,7 @@ function xoaSanPham(trangthai, masp, tensp) {
                 type: "POST",
                 url: "php/xulysanpham.php",
                 dataType: "json",
-                timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+                // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
                 data: {
                     request: "delete",
                     maspdelete: masp
@@ -714,30 +714,51 @@ function getValueOfTypeInTable_SanPham(tr, loai) {
 
 // ========================= Đơn Hàng ===========================
 // Vẽ bảng
-function addTableDonHang() {
+
+function refreshTableDonHang() {
+    $.ajax({
+        type: "POST",
+        url: "php/xulydonhang.php",
+        dataType: "json",
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getall",
+        },
+        success: function(data, status, xhr) {
+            addTableDonHang(data);
+            console.log(data);
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
+                html: e.responseText
+            });
+        }
+    });
+}
+function addTableDonHang(data) {
     var tc = document.getElementsByClassName('donhang')[0].getElementsByClassName('table-content')[0];
     var s = `<table class="table-outline hideImg">`;
 
-    var listDH = getListDonHang();
-
     TONGTIEN = 0;
-    for (var i = 0; i < listDH.length; i++) {
-        var d = listDH[i];
+    for (var i = 0; i < data.length; i++) {
+        var d = data[i];
         s += `<tr>
             <td style="width: 5%">` + (i + 1) + `</td>
-            <td style="width: 13%">` + d.ma + `</td>
-            <td style="width: 7%">` + d.khach + `</td>
-            <td style="width: 20%">` + d.sp + `</td>
-            <td style="width: 15%">` + d.tongtien + `</td>
-            <td style="width: 10%">` + d.ngaygio + `</td>
-            <td style="width: 10%">` + d.tinhTrang + `</td>
+            <td style="width: 13%">` + d.MaHD + `</td>
+            <td style="width: 7%">` + d.MaND + `</td>
+            <td style="width: 20%">` + /*d.sp*/ + `</td>
+            <td style="width: 15%">` + d.TongTien + `</td>
+            <td style="width: 10%">` + d.NgayLap + `</td>
+            <td style="width: 10%">` + d.TinhTrang + `</td>
             <td style="width: 10%">
                 <div class="tooltip">
-                    <i class="fa fa-check" onclick="duyet('` + d.ma + `', true)"></i>
+                    <i class="fa fa-check" onclick="duyet('` + d.MaHD + `', true)"></i>
                     <span class="tooltiptext">Duyệt</span>
                 </div>
                 <div class="tooltip">
-                    <i class="fa fa-remove" onclick="duyet('` + d.ma + `', false)"></i>
+                    <i class="fa fa-remove" onclick="duyet('` + d.MaHD + `', false)"></i>
                     <span class="tooltiptext">Hủy</span>
                 </div>
                 
@@ -895,31 +916,82 @@ function getValueOfTypeInTable_DonHang(tr, loai) {
 
 // ====================== Khách Hàng =============================
 // Vẽ bảng
-function addTableKhachHang() {
+function refreshTableKhachHang() {
+    $.ajax({
+        type: "POST",
+        url: "php/xulykhachhang.php",
+        dataType: "json",
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "getall",
+        },
+        success: function(data, status, xhr) {
+            addTableKhachHang(data);
+            //console.log(data);
+        },
+        error: function(e) {
+            Swal.fire({
+                type: "error",
+                title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
+                html: e.responseText
+            });
+        }
+    });
+}
+
+function thayDoiTrangThaiND(inp, mand) {
+    var trangthai = (inp.checked?1:0);  
+    $.ajax({
+        type: "POST",
+        url: "php/xulykhachhang.php",
+        dataType: "json",
+        // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+        data: {
+            request: "changeTT",
+            key: mand,
+            trangThai: trangthai
+        },
+        success: function(data, status, xhr) {
+            //list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
+            // refreshTableKhachHang();
+            //console.log(data);
+        },
+        error: function(e) {
+            // Swal.fire({
+            //     type: "error",
+            //     title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
+            //     html: e.responseText
+            // });
+            console.log(e.responseText);
+        }
+    });
+}
+
+
+function addTableKhachHang(data) {
     var tc = document.getElementsByClassName('khachhang')[0].getElementsByClassName('table-content')[0];
     var s = `<table class="table-outline hideImg">`;
 
-    var listUser = getListUser();
 
+    for (var i = 0; i < data.length; i++) {
+        var u = data[i];
+        console.log(u.TrangThai)
 
-    for (var i = 0; i < listUser.length; i++) {
-        var u = listUser[i];
         s += `<tr>
-            <td style="width: 5%">` + (i + 1) + `</td>
-            <td style="width: 15%">` + u.ho + ' ' + u.ten + `</td>
-            <td style="width: 20%">` + u.email + `</td>
-            <td style="width: 20%">` + u.username + `</td>
-            <td style="width: 10%">` + u.pass + `</td>
-            <td style="width: 10%">
+            <td >` + (i + 1) + `</td>
+            <td >` + u.Ho + ' ' + u.Ten + `</td>
+            <td >` + u.Email + `</td>
+            <td >` + u.TaiKhoan + `</td>           
+            <td >
                 <div class="tooltip">
                     <label class="switch">
-                        <input type="checkbox" ` + (u.off ? '' : 'checked') + ` onclick="voHieuHoaNguoiDung(this, '` + u.username + `')">
+                        <input type="checkbox" `+(u.TrangThai==1?"checked":"")+` onclick="thayDoiTrangThaiND(this, '`+u.MaND+`')">
                         <span class="slider round"></span>
                     </label>
-                    <span class="tooltiptext">` + (u.off ? 'Mở' : 'Khóa') + `</span>
+                    <span class="tooltiptext">` + (u.TrangThai ?    'Mở' : 'Khóa') + `</span>
                 </div>
                 <div class="tooltip">
-                    <i class="fa fa-remove" onclick="xoaNguoiDung('` + u.username + `')"></i>
+                    <i class="fa fa-remove" onclick="xoaNguoiDung('` + u.MaND + `')"></i>
                     <span class="tooltiptext">Xóa</span>
                 </div>
             </td>
@@ -959,39 +1031,48 @@ function openThemNguoiDung() {
 }
 
 // vô hiệu hóa người dùng (tạm dừng, không cho đăng nhập vào)
-function voHieuHoaNguoiDung(inp, taikhoan) {
-    var listUser = getListUser();
-    for (var u of listUser) {
-        if (u.username == taikhoan) {
-            u.off = !inp.checked;
-            setListUser(listUser);
+function voHieuHoaNguoiDung(TrangThai) {
+    if (TrangThai == 1)
+    {
 
-            var c_user = getCurrentUser();
-            if (c_user.username == taikhoan) {
-                setCurrentUser(u);
-            }
-            break;
-        }
     }
     var span = inp.parentElement.nextElementSibling;
     span.innerHTML = (inp.checked ? 'Khóa' : 'Mở');
 }
 
 // Xóa người dùng
-function xoaNguoiDung(taikhoan) {
-    if (window.confirm('Xác nhận xóa ' + taikhoan + '? \nMọi dữ liệu về ' + taikhoan + ' sẽ mất! Bao gồm cả những đơn hàng của ' + taikhoan)) {
-        var listuser = getListUser();
-        for (var i = 0; i < listuser.length; i++) {
-            if (listuser[i].username == taikhoan) {
-                listuser.splice(i, 1); // xóa
-                setListUser(listuser); // lưu thay đổi
-                localStorage.removeItem('CurrentUser'); // đăng xuất khỏi tài khoản hiện tại (current user)
-                addTableKhachHang(); // vẽ lại bảng khách hàng
-                addTableDonHang(); // vẽ lại bảng đơn hàng
-                return;
-            }
+function xoaNguoiDung(mand) { 
+    Swal.fire({
+        title: "Bạn có chắc muốn xóa?",
+        type: "question",
+        showCancelButton: true,
+        cancelButtonText: "Hủy"
+    }).then((result)=>{
+        if(result.value) {
+            $.ajax({
+                type: "POST",
+                url: "php/xulykhachhang.php",
+                dataType: "json",
+                // timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+                data: {
+                    request: "delete",
+                    mand: mand
+                },
+                success: function(data, status, xhr) {
+                    refreshTableKhachHang();
+                    //console.log(data);
+                },
+                error: function(e) {
+                    // Swal.fire({
+                    //     type: "error",
+                    //     title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
+                    //     html: e.responseText
+                    // });
+                    console.log(e.responseText);
+                }
+            });
         }
-    }
+    })
 }
 
 // Sắp xếp

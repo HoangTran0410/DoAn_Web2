@@ -67,7 +67,6 @@
 			"MaND" => "",
 			"Ho" => $xuli_ho,
 			"Ten" => $xuli_ten,
-			"GioiTinh" => "",
 			"SDT" => $xuli_sdt,
 			"Email" => $xuli_email,
 			"DiaChi" => $xuli_diachi,

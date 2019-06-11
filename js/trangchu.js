@@ -86,7 +86,7 @@ window.onload = function() {
 // ============================== web2 ===========================
 function hienThiKhungSanPhamMacDinh() {
 
-    $('contain-khungSanPham').html('');
+    $('.contain-khungSanPham').html('');
 
     var soLuong = (window.innerWidth < 1200 ? 4 : 5); // màn hình nhỏ thì hiển thị 4 sp, to thì hiển thị 5
 
@@ -409,7 +409,7 @@ function getFilterFromURL() { // tách và trả về mảng bộ lọc trên ur
 }
 
 // Thêm sản phẩm vào các khung sản phẩm
-function addKhungSanPham(tenKhung, color, filter, len) {
+function addKhungSanPham(tenKhung, color, filters, len) {
     // convert color to code
     var gradient = `background-image: linear-gradient(120deg, ` + color[0] + ` 0%, ` + color[1] + ` 50%, ` + color[0] + ` 100%);`
     var borderColor = `border-color: ` + color[0];
@@ -421,7 +421,7 @@ function addKhungSanPham(tenKhung, color, filter, len) {
                 <div class="listSpTrongKhung flexContain" data-tenkhung="` + tenKhung + `">
                     <div class="loader"></div>
                 </div>
-                <a class="xemTatCa" href="index.php?` + filter.join('&') + `" style="` + borderA + `" data-tenkhung="` + tenKhung + `">
+                <a class="xemTatCa" onclick='filtersAjax(`+JSON.stringify(filters)+`)' style="` + borderA + `" data-tenkhung="` + tenKhung + `">
                 </a>
               </div> <hr>`;
 
@@ -430,7 +430,7 @@ function addKhungSanPham(tenKhung, color, filter, len) {
     document.getElementsByClassName('contain-khungSanPham')[0].innerHTML += s;
 
     // lấy dữ liệu cho vào khung
-    filtersAjax(filter, (data) => {
+    filtersAjax(filters, (data) => {
         // thêm các <li> (sản phẩm) vào tag
         var s1 = "";
         var spResult = data;
@@ -538,7 +538,9 @@ function craeteRemoveFilters(type) {
 
 function removeAllFilters() {
     CurrentFilters = [];
-    hienThiKhungSanPhamMacDinh();
+    if($('.contain-khungSanPham').html() == "") {
+        hienThiKhungSanPhamMacDinh();
+    }
     pushState([]);
     $(".choosedFilter").css("display", "none");
     $(".contain-khungSanPham").css("display", "block");
@@ -662,7 +664,7 @@ function filterProductsName(ele) {
 
     for (var i = 0; i < listLi.length; i++) {
         if (getNameFromLi(listLi[i]).toUpperCase().indexOf(filter) > -1 &&
-            soLuong < soLuongSanPhamMaxTrongMotTrang) {
+            soLuong < ProductsPerPage) {
             showLi(listLi[i]);
             coSanPham = true;
             soLuong++;

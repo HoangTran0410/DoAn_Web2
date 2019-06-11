@@ -321,16 +321,16 @@ function addContainTaiKhoan()
                             </div> <!-- /sdt -->
                             <div class="field-wrap">
                                 <label>
-                                    Email<span class="req"></span>
+                                    Email<span class="req">*</span>
                                 </label>
-                                <input name="email" id="email" type="email" autocomplete="off" />
+                                <input name="email" id="email" type="email" required autocomplete="off" />
                             </div> <!-- /email -->
                         </div>
                         <div class="field-wrap">
                             <label>
-                                Địa chỉ<span class="req"></span>
+                                Địa chỉ<span class="req">*</span>
                             </label>
-                            <input name="diachi" id="diachi" type="text" autocomplete="off" />
+                            <input name="diachi" id="diachi" type="text" required autocomplete="off" />
                         </div> <!-- /user name -->
                         <div class="field-wrap">
                             <label>

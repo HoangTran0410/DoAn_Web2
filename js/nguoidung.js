@@ -9,25 +9,46 @@ window.onload = function () {
     var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
     for (var t of tags) addTags(t, "index.php?search=" + t);
 
-    if (currentUser) {
-        // cập nhật từ list user, do trong admin chỉ tác động tới listuser
-        var listUser = getListUser();
-        for (var u of listUser) {
-            if (equalUser(currentUser, u)) {
-                currentUser = u;
-                setCurrentUser(u);
-            }
-        }
+    getCurrentUser((data) => {
+        if(data) {
 
-        addTatCaDonHang(currentUser); // hàm này cần chạy trước để tính được tổng tiền tất cả đơn hàng 
-        addInfoUser(currentUser);
-    
-    } else {
-        var warning = `<h2 style="color: red; font-weight:bold; text-align:center; font-size: 2em; padding: 50px;">
+            $.ajax({
+                type: "GET",
+                url: "php/tabledonhang.php",
+                success: function(data) {
+                    $(".listDonHang").html(data);
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                }
+            })
+
+        } else {
+            var warning = `<h2 style="color: red; font-weight:bold; text-align:center; font-size: 2em; padding: 50px;">
                             Bạn chưa đăng nhập !!
                         </h2>`;
-        document.getElementsByClassName('infoUser')[0].innerHTML = warning;
-    }
+            document.getElementsByClassName('infoUser')[0].innerHTML = warning;
+        }
+
+    }, (e)=> {
+        console.log(e.responseText);
+    })
+}
+
+function xemChiTiet(mahd) {
+    $.ajax({
+        type: "GET",
+        url: "php/tablechitietdonhang.php",
+        data: {
+            mahd: mahd
+        },
+        success: function(data) {
+            $("#chitietdonhang").html(data);
+        },
+        error: function(e) {
+            console.log(e.responseText);
+        }
+    });
 }
 
 // Phần Thông tin người dùng

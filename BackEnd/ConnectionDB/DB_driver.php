@@ -3,7 +3,7 @@
 class DB_driver
 {
     // Biến lưu trữ kết nối
-    private $__conn,
+    public $__conn,
         $localhost = "localhost",
         $user = "root",
         $pass = "",

@@ -263,39 +263,6 @@ function createComment(name, value, star, time) {
             </div>`;
 }
 
-Date.prototype.toShortFormat = function() {
-    // var month_names = ["Jan", "Feb", "Mar",
-    //     "Apr", "May", "Jun",
-    //     "Jul", "Aug", "Sep",
-    //     "Oct", "Nov", "Dec"
-    // ];
-    var day = this.getDate();
-    var month_index = this.getMonth();
-    var year = this.getFullYear();
-
-    var second = this.getSeconds();
-    var minute = this.getMinutes();
-    var hour = this.getHours();
-
-    return day + "/" + (month_index+1) + "/" + year + " " + hour + ":" + minute;
-}
-
-function twoDigits(d) {
-    if(0 <= d && d < 10) return "0" + d.toString();
-    if(-10 < d && d < 0) return "-0" + (-1*d).toString();
-    return d.toString();
-}
-
-/**
- * …and then create the method to output the date string as desired.
- * Some people hate using prototypes this way, but if you are going
- * to apply this to more than one Date object, having it as a prototype
- * makes sense.
- **/
-Date.prototype.toMysqlFormat = function() {
-    return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
-};
-
 /*// add hình
 function addSmallImg(img) {
     var newDiv = `<div class='item'>
