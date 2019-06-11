@@ -2,45 +2,78 @@ var currentuser; // user hiện tại, biến toàn cục
 window.onload = function () {
 	khoiTao();
 
-	// autocomplete cho khung tim kiem
-	autocomplete(document.getElementById('search-box'), list_products);
-
 	// thêm tags (từ khóa) vào khung tìm kiếm
 	var tags = ["Samsung", "iPhone", "Huawei", "Oppo", "Mobi"];
 	for (var t of tags) addTags(t, "index.php?search=" + t)
 
-	currentuser = getCurrentUser();
-	addProductToTable(currentuser);
+	// currentuser = getCurrentUser();
+	var listGioHang = getListGioHang();
+	initTableSanPham(listGioHang);
 }
 
-function addProductToTable(user) {
+function abc() {
+	for(var p of list) {
+		$.ajax({
+			type: "POST",
+	        url: "php/xulysanpham.php",
+	        dataType: "json",
+	        timeout: 1500, // sau 1.5 giây mà không phản hồi thì dừng => hiện lỗi
+	        data: {
+	            request: "getbyid",
+	            id: p.masp
+	        },
+	        success: function(data, status, xhr) {
+	            addSanPhamToTable(data);
+	        },
+	        error: function(e) {
+	            console.log('fail');
+	        }
+		})
+	}
+
+	var totalPrice = 0;
+		// 	s += `
+	// 		<tr>
+	// 			<td>` + (i + 1) + `</td>
+	// 			<td class="noPadding imgHide">
+	// 				<a target="_blank" href="chitietsanpham.php?` + p.name.split(' ').join('-') + `" title="Xem chi tiết">
+	// 					` + p.name + `
+	// 					<img src="` + p.img + `">
+	// 				</a>
+	// 			</td>
+	// 			<td class="alignRight">` + price + ` ₫</td>
+	// 			<td class="soluong" >
+	// 				<button onclick="giamSoLuong('` + masp + `')"><i class="fa fa-minus"></i></button>
+	// 				<input size="1" onchange="capNhatSoLuongFromInput(this, '` + masp + `')" value=` + soluongSp + `>
+	// 				<button onclick="tangSoLuong('` + masp + `')"><i class="fa fa-plus"></i></button>
+	// 			</td>
+	// 			<td class="alignRight">` + numToString(thanhtien) + ` ₫</td>
+	// 			<td style="text-align: center" >` + thoigian + `</td>
+	// 			<td class="noPadding"> <i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(` + i + `)"></i> </td>
+	// 		</tr>
+	// 	`;
+	// 	// Chú ý nháy cho đúng ở giamsoluong, tangsoluong
+	// 	totalPrice += thanhtien;
+}
+
+function addSanPhamToTable(sp) {
+	
+}
+
+function initTableSanPham(list) {
 	var table = document.getElementsByClassName('listSanPham')[0];
 
 	var s = `
 		<tbody>
 			<tr>
-				<th>STT</th>
 				<th>Sản phẩm</th>
 				<th>Giá</th>
 				<th>Số lượng</th>
 				<th>Thành tiền</th>
-				<th>Thời gian</th>
 				<th>Xóa</th>
 			</tr>`;
 
-	if (!user) {
-		s += `
-			<tr>
-				<td colspan="7"> 
-					<h1 style="color:red; background-color:white; font-weight:bold; text-align:center; padding: 15px 0;">
-						Bạn chưa đăng nhập !!
-					</h1> 
-				</td>
-			</tr>
-		`;
-		table.innerHTML = s;
-		return;
-	} else if (user.products.length == 0) {
+	if (!list || list.length == 0) {
 		s += `
 			<tr>
 				<td colspan="7"> 
@@ -54,45 +87,24 @@ function addProductToTable(user) {
 		return;
 	}
 
-	var totalPrice = 0;
-	for (var i = 0; i < user.products.length; i++) {
-		var masp = user.products[i].ma;
-		var soluongSp = user.products[i].soluong;
-		var p = timKiemTheoMa(list_products, masp);
-		var price = (p.promo.name == 'giareonline' ? p.promo.value : p.price);
-		var thoigian = new Date(user.products[i].date).toLocaleString();
-		var thanhtien = stringToNum(price) * soluongSp;
+	s += `<tr>
+			<td>
+				<table id="tablesanpham" class="listSanPham">
 
-		s += `
-			<tr>
-				<td>` + (i + 1) + `</td>
-				<td class="noPadding imgHide">
-					<a target="_blank" href="chitietsanpham.php?` + p.name.split(' ').join('-') + `" title="Xem chi tiết">
-						` + p.name + `
-						<img src="` + p.img + `">
-					</a>
-				</td>
-				<td class="alignRight">` + price + ` ₫</td>
-				<td class="soluong" >
-					<button onclick="giamSoLuong('` + masp + `')"><i class="fa fa-minus"></i></button>
-					<input size="1" onchange="capNhatSoLuongFromInput(this, '` + masp + `')" value=` + soluongSp + `>
-					<button onclick="tangSoLuong('` + masp + `')"><i class="fa fa-plus"></i></button>
-				</td>
-				<td class="alignRight">` + numToString(thanhtien) + ` ₫</td>
-				<td style="text-align: center" >` + thoigian + `</td>
-				<td class="noPadding"> <i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(` + i + `)"></i> </td>
-			</tr>
-		`;
-		// Chú ý nháy cho đúng ở giamsoluong, tangsoluong
-		totalPrice += thanhtien;
-	}
+				</table>
+			</td>
+		</tr>`
 
 	s += `
 			<tr style="font-weight:bold; text-align:center">
-				<td colspan="4">TỔNG TIỀN: </td>
-				<td class="alignRight">` + numToString(totalPrice) + ` ₫</td>
-				<td class="thanhtoan" onclick="thanhToan()"> Thanh Toán </td>
-				<td class="xoaHet" onclick="xoaHet()"> Xóa hết </td>
+				<td colspan="3">TỔNG TIỀN: </td>
+				<td class="alignRight">` + numToString(0) + ` ₫</td>
+				<td class="thanhtoan" onclick="thanhToan()"><i class="fa fa-usd"></i> Thanh Toán </td>
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="4"></td>
+				<td class="xoaHet" onclick="xoaHet()"><i class="fa fa-ban"></i> Xóa hết </td>
 			</tr>
 		</tbody>
 	`;

@@ -215,24 +215,24 @@ function addChiTietSanPham()
             <div class="guiBinhLuan">
                 <div class="stars">
                     <form action="">
-                        <input class="star star-5" id="star-5" type="radio" name="star"/>
+                        <input class="star star-5" id="star-5" value="5" type="radio" name="star"/>
                         <label class="star star-5" for="star-5" title="Tuyệt vời"></label>
 
-                        <input class="star star-4" id="star-4" type="radio" name="star"/>
+                        <input class="star star-4" id="star-4" value="4" type="radio" name="star"/>
                         <label class="star star-4" for="star-4" title="Tốt"></label>
 
-                        <input class="star star-3" id="star-3" type="radio" name="star"/>
+                        <input class="star star-3" id="star-3" value="3" type="radio" name="star"/>
                         <label class="star star-3" for="star-3" title="Tạm"></label>
 
-                        <input class="star star-2" id="star-2" type="radio" name="star"/>
+                        <input class="star star-2" id="star-2" value="2" type="radio" name="star"/>
                         <label class="star star-2" for="star-2" title="Khá"></label>
 
-                        <input class="star star-1" id="star-1" type="radio" name="star"/>
+                        <input class="star star-1" id="star-1" value="1" type="radio" name="star"/>
                         <label class="star star-1" for="star-1" title="Tệ"></label>
                     </form>
                 </div>
-                <textarea id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></textarea>
-                <input id="btnBinhLuan" type="button" value="GỬI BÌNH LUẬN">
+                <textarea maxlength="250" id="inpBinhLuan" placeholder="Viết suy nghĩ của bạn vào đây..."></textarea>
+                <input id="btnBinhLuan" type="button" onclick="checkGuiBinhLuan()" value="GỬI BÌNH LUẬN">
             </div>
             <!-- <h2>Bình luận</h2> -->
             <div class="container-comment">
@@ -317,7 +317,7 @@ function addContainTaiKhoan()
                                 <label>
                                     Điện thoại<span class="req">*</span>
                                 </label>
-                                <input name="sdt" id="sdt" type="number" required autocomplete="off" />
+                                <input name="sdt" id="sdt" type="text" pattern="\d*" minlength="10" maxlength="12" required autocomplete="off" />
                             </div> <!-- /sdt -->
                             <div class="field-wrap">
                                 <label>

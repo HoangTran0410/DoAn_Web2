@@ -394,35 +394,6 @@ function addToWeb(p, ele, returnString) {
     products.innerHTML += newLi;
 }
 
-function promoToWeb(name, value) { // khuyen mai
-    if (!name || name == "Nothing") return "";
-    var contentLabel = "";
-    switch (name) {
-        case "GiamGia":
-            contentLabel = `<i class="fa fa-bolt"></i> Giảm ` + value.toLocaleString() + `&#8363;`;
-            break;
-
-        case "TraGop":
-            contentLabel = `Trả góp ` + value.toLocaleString() + `%`;
-            break;
-
-        case "GiaReOnline":
-            contentLabel = `Giá rẻ online`;
-            break;
-
-        case "MoiRaMat":
-            contentLabel = "Mới ra mắt";
-            break;
-    }
-
-    var label =
-        `<label class=` + name.toLowerCase() + `>
-            ` + contentLabel + `
-        </label>`;
-
-    return label;
-}
-
 // =========== Đọc dữ liệu từ url ============
 function getFilterFromURL() { // tách và trả về mảng bộ lọc trên url
     var fullLocation = window.location.href;
@@ -515,7 +486,7 @@ function pushState(filters) {
     }
     if(fsort != '') {
         str += fsort;
-    } else {
+    } else if(str.indexOf("&") >= 0) {
         str = str.slice(0, str.length - 1); // loại bỏ "&" dư thừa
     }
 
@@ -568,6 +539,7 @@ function craeteRemoveFilters(type) {
 function removeAllFilters() {
     CurrentFilters = [];
     hienThiKhungSanPhamMacDinh();
+    pushState([]);
     $(".choosedFilter").css("display", "none");
     $(".contain-khungSanPham").css("display", "block");
     $(".contain-products").css("display", "none");

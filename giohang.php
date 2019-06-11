@@ -40,7 +40,7 @@
 	<section style="min-height: 85vh">
 		<?php addHeader(); ?>
 
-		<table class="listSanPham"> </table>
+		<table class="listSanPham"></table>
 
 	</section> <!-- End Section -->
 
