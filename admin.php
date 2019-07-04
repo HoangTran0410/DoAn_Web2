@@ -181,7 +181,7 @@
                             <td>Hình:</td>
                             <td>
                                 <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem')">
                                 <input style="display: none;" type="text" id="hinhanh" value="">
                             </td>
                         </tr>
@@ -259,9 +259,134 @@
                         </tr>
                     </table>
                 </form>
-                <div style="display: none;" id="hinhanh"></div>
             </div>
-            <div id="khungSuaSanPham" class="overlay"></div>
+            <div id="khungSuaSanPham" class="overlay">
+                <span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
+                <form method="post" action="" enctype="multipart/form-data" onsubmit="return suaSanPham('');">
+                    <table class="overlayTable table-outline table-content table-header">
+                        <tr>
+                            <th colspan="2"></th>
+                        </tr>
+                        <tr>
+                            <td>Mã sản phẩm:</td>
+                            <td><input disabled="disabled" type="text" id="maspSua" name="maspSua" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Tên sẩn phẩm:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Hãng:</td>
+                            <td>
+                                <select name="chonCompanySua" onchange="autoMaSanPham(this.value)">
+
+                                </select>
+                            </td>
+                        </tr>
+                        <?php
+                            $tenfileSuamoi= "";
+                            if (isset($_POST["submit"]))
+                            {
+                                if (($_FILES["hinhanhSua"]["type"]=="image/jpeg") ||($_FILES["hinhanhSua"]["type"]=="image/png") || ($_FILES["hinhanhSua"]["type"]=="image/jpg") && ($_FILES["hinhanhSua"]["size"] < 50000) )
+                                {
+                                    if ($_FILES["file"]["error"] > 0 || file_exists("img/products/" . basename($_FILES["hinhanhSua"]["name"]))) 
+                                    {
+                                        echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau)");
+                                    }
+                                    else
+                                    {
+                                        //$tmp = explode(".", $_FILES["hinhanh"]["name"]);
+                                        //$duoifile = end($tmp);
+                                        //$masp = $_POST['maspThem'];
+                                        //$tenfilemoi = $masp . "." . $duoifile;
+                                        $file = $_FILES["hinhanhSua"]["name"];
+                                        $tenfileSuamoi = "img/products/" .$_FILES["hinhanhSua"]["name"];
+                                        move_uploaded_file( $_FILES["hinhanhSua"]["tmp_name"], $tenfileSuamoi);
+                                    }
+                                }
+                            }
+                        ?>
+                        <tr>
+                            <td>Hình:</td>
+                            <td>
+                                <img class="hinhDaiDien" id="anhDaiDienSanPhamSua" src="">
+                                <input type="file" name="hinhanhSua" onchange="capNhatAnhSanPhamSua(this.files, 'anhDaiDienSanPhamSua')">
+                                <input style="display: none;" type="text" id="hinhanhSua" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Giá tiền:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Số lượng:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Số sao:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Đánh giá:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Khuyến mãi:</td>
+                            <td>
+                                <select name="chonSuaKhuyenMai" onchange="showGTKMSua()">
+                                        
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Giá trị khuyến mãi:</td>
+                            <td><input id="giatrikmsua" type="text" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Thông số kĩ thuật</th>
+                        </tr>
+                        <tr>
+                            <td>Màn hình:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Hệ điều hành:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Camara sau:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Camara trước:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>CPU:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>RAM:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Bộ nhớ trong:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Thẻ nhớ:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td>Dung lượng Pin:</td>
+                            <td><input type="text" value=""></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"  class="table-footer"> <button name="submit">SỬA</button> </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
         </div> <!-- // sanpham -->
 
 
