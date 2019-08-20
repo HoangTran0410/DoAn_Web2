@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 16, 2019 lúc 09:53 PM
+-- Thời gian đã tạo: Th8 20, 2019 lúc 03:41 PM
 -- Phiên bản máy phục vụ: 10.1.37-MariaDB
 -- Phiên bản PHP: 7.2.12
 
@@ -34,6 +34,14 @@ CREATE TABLE `chitiethoadon` (
   `SoLuong` int(11) NOT NULL,
   `DonGia` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `chitiethoadon`
+--
+
+INSERT INTO `chitiethoadon` (`MaHD`, `MaSP`, `SoLuong`, `DonGia`) VALUES
+(1, 46, 1, 24990000),
+(1, 4, 10, 31990000);
 
 -- --------------------------------------------------------
 
@@ -82,6 +90,13 @@ CREATE TABLE `hoadon` (
   `TongTien` float NOT NULL,
   `TrangThai` varchar(70) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `hoadon`
+--
+
+INSERT INTO `hoadon` (`MaHD`, `MaND`, `NgayLap`, `NguoiNhan`, `SDT`, `DiaChi`, `PhuongThucTT`, `TongTien`, `TrangThai`) VALUES
+(1, 2, '2019-08-20 13:20:56', 'Nguyen Danh', '0123456789', 'Hà Nội', 'Trực tiếp khi nhận h', 337740000, '1');
 
 -- --------------------------------------------------------
 
@@ -168,6 +183,7 @@ CREATE TABLE `nguoidung` (
 INSERT INTO `nguoidung` (`MaND`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `Email`, `DiaChi`, `TaiKhoan`, `MatKhau`, `MaQuyen`, `TrangThai`) VALUES
 (1, 'Tran', 'Hoang', '', '0123456789', 'th@gmail.com', '', 'Hoang016', 'e10adc3949ba59abbe56e057f20f883e', 1, 1),
 (2, 'Nguyen', 'Danh', '', '0123456789', '', '', 'Abc', '202cb962ac59075b964b07152d234b70', 1, 1),
+(3, 'Trần', 'Hoàng', 'Nam', '', '', '', 'Admin', '202cb962ac59075b964b07152d234b70', 2, 1),
 (4, 'Nguyễn', 'Huệ', '', '01207764668', '', '', 'Hue', '202cb962ac59075b964b07152d234b70', 1, 1);
 
 -- --------------------------------------------------------
@@ -187,7 +203,8 @@ CREATE TABLE `phanquyen` (
 --
 
 INSERT INTO `phanquyen` (`MaQuyen`, `TenQuyen`, `ChiTietQuyen`) VALUES
-(1, 'Customer', 'Khách hàng có tài khoản');
+(1, 'Customer', 'Khách hàng có tài khoản'),
+(2, 'Admin', 'Admin');
 
 -- --------------------------------------------------------
 
@@ -327,7 +344,7 @@ ALTER TABLE `sanpham`
 -- AUTO_INCREMENT cho bảng `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `MaHD` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MaHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `khuyenmai`
@@ -351,7 +368,7 @@ ALTER TABLE `nguoidung`
 -- AUTO_INCREMENT cho bảng `phanquyen`
 --
 ALTER TABLE `phanquyen`
-  MODIFY `MaQuyen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaQuyen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `sanpham`
