@@ -2,12 +2,14 @@
 // Thư Viện Xử Lý Database
 class DB_driver
 {
+  // My Heroku Database: mysql://be8458edc48295:a2b7bcff@us-cdbr-iron-east-04.cleardb.net/heroku_bbff145fd5e97ab?reconnect=true
+  // link : https://scotch.io/@phalconVee/using-mysql-on-heroku
     // Biến lưu trữ kết nối
     public $__conn,
-        $localhost = "localhost",
-        $user = "root",
-        $pass = "",
-        $DbName = "web2";
+        $host = "us-cdbr-iron-east-04.cleardb.net",
+        $DbName = "heroku_bbff145fd5e97ab",
+        $user = "be8458edc48295",
+        $pass = "a2b7bcff";
 
     // Hàm Kết Nối
     function connect()
@@ -15,7 +17,7 @@ class DB_driver
         // Nếu chưa kết nối thì thực hiện kết nối
         if (!$this->__conn) {
             // Kết nối
-            $this->__conn = mysqli_connect($this->localhost, $this->user, $this->pass, $this->DbName) or die('Lỗi kết nối');
+            $this->__conn = mysqli_connect($this->host, $this->user, $this->pass, $this->DbName) or die('Lỗi kết nối');
 
             // Xử lý truy vấn UTF8 để tránh lỗi font
             mysqli_query($this->__conn, "SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
