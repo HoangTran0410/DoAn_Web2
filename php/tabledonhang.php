@@ -42,7 +42,7 @@
 			echo '</table>';
 
 		} else {
-			echo '<h2 style="color:green; text-align:center;">
+			echo '<h2 class="empty-noti">
 						Hiện chưa có đơn hàng nào, 
 						<a href="index.php" style="color:blue">Mua ngay</a>
 					</h2>';

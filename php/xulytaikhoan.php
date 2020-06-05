@@ -63,6 +63,8 @@
 		$xuli_newPass=$_POST['data_newPass'];
 		$xuli_newPass=md5($xuli_newPass);
 
+		echo "$xuli_ho, $xuli_ten, $xuli_sdt, $xuli_email, $xuli_diachi, $xuli_newUser, $xuli_newPass";
+
 		$status = (new NguoiDungBUS())->add_new(array(
 			"MaND" => "",
 			"Ho" => $xuli_ho,

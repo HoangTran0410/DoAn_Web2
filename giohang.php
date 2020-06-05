@@ -10,7 +10,8 @@
 	<title>Thế giới điện thoại</title>
 
 	<!-- Load font awesome icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
 
 	<!-- Jquery -->
@@ -50,21 +51,21 @@
 		<div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-				    <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel" >Nhập thông tin thanh toán</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				    </div>
-				    <form action="" onsubmit="return xacNhanThanhToan()">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Nhập thông tin thanh toán</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form action="" onsubmit="return xacNhanThanhToan()">
 						<div class="modal-body" id="thongtinthanhtoan"></div>
 						<div class="modal-footer">
-				        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-				        	<button type="submit" class="btn btn-primary" id="btnXacNhan">Xác nhận</button>
-				      	</div>
-				    </form>
-		    	</div>
-		  	</div>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+							<button type="submit" class="btn btn-primary" id="btnXacNhan">Xác nhận</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 
 	</section> <!-- End Section -->
