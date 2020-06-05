@@ -40,6 +40,27 @@
         Giới thiệu
       </h4>
       <div class="page-info">
+        <img src="https://cdn.tgdd.vn/Files/2019/12/23/1228025/z6_800x450-600x400.jpg">
+
+        <ol class="gradient-list">
+          <li>Thời gian phục vụ khách hàng là từ 08h00 sáng đến 21h30 tất cả các ngày trong tuần và 24/7</li>
+          <li>Chúng tôi cam kết luôn luôn ưu tiên lợi ích của khách hàng, sản phẩm chất lượng luôn được cập nhật phù hợp
+            với nhu cầu của tất cả khách hàng.</li>
+          <li>Tất cả các sản phẩm SMARTPHONE là thế mạnh chính và cung cấp ra thị trường được đảm bảo 100% nguyên hộp,
+            trùng IMEI với phụ kiện nguyên SEAL. Đây là điều rất ít cửa hàng bán lẻ nào có thể làm được ở VN theo cách
+            duy
+            trì.</li>
+          <li>Chúng tôi là cửa hàng uy tín đã được khảng định với tất cả các khách hàng. Cám ơn tất cả các khách hàng đã
+            mua và ủng hộ chúng tôi trong suốt thời gian qua. </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- <div class="page-gt">
+      <h4 class="page-header">
+        Giới thiệu
+      </h4>
+      <div class="page-info">
         <p>Được thành lập từ năm 1996, chúng tôi là một trong những nhà phân phối ĐTDĐ đầu tiên tại Hà Nội và
           kể từ năm 2000, chúng tôi chính thức trở thành nhà phân phối ĐTDĐ SamSung – Masterdealer duy nhất
           tại 194 đường Lê Duẩn.
@@ -61,13 +82,13 @@
           Chúng tôi xin chân thành cảm ơn tất cả các khách hàng đã, đang và sẽ ủng hộ chúng tôi.
         </p>
       </div>
-    </div>
+    </div> -->
   </section>
 
   <?php addContainTaiKhoan(); ?>
 
   <div class="footer">
-    <?php addFooter(); ?>
+    <?php addPlc(); addFooter(); ?>
 
   </div>
 

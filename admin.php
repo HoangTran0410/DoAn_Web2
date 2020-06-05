@@ -25,6 +25,7 @@
     <!-- Our files -->
     <link rel="stylesheet" href="css/admin/style.css">
     <link rel="stylesheet" href="css/admin/progress.css">
+    <link rel="stylesheet" href="css/admin/tuchoitruycap.css">
 
     <!-- <script src="data/products.js"></script>
     <script src="js/classes.js"></script> -->
@@ -42,18 +43,35 @@
         <ul class="nav">
             <li class="nav-title">MENU</li>
             <!-- <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Home</a></li> -->
-            <li class="nav-item" onclick="refreshTableSanPham()"><a class="nav-link"><i class="fa fa-th-large"></i> Sản
-                    Phẩm</a></li>
-            <li class="nav-item" onclick="refreshTableDonHang()"><a class="nav-link"><i class="fa fa-file-text-o"></i>
-                    Đơn Hàng</a></li>
-            <li class="nav-item" onclick="refreshTableKhachHang()"><a class="nav-link"><i
-                        class="fa fa-address-book-o"></i> Khách Hàng</a></li>
-            <li class="nav-item"><a class="nav-link"><i class="fa fa-bar-chart-o"></i> Thống Kê</a></li>
+            <li class="nav-item" onclick="refreshTableSanPham()">
+                <a class="nav-link">
+                    <i class="fa fa-th-large"></i>
+                    <span>Sản Phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item" onclick="refreshTableDonHang()">
+                <a class="nav-link">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Đơn Hàng</span>
+                </a>
+            </li>
+            <li class="nav-item" onclick="refreshTableKhachHang()">
+                <a class="nav-link">
+                    <i class="fa fa-address-book-o"></i>
+                    <span>Khách Hàng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">
+                    <i class="fa fa-bar-chart-o"></i>
+                    <span>Thống Kê</span>
+                </a>
+            </li>
             <hr>
             <li class="nav-item">
                 <a class="nav-link" id="btnDangXuat">
                     <i class="fa fa-arrow-left"></i>
-                    Đăng xuất
+                    <span>Đăng xuất</span>
                 </a>
             </li>
         </ul>

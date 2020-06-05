@@ -1,29 +1,28 @@
-.body-tintuc{
-	margin: 70px 50px 50px 90px;
-	width: 80%;
-	
-	
+.body-tintuc {
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: center; */
+  justify-content: center;
+  padding: 5px;
 }
-.tintuc-info{
-	height: 170px;
-	border-bottom: 1px solid #FCF;
-	margin-top: 5px;
 
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  max-width: 250px;
+  margin: 15px;
 }
-.tintuc-info img{
-	border: 1px solid gray;
-	float: left;
-	margin-right: 10px;
-	padding:5px;
-	border-radius: 5px;
-	height:148px;
-	width:224px;
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
-.tintuc-info a:hover{
-	color: #666;
+
+.card .container {
+  padding: 2px 16px;
 }
-.tintuc-info h5{
-	font-weight: 100;
-	font-style: italic;
-	color: gray;
+
+.card .container p {
+  font-style: italic;
+  color: gray;
+  margin: 15px auto 5px;
 }

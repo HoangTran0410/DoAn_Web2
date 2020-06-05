@@ -30,7 +30,12 @@
 				$dataSp = (new SanPhamBUS())->select_by_id("*", $sp["masp"]);
 				$donGia = $dataSp["DonGia"];
 
-				$chitiethdBUS->add_new(array($mahd, $sp["masp"], $sp["soLuong"], $donGia));
+				$chitiethdBUS->add_new(array(
+					"MaHD" => $mahd, 
+					"MaSP" => $sp["masp"], 
+					"SoLuong" => $sp["soLuong"], 
+					"DonGia" => $donGia
+				));
 			}
 
 			die (json_encode(true));

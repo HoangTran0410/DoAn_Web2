@@ -63,9 +63,9 @@
 		$xuli_newPass=$_POST['data_newPass'];
 		$xuli_newPass=md5($xuli_newPass);
 
-		echo "$xuli_ho, $xuli_ten, $xuli_sdt, $xuli_email, $xuli_diachi, $xuli_newUser, $xuli_newPass";
+		// echo "$xuli_ho, $xuli_ten, $xuli_sdt, $xuli_email, $xuli_diachi, $xuli_newUser, $xuli_newPass";
 
-		$status = (new NguoiDungBUS())->add_new(array(
+		$data = array(
 			"MaND" => "",
 			"Ho" => $xuli_ho,
 			"Ten" => $xuli_ten,
@@ -76,7 +76,9 @@
 			"MatKhau" => $xuli_newPass,
 			"MaQuyen" => 1,
 			"TrangThai" => 1
-		));
+		);
+
+		$status = (new NguoiDungBUS())->add_new($data);
 
 		// đăng nhập vào ngay
 		$sql = "SELECT * FROM nguoidung WHERE TaiKhoan='$xuli_newUser' AND MatKhau='$xuli_newPass' AND MaQuyen=1 AND TrangThai=1";

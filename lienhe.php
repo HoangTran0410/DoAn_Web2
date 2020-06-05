@@ -155,7 +155,7 @@
   <?php addContainTaiKhoan(); ?>
 
   <div class="footer">
-    <?php addFooter(); ?>
+    <?php addPlc(); addFooter(); ?>
 
   </div>
 

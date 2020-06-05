@@ -8,6 +8,9 @@
     <!-- Jquery -->
     <script src="lib/Jquery/Jquery.min.js"></script>
 
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -17,15 +20,26 @@
             a = document.getElementById("username").value;
             b = document.getElementById("password").value;
             if (a == "") {
-                alert("Tài khoản không được để trống!Vui lòng nhập tài khoản.");
-                form.username.focus();
+                Swal.fire({
+                    type: "error",
+                    title: "Thiếu",
+                    text: "Tài khoản không được để trống!Vui lòng nhập tài khoản.",
+                }).then(() => {
+                    form.username.focus();
+                });
                 return false;
             }
             if (b == "") {
-                alert("Mật khẩu không được để trống!Vui lòng nhập mật khẩu.");
-                form.password.focus();
+                Swal.fire({
+                    type: "error",
+                    title: "Thiếu",
+                    text: "Mật khẩu không được để trống!Vui lòng nhập mật khẩu.",
+                }).then(() => {
+                    form.password.focus();
+                });
                 return false;
             }
+
             $.ajax({
                 url: "php/xulidangnhapadmin.php",
                 type: "post",
@@ -36,17 +50,17 @@
                 //async:true,
                 success: function (kq) {
                     if (kq.indexOf("yes") != -1) {
-                        alert("Đăng nhập thành công");
                         window.location = "admin.php";
                     } else {
-                        alert("Vui lòng kiểm tra lại");
-                        document.getElementById("username").value = "";
-                        document.getElementById("password").value = "";
-                        form.username.focus();
+                        Swal.fire({
+                            type: "error",
+                            title: "Sai",
+                            text: "Sai tên đăng nhập hoặc mật khẩu.",
+                        }).then(() => {
+                            form.username.focus();
+                        });
                     }
-                    // }
                 }
-
             });
         }
     </script>

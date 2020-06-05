@@ -84,7 +84,7 @@ function addProductToTable(listProduct) {
     s += `
 			<tr>
 				<td colspan="7"> 
-					<h1 style="color:green; background-color:white; font-weight:bold; text-align:center; padding: 15px 0;">
+					<h1>
 						Giỏ hàng trống !!
 					</h1> 
 				</td>
@@ -102,47 +102,26 @@ function addProductToTable(listProduct) {
     var price = Number(p.DonGia) - Number(p.KM.GiaTriKM);
     var thanhtien = price * soluongSp;
 
-    s +=
-      `
+    s += `
 			<tr>
 				<td class="noPadding">
-					<a target="_blank" href="chitietsanpham.html?` +
-      p.MaSP +
-      `" title="Xem chi tiết">
-						<img class="smallImg" src="` +
-      p.HinhAnh +
-      `">
+					<a target="_blank" href="chitietsanpham.php?${p.MaSP}" title="Xem chi tiết">
+						<img class="smallImg" src="${p.HinhAnh}">
 						<br>
-						` +
-      p.TenSP +
-      `
+						${p.TenSP}
 					</a>
 				</td>
-				<td class="alignRight">` +
-      numToString(price) +
-      ` ₫</td>
+				<td class="alignRight">${numToString(price)} ₫</td>
 				<td class="soluong" >
-					<button onclick="giamSoLuong('` +
-      masp +
-      `')"><i class="fa fa-minus"></i></button>
-					<input size="1" onchange="capNhatSoLuongFromInput(this, '` +
-      masp +
-      `')" value=` +
-      soluongSp +
-      `>
-					<button onclick="tangSoLuong('` +
-      masp +
-      `')"><i class="fa fa-plus"></i></button>
+					<button onclick="giamSoLuong('${masp}')"><i class="fa fa-minus"></i></button>
+					<input size="1" onchange="capNhatSoLuongFromInput(this, '${masp}')" value=${soluongSp}>
+					<button onclick="tangSoLuong('${masp}')"><i class="fa fa-plus"></i></button>
 				</td>
-				<td class="alignRight">` +
-      numToString(thanhtien) +
-      ` ₫</td>
+				<td class="alignRight">${numToString(thanhtien)} ₫</td>
 				<td class="noPadding"> 
-					<i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(` +
-      masp +
-      ",'" +
-      p.TenSP +
-      `')"></i> 
+					<i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(${masp},'${
+      p.TenSP
+    }')"></i> 
 				</td>
 			</tr>
 		`;
@@ -152,13 +131,13 @@ function addProductToTable(listProduct) {
 
   TotalPrice = totalPrice;
 
-  s +=
-    `
-			<tr style="font-weight:bold; text-align:center">
+  s += `
+			<tr>
 				<td colspan="3">TỔNG TIỀN: </td>
-				<td class="alignRight" style="color:red">` +
-    numToString(totalPrice) +
-    ` ₫</td>
+        <td 
+          class="alignRight" 
+          style="color:red; font-size: 1.5em">
+          ${numToString(totalPrice)} ₫</td>
 				<td></td>
 			</tr>
 			<tr>
@@ -257,31 +236,29 @@ function htmlThanhToan(userHienTai) {
     `
 		<form>
 		  	<div class="form-group">
-		    <p>Tổng tiền : <h2>` +
-      TotalPrice.toLocaleString() +
-      `đ </h2></p>
+		    <p>Tổng tiền : <h2>${TotalPrice.toLocaleString()}đ </h2></p>
 		  </div>
 		  <div class="form-group">
 		    <label for="inputTen">Tên người nhận</label>
-		    <input class="form-control input-sm" id="inputTen" required type="text" value="` +
-      (userHienTai.Ho + " " + userHienTai.Ten) +
-      `">
+		    <input class="form-control input-sm" id="inputTen" required type="text" value="${
+          userHienTai.Ho
+        } ${userHienTai.Ten}">
 		  </div>
 		   <div class="form-group">
 		    <label for="inputSDT">SDT người nhận</label>
-		    <input class="form-control input-sm" id="inputSDT" required type="text" pattern="\\d*" minlength="10" maxlength="12" value="` +
-      userHienTai.SDT +
-      `">
+		    <input class="form-control input-sm" id="inputSDT" required type="text" pattern="\\d*" minlength="10" maxlength="12" value="${
+          userHienTai.SDT
+        }">
 		  </div>
 		  <div class="form-group">
 		    <label for="inputDiaChi">Địa chỉ giao hàng</label>
-		    <input class="form-control input-sm" id="inputDiaChi" required type="text" value="` +
-      userHienTai.DiaChi +
-      `">
+		    <input class="form-control input-sm" id="inputDiaChi" required type="text" value="${
+          userHienTai.DiaChi
+        }">
 		  </div>
-		  <div class="form-group">
+      <div class="form-group">
+        <label for="selectHinhThucTT">Hình thức thanh toán</label>
 		    <select class="browser-default custom-select" id="selectHinhThucTT">
-		      <option value="" disabled selected>Hình thức thanh toán</option>
 			  <option value="Trực tiếp khi nhận hàng">Trực tiếp khi nhận hàng</option>
 			  <option value="Qua thẻ ngân hàng">Qua thẻ ngân hàng</option>
 			</select>
@@ -315,6 +292,7 @@ function xacNhanThanhToan() {
       dulieu: dulieu,
     },
     success: function (data) {
+      $("#exampleModal").modal("hide");
       capNhatMoiThu([]);
     },
     error: function (e) {
@@ -388,10 +366,10 @@ function giamSoLuong(masp) {
 }
 
 function capNhatMoiThu(list) {
+  setListGioHang(list);
+
   // Mọi thứ
   animateCartNumber();
-
-  setListGioHang(list);
 
   // cập nhật danh sách sản phẩm ở table
   getListFromDB(list);

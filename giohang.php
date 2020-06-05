@@ -46,7 +46,7 @@
 	<section style="min-height: 85vh">
 		<?php addHeader(); ?>
 
-		<table class="listSanPham"></table>
+		<table class="table listSanPham"></table>
 
 		<div class="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -61,7 +61,7 @@
 						<div class="modal-body" id="thongtinthanhtoan"></div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-							<button type="submit" class="btn btn-primary" id="btnXacNhan">Xác nhận</button>
+							<button type="submit" class="btn btn-primary" id="btnXacNhan" aria-label="Close">Xác nhận</button>
 						</div>
 					</form>
 				</div>

@@ -9,22 +9,19 @@ window.onload = function () {
 
   function tuChoiTruyCap() {
     document.body.innerHTML = `
-        <h1 style="color:red; with:100%; text-align:center; margin: 50px;"> 
-            Truy cập bị từ chối.. 
-            <a href="login.php" style="color: #989898; text-decoration:underline">
-                Đăng nhập
+        <h1 class="tuchoitruycap"> 
+            <p>Truy cập bị từ chối..</p> <br/>
+            <a href="login.php" class="tuchoitruycap">
+              Đăng nhập Admin
             </a>
         </h1>`;
   }
 
   getCurrentUser(
     (user) => {
-      if (user != null) {
-        if (user.MaQuyen != 1) {
-          addEventChangeTab();
-          addThongKe();
-          openTab("Home");
-        }
+      if (user != null && user.MaQuyen != 1) {
+        addEventChangeTab();
+        addThongKe();
       } else {
         tuChoiTruyCap();
       }
@@ -46,6 +43,7 @@ function refreshTableSanPham() {
     },
     success: function (data, status, xhr) {
       list_products = data; // biến toàn cục lưu trữ mảng sản phẩm hiện có
+
       addTableProducts(data);
     },
     error: function (e) {
@@ -217,12 +215,14 @@ function showGTKM() {
 function addEventChangeTab() {
   var sidebar = document.getElementsByClassName("sidebar")[0];
   var list_a = sidebar.getElementsByTagName("a");
+
   for (var a of list_a) {
     if (!a.onclick) {
       a.addEventListener("click", function () {
         turnOff_Active();
         this.classList.add("active");
-        var tab = this.childNodes[1].data.trim();
+        var tab = this.getElementsByTagName("span")[0].innerHTML.trim();
+        console.log(tab);
         openTab(tab);
       });
     }
@@ -274,48 +274,40 @@ function addTableProducts(list_products) {
 
   for (var i = 0; i < list_products.length; i++) {
     var p = list_products[i];
-    s +=
-      `<tr>
-            <td style="width: 5%">` +
-      (i + 1) +
-      `</td>
-            <td style="width: 10%">` +
-      p.MaSP +
-      `</td>
+
+    let masp = p.MaSP;
+    let tensp = p.TenSP.split(" ").join("-");
+    let tenkm = /*promoToStringValue(*/ p.KM.TenKM; /*)*/
+    let dongia = parseInt(p.DonGia).toLocaleString();
+    let trangthai = p.TrangThai == 1 ? "Hiện" : "Ẩn";
+
+    let hamXoaSP = `xoaSanPham('${p.TrangThai}', '${p.MaSP}', '${p.TenSP}')`;
+
+    s += `<tr>
+            <td style="width: 5%">${i + 1}</td>
+            <td style="width: 10%">${p.MaSP}</td>
             <td style="width: 40%">
-                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?` +
-      p.TenSP.split(" ").join("-") +
-      `">` +
-      p.TenSP +
-      `</a>
-                <img src="` +
-      p.HinhAnh +
-      `"></img>
+                <a title="Xem chi tiết" target="_blank" href="chitietsanpham.php?${masp}">
+                  ${p.TenSP}
+                </a>
+                <img src="${p.HinhAnh}"></img>
             </td>
-            <td style="width: 15%">` +
-      parseInt(p.DonGia).toLocaleString() +
-      `</td>
-            <td style="width: 10%">` +
-      /*promoToStringValue(*/ p.KM.TenKM /*)*/ +
-      `</td>
-            <td style="width: 10%">` +
-      (p.TrangThai == 1 ? "Hiện" : "Ẩn") +
-      `</td>
+            <td style="width: 15%">${dongia}</td>
+            <td style="width: 10%">${tenkm}</td>
+            <td style="width: 10%">${trangthai}</td>
             <td style="width: 10%">
                 <div class="tooltip">
-                    <i class="fa fa-wrench" onclick="addKhungSuaSanPham('` +
-      p.MaSP +
-      `')"></i>
+                    <i 
+                      class="fa fa-wrench" 
+                      onclick="addKhungSuaSanPham('${p.MaSP}')"
+                    ></i>
                     <span class="tooltiptext">Sửa</span>
                 </div>
                 <div class="tooltip">
-                    <i class="fa fa-trash" onclick="xoaSanPham('` +
-      p.TrangThai +
-      `', '` +
-      p.MaSP +
-      `', '` +
-      p.TenSP +
-      `')"></i>
+                    <i 
+                      class="fa fa-trash" 
+                      onclick="${hamXoaSP}"
+                    ></i>
                     <span class="tooltiptext">Xóa</span>
                 </div>
             </td>
@@ -488,7 +480,7 @@ function themSanPham() {
     success: function (data, status, xhr) {
       Swal.fire({
         type: "success",
-        title: "Thêm thành công",
+        title: "Thêm sản phẩm " + newSp.name + " thành công",
       });
       resetForm();
       document.getElementById("khungThemSanPham").style.transform = "scale(0)";
@@ -503,7 +495,6 @@ function themSanPham() {
     },
   });
 
-  alert('Thêm sản phẩm "' + newSp.name + '" thành công.');
   refreshTableSanPham();
 }
 function resetForm() {
@@ -623,28 +614,19 @@ function addKhungSuaSanPham(masp) {
     }
   }
 
-  var s =
-    `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
-    <form method="post" action="" enctype="multipart/form-data" onsubmit="return suaSanPham('` +
-    sp.MaSP +
-    `')">
+  const s = `<span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
+    <form method="post" action="" enctype="multipart/form-data" onsubmit="return suaSanPham('${sp.MaSP}')">
         <table class="overlayTable table-outline table-content table-header">
             <tr>
-                <th colspan="2">` +
-    sp.TenSP +
-    `</th>
+                <th colspan="2">${sp.TenSP}</th>
             </tr>
             <tr>
                 <td>Mã sản phẩm:</td>
-                <td><input disabled="disabled" type="text" id="maspSua" name="maspSua" value="` +
-    sp.MaSP +
-    `"></td>
+                <td><input disabled="disabled" type="text" id="maspSua" name="maspSua" value="${sp.MaSP}"></td>
             </tr>
             <tr>
                 <td>Tên sẩn phẩm:</td>
-                <td><input type="text" value="` +
-    sp.TenSP +
-    `"></td>
+                <td><input type="text" value="${sp.TenSP}"></td>
             </tr>
             <tr>
                 <td>Hãng:</td>
@@ -666,84 +648,73 @@ function addKhungSuaSanPham(masp) {
     "Motorola",
     "Xiaomi",
   ];
+
   var i = 1;
   for (var c of company) {
     var masp = i++;
     if (sp.MaLSP == masp)
-      s +=
-        `<option value="` +
-        sp.MaLSP +
-        `" selected="selected">` +
-        c +
-        `</option>`;
-    else s += `<option value="` + masp + `">` + c + `</option>`;
+      s += `<option value="${sp.MaLSP}" selected="selected">${c}</option>`;
+    else s += `<option value="${masp}">${c}</option>`;
   }
-  s +=
-    `</select>
+
+  let selectIndex = 1;
+
+  s += `</select>
                 </td>
             </tr>
             <?php
-                            $tenfilemoi= "";
-                                if (isset($_POST["submit"]))
-                                {
-                                    if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
-                                    {
-                                        if ($_FILES["file"]["error"] > 0 || file_exists("img/products/" . basename($_FILES["hinhanh"]["name"]))) 
-                                        {
-                                            echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau)");
-                                        }
-                                        else
-                                        {
-                                            /*$tmp = explode(".", $_FILES["hinhanh"]["name"]);
-                                            $duoifile = end($tmp);
-                                            $masp = $_POST['maspThem'];
-                                            $tenfilemoi = $masp . "." . $duoifile;*/
-                                            $file = $_FILES["hinhanh"]["name"];
-                                            $tenfilemoi = "img/products/" .$_FILES["hinhanh"]["name"];
-                                            move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], $tenfilemoi);
-                                        }
-                                    }
-                                }
-                        // require_once ("php/uploadfile.php");
-                        ?>
+              $tenfilemoi= "";
+              if (isset($_POST["submit"]))
+              {
+                if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
+                {
+                  if ($_FILES["file"]["error"] > 0 || file_exists("img/products/" . basename($_FILES["hinhanh"]["name"]))) 
+                  {
+                    echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau)");
+                  }
+                  else
+                  {
+                    /*$tmp = explode(".", $_FILES["hinhanh"]["name"]);
+                    $duoifile = end($tmp);
+                    $masp = $_POST['maspThem'];
+                    $tenfilemoi = $masp . "." . $duoifile;*/
+                    $file = $_FILES["hinhanh"]["name"];
+                    $tenfilemoi = "img/products/" .$_FILES["hinhanh"]["name"];
+                    move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], $tenfilemoi);
+                  }
+                }
+              }
+            // require_once ("php/uploadfile.php");
+            ?>
             <tr>
-                            <td>Hình:</td>
-                            <td>
-                                <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
-                                <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
-                                <input style="display: none;" type="text" id="hinhanh" value="">
-                            </td>
-                        </tr>
+                <td>Hình:</td>
+                <td>
+                    <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
+                    <input type="file" name="hinhanh" onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                    <input style="display: none;" type="text" id="hinhanh" value="">
+                </td>
+            </tr>
             <tr>
                 <td>Giá tiền:</td>
-                <td><input type="text" value="` +
-    sp.DonGia +
-    `"></td>
+                <td><input type="text" value="${sp.DonGia}"></td>
             </tr>
             <tr>
                 <td>Số sao:</td>
-                <td><input type="text" value="` +
-    sp.SoSao +
-    `"></td>
+                <td><input type="text" value="${sp.SoSao}"></td>
             </tr>
             <tr>
                 <td>Đánh giá:</td>
-                <td><input type="text" value="` +
-    sp.SoDanhGia +
-    `"></td>
+                <td><input type="text" value="${sp.SoDanhGia}"></td>
             </tr>
             <tr>
                 <td>Khuyến mãi:</td>
                 <td>
-                    <select name="chonKhuyenMai" onchange="showGTKM()">`;
-  var i = 1;
-  s += `<option selected="selected" value="` + i++ + `">Không</option>`;
-  s += `<option value="` + i++ + `">Giảm giá</option>`;
-  s += `<option value="` + i++ + `">Giá rẻ online</option>`;
-  s += `<option value="` + i++ + `">Trả góp</option>`;
-  s += `<option value="` + i++ + `">Mới ra mắt</option>`;
-  s +=
-    `</script>
+                    <select name="chonKhuyenMai" onchange="showGTKM()">
+                      <option selected value="${selectIndex++}">Không</option>
+                      <option value="${selectIndex++}">Giảm giá</option>
+                      <option value="${selectIndex++}">Giá rẻ online</option>
+                      <option value="${selectIndex++}">Trả góp</option>
+                      <option value="${selectIndex}">Mới ra mắt</option>
                     </select>
                 </td>
             </tr>
@@ -756,57 +727,39 @@ function addKhungSuaSanPham(masp) {
             </tr>
             <tr>
                 <td>Màn hình:</td>
-                <td><input type="text" value="` +
-    sp.ManHinh +
-    `"></td>
+                <td><input type="text" value="${sp.ManHinh}"></td>
             </tr>
             <tr>
                 <td>Hệ điều hành:</td>
-                <td><input type="text" value="` +
-    sp.HDH +
-    `"></td>
+                <td><input type="text" value="${sp.HDH}"></td>
             </tr>
             <tr>
                 <td>Camara sau:</td>
-                <td><input type="text" value="` +
-    sp.CamSau +
-    `"></td>
+                <td><input type="text" value="${sp.CamSau}"></td>
             </tr>
             <tr>
                 <td>Camara trước:</td>
-                <td><input type="text" value="` +
-    sp.CamTruoc +
-    `"></td>
+                <td><input type="text" value="${sp.CamTruoc}"></td>
             </tr>
             <tr>
                 <td>CPU:</td>
-                <td><input type="text" value="` +
-    sp.CPU +
-    `"></td>
+                <td><input type="text" value="${sp.CPU}"></td>
             </tr>
             <tr>
                 <td>RAM:</td>
-                <td><input type="text" value="` +
-    sp.Ram +
-    `"></td>
+                <td><input type="text" value="${sp.Ram}"></td>
             </tr>
             <tr>
                 <td>Bộ nhớ trong:</td>
-                <td><input type="text" value="` +
-    sp.Rom +
-    `"></td>
+                <td><input type="text" value="${sp.Rom}"></td>
             </tr>
             <tr>
                 <td>Thẻ nhớ:</td>
-                <td><input type="text" value="` +
-    sp.SDCard +
-    `"></td>
+                <td><input type="text" value="${sp.SDCard}"></td>
             </tr>
             <tr>
                 <td>Dung lượng Pin:</td>
-                <td><input type="text" value="` +
-    sp.Pin +
-    `"></td>
+                <td><input type="text" value="${sp.Pin}"></td>
             </tr>
             <tr>
                 <td colspan="2"  class="table-footer"> <button name="submit">SỬA</button> </td>
@@ -890,45 +843,32 @@ function addTableDonHang(data) {
   TONGTIEN = 0;
   for (var i = 0; i < data.length; i++) {
     var d = data[i];
-    s +=
-      `<tr>
-            <td style="width: 5%">` +
-      (i + 1) +
-      `</td>
-            <td style="width: 13%">` +
-      d.MaHD +
-      `</td>
-            <td style="width: 7%">` +
-      d.MaND +
-      `</td>
-            <td style="width: 20%">` +
-      /*d.sp*/ +`</td>
-            <td style="width: 15%">` +
-      d.TongTien +
-      `</td>
-            <td style="width: 10%">` +
-      d.NgayLap +
-      `</td>
-            <td style="width: 10%">` +
-      d.TinhTrang +
-      `</td>
+    s += `<tr>
+            <td style="width: 5%">${i + 1}</td>
+            <td style="width: 13%">${d.MaHD}</td>
+            <td style="width: 7%">${d.MaND}</td>
+            <td style="width: 20%">${
+              /*d.sp*/ +`</td>
+            <td style="width: 15%">`
+            }${d.TongTien}</td>
+            <td style="width: 10%">${d.NgayLap}</td>
+            <td style="width: 10%">${d.TrangThai}</td>
             <td style="width: 10%">
                 <div class="tooltip">
-                    <i class="fa fa-check" onclick="duyet('` +
-      d.MaHD +
-      `', true)"></i>
+                    <i class="fa fa-check" onclick="duyet('${
+                      d.MaHD
+                    }', true)"></i>
                     <span class="tooltiptext">Duyệt</span>
                 </div>
                 <div class="tooltip">
-                    <i class="fa fa-remove" onclick="duyet('` +
-      d.MaHD +
-      `', false)"></i>
+                    <i class="fa fa-remove" onclick="duyet('${
+                      d.MaHD
+                    }', false)"></i>
                     <span class="tooltiptext">Hủy</span>
                 </div>
                 
             </td>
         </tr>`;
-    console.log(d);
     TONGTIEN += Number(d.tongtien);
   }
 
@@ -1011,7 +951,7 @@ function duyet(maDonHang, duyetDon) {
   setListUser(u);
 
   // vẽ lại
-  addTableDonHang();
+  refreshTableDonHang();
 }
 
 function locDonHangTheoKhoangNgay() {
@@ -1108,7 +1048,7 @@ function refreshTableKhachHang() {
     },
     success: function (data, status, xhr) {
       addTableKhachHang(data);
-      //console.log(data);
+      console.log(data);
     },
     error: function (e) {
       Swal.fire({
@@ -1156,42 +1096,28 @@ function addTableKhachHang(data) {
 
   for (var i = 0; i < data.length; i++) {
     var u = data[i];
-    console.log(u.TrangThai);
 
-    s +=
-      `<tr>
-            <td >` +
-      (i + 1) +
-      `</td>
-            <td >` +
-      u.Ho +
-      " " +
-      u.Ten +
-      `</td>
-            <td >` +
-      u.Email +
-      `</td>
-            <td >` +
-      u.TaiKhoan +
-      `</td>           
+    s += `<tr>
+            <td >${i + 1}</td>
+            <td >${u.Ho} ${u.Ten}</td>
+            <td >${u.Email}</td>
+            <td >${u.TaiKhoan}</td>           
             <td >
                 <div class="tooltip">
                     <label class="switch">
-                        <input type="checkbox" ` +
-      (u.TrangThai == 1 ? "checked" : "") +
-      ` onclick="thayDoiTrangThaiND(this, '` +
-      u.MaND +
-      `')">
+                        <input type="checkbox" ${
+                          u.TrangThai == 1 ? "checked" : ""
+                        } onclick="thayDoiTrangThaiND(this, '${u.MaND}')">
                         <span class="slider round"></span>
                     </label>
-                    <span class="tooltiptext">` +
-      (u.TrangThai ? "Mở" : "Khóa") +
-      `</span>
+                    <span class="tooltiptext">${
+                      u.TrangThai ? "Mở" : "Khóa"
+                    }</span>
                 </div>
                 <div class="tooltip">
-                    <i class="fa fa-remove" onclick="xoaNguoiDung('` +
-      u.MaND +
-      `')"></i>
+                    <i class="fa fa-remove" onclick="xoaNguoiDung('${
+                      u.MaND
+                    }')"></i>
                     <span class="tooltiptext">Xóa</span>
                 </div>
             </td>

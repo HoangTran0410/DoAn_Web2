@@ -79,7 +79,7 @@ class NguoiDungBUS extends DB_business
         // username trung, email trung
         
         // them
-        parent::add_new($data);
+        return parent::add_new($data);
     }
 }
 

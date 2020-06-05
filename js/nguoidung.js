@@ -13,10 +13,13 @@ window.onload = function () {
     (data) => {
       if (data) {
         $.ajax({
-          type: "GET",
-          url: "php/tabledonhang.php",
+          type: "POST",
+          url: "php/xulydonhang.php",
+          data: {
+            request: "getCurrentUser",
+          },
           success: function (data) {
-            $(".listDonHang").html(data);
+            $(".listDonHang").html(tableDonHang_Html(JSON.parse(data)));
           },
           error: function (e) {
             console.log(e.responseText);
@@ -37,18 +40,98 @@ window.onload = function () {
 
 function xemChiTiet(mahd) {
   $.ajax({
-    type: "GET",
-    url: "php/tablechitietdonhang.php",
+    type: "POST",
+    url: "php/xulychitietdonhang.php",
     data: {
+      request: "getbyid",
       mahd: mahd,
     },
     success: function (data) {
-      $("#chitietdonhang").html(data);
+      $("#chitietdonhang").html(tableChiTietDonHang_Html(JSON.parse(data)));
     },
     error: function (e) {
       console.log(e.responseText);
     },
   });
+}
+
+function tableChiTietDonHang_Html(data) {
+  let str = `<table class="table table-striped" >
+		<tr>
+			<th scope="col" >Sản phẩm</th>
+			<th scope="col" >Số lượng</th>
+			<th scope="col" >Đơn giá</th>
+		</tr>`;
+
+  for (let i = 0; i < data.length; i++) {
+    let row = data[i];
+
+    str += `<tr>
+					<td scope="col">
+						<a href="chitietsanpham.php?${row.MaSP}">
+							<img style="width:100px;height:100px;" src="${row.SP.HinhAnh}"><br>
+							${row.SP.TenSP}
+						</a>
+					</td>
+					<td scope="col">${row.SoLuong}</td>
+          <td scope="col">
+            ${Number(row.DonGia).toLocaleString()} đ
+          </td>
+				</tr>`;
+  }
+  str += "</table>";
+
+  return str;
+}
+
+function tableDonHang_Html(data) {
+  let str = "";
+  if (data.length > 0) {
+    str = `<table class="table table-striped" style="margin: 50px 0;" >
+      <tr>
+      <th  style="font-weight:600">Mã đơn hàng</th>
+      <th  style="font-weight:600">Ngày lập</th>
+      <th  style="font-weight:600">Người nhận</th>
+      <th  style="font-weight:600">SDT</th>
+      <th  style="font-weight:600">Địa chỉ</th>
+      <th  style="font-weight:600">Phương thức TT</th>
+      <th  style="font-weight:600">Tổng tiền</th>
+      <th  style="font-weight:600">Trạng thái</th>
+      <th  style="font-weight:600">Chi tiết</th>
+    </tr>`;
+
+    for (donhang of data) {
+      str += `<tr>
+          <td >${donhang.MaHD}</td>
+          <td >${donhang.NgayLap}</td>
+          <td >${donhang.NguoiNhan}</td>
+          <td >${donhang.SDT}</td>
+          <td >${donhang.DiaChi}</td>
+          <td >${donhang.PhuongThucTT}</td>
+          <td >${Number(donhang.TongTien).toLocaleString()} đ</td>
+          <td >${donhang.TrangThai}</td>
+          <td >
+            <button 
+              type="button" 
+              class="btn btn-primary"
+              data-toggle="modal" 
+              data-target="#exampleModal" 
+              onclick="xemChiTiet('${donhang.MaHD}')"
+            >
+              Xem
+            </button>
+          </td>
+        </tr>`;
+    }
+    str += "</table>";
+  } else {
+    str = `<h2 class="empty-noti">
+          Hiện chưa có đơn hàng nào, 
+          <a href="index.php" style="color:blue">Mua ngay</a>
+        </h2>`;
+  }
+
+  return str;
 }
 
 // Phần Thông tin người dùng
@@ -267,13 +350,10 @@ function addTatCaDonHang(user) {
     return;
   }
   if (!user.donhang.length) {
-    document.getElementsByClassName("listDonHang")[0].innerHTML =
-      `
-            <h3 class="empty-noti"> 
-                Xin chào ` +
-      currentUser.username +
-      `. Bạn chưa có đơn hàng nào.
-            </h3>`;
+    document.getElementsByClassName("listDonHang")[0].innerHTML = ` 
+    <h3 class="empty-noti"> 
+        Xin chào ${currentUser.username}. Bạn chưa có đơn hàng nào.
+    </h3>`;
     return;
   }
   for (var dh of user.donhang) {
@@ -284,24 +364,23 @@ function addTatCaDonHang(user) {
 function addDonHang(dh) {
   var div = document.getElementsByClassName("listDonHang")[0];
 
-  var s =
-    `
-            <table class="listSanPham">
-                <tr> 
-                    <th colspan="6">
-                        <h3 style="text-align:center;"> Đơn hàng ngày: ` +
-    new Date(dh.ngaymua).toLocaleString() +
-    `</h3> 
-                    </th>
-                </tr>
-                <tr>
-                    <th>STT</th>
-                    <th>Sản phẩm</th>
-                    <th>Giá</th>
-                    <th>Số lượng</th>
-                    <th>Thành tiền</th>
-                    <th>Thời gian thêm vào giỏ</th> 
-                </tr>`;
+  var s = `
+    <table class="listSanPham">
+        <tr> 
+            <th colspan="6">
+                <h3 style="text-align:center;"> Đơn hàng ngày: ${new Date(
+                  dh.ngaymua
+                ).toLocaleString()}</h3> 
+            </th>
+        </tr>
+        <tr>
+            <th>STT</th>
+            <th>Sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+            <th>Thời gian thêm vào giỏ</th> 
+        </tr>`;
 
   var totalPrice = 0;
   for (var i = 0; i < dh.sp.length; i++) {
@@ -312,58 +391,38 @@ function addDonHang(dh) {
     var thoigian = new Date(dh.sp[i].date).toLocaleString();
     var thanhtien = stringToNum(price) * soluongSp;
 
-    s +=
-      `
-                <tr>
-                    <td>` +
-      (i + 1) +
-      `</td>
-                    <td class="noPadding imgHide">
-                        <a target="_blank" href="chitietsanpham.php?` +
-      p.name.split(" ").join("-") +
-      `" title="Xem chi tiết">
-                            ` +
-      p.name +
-      `
-                            <img src="` +
-      p.img +
-      `">
-                        </a>
-                    </td>
-                    <td class="alignRight">` +
-      price +
-      ` ₫</td>
-                    <td class="soluong" >
-                         ` +
-      soluongSp +
-      `
-                    </td>
-                    <td class="alignRight">` +
-      numToString(thanhtien) +
-      ` ₫</td>
-                    <td style="text-align: center" >` +
-      thoigian +
-      `</td>
-                </tr>
-            `;
+    s += `
+      <tr>
+          <td>${i + 1}</td>
+          <td class="noPadding imgHide">
+              <a target="_blank" href="chitietsanpham.php?${p.name
+                .split(" ")
+                .join("-")}" title="Xem chi tiết">
+                  ${p.name}
+                  <img src="${p.img}">
+              </a>
+          </td>
+          <td class="alignRight">${price} ₫</td>
+          <td class="soluong" >
+                ${soluongSp}
+          </td>
+          <td class="alignRight">${numToString(thanhtien)} ₫</td>
+          <td style="text-align: center" >${thoigian}</td>
+      </tr>
+  `;
     totalPrice += thanhtien;
     tongSanPhamTatCaDonHang += soluongSp;
   }
   tongTienTatCaDonHang += totalPrice;
 
-  s +=
-    `
-                <tr style="font-weight:bold; text-align:center; height: 4em;">
-                    <td colspan="4">TỔNG TIỀN: </td>
-                    <td class="alignRight">` +
-    numToString(totalPrice) +
-    ` ₫</td>
-                    <td > ` +
-    dh.tinhTrang +
-    ` </td>
-                </tr>
-            </table>
-            <hr>
+  s += `
+      <tr style="font-weight:bold; text-align:center; height: 4em;">
+          <td colspan="4">TỔNG TIỀN: </td>
+          <td class="alignRight">${numToString(totalPrice)} ₫</td>
+          <td > ${dh.tinhTrang} </td>
+      </tr>
+  </table>
+  <hr>
         `;
   div.innerHTML += s;
 }
