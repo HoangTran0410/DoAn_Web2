@@ -23,6 +23,12 @@ class SanPhamBUS extends DB_business
         $this->setTable("SanPham", "MaSP");
     }
 
+    function suaSanPham($data, $id) {
+        // $sanpham = $this->select_by_id("*", $id);
+        
+        return $this->update_by_id($data, $id);
+    }
+
     function capNhapTrangThai($trangthai, $id) {
         $sanpham = $this->select_by_id("*", $id);
         $sanpham["TrangThai"] = $trangthai;

@@ -79,9 +79,7 @@
 
     <!-- Khung hiển thị chính -->
     <div class="main">
-        <div class="home">
-
-        </div>
+        <div class="home"></div>
 
         <!-- Sản Phẩm -->
         <div class="sanpham">
@@ -106,39 +104,6 @@
 
             <div class="table-content">
             </div>
-
-            <!--<div class="table-content">
-            <?php
-                require_once('BackEnd/ConnectionDB/DB_classes.php');
-
-                $sp = new SanPhamBUS();
-                $i = 1;
-                echo "<table class='table-outline hideImg'>";
-                foreach ($sp->select_all() as $rowname => $row) {
-                    echo "<tr>
-                        <td style'width: 5%'>" . $i++ . "</td>
-                        <td style='width: 10%'>" . $row['MaSP'] . "</td>
-                        <td style='width: 40%'>
-                            <a title='Xem chi tiết' target='_blank' href='chitietsanpham.php?" . $row['TenSP'] . "'>" . $row['TenSP'] . "</a>
-                            <img src='" . $row['HinhAnh'] . "'></img>
-                        </td>
-                        <td style='width: 15%'>" . $row['DonGia'] . "</td>
-                        <td style='width: 15%'>" . $row['MaKM'] . "</td>
-                        <td style='width: 15%'>
-                            <div class='tooltip'>
-                                <i class='fa fa-wrench' onclick='addKhungSuaSanPham('" . $row['MaSP'] . "')'></i>
-                                <span class='tooltiptext'>Sửa</span>
-                            </div>
-                            <div class='tooltip'>
-                                <i class='fa fa-trash' onclick='xoaSanPham('" . $row['MaSP'] . "', '" . $row['TenSP'] . "')'></i>
-                                <span class='tooltiptext'>Xóa</span>
-                            </div>
-                        </td>
-                    </tr>";
-                }
-                echo "</table>";
-            ?>
-            </div>-->
 
             <div class="table-footer">
                 <select name="kieuTimSanPham">
@@ -182,54 +147,30 @@
                                 </select>
                             </td>
                         </tr>
-                        <?php
-                            $tenfilemoi= "";
-                                if (isset($_POST["submit"]))
-                                {
-                                    if (($_FILES["hinhanh"]["type"]=="image/jpeg") ||($_FILES["hinhanh"]["type"]=="image/png") || ($_FILES["hinhanh"]["type"]=="image/jpg") && ($_FILES["hinhanh"]["size"] < 50000) )
-                                    {
-                                        if ($_FILES["file"]["error"] > 0 || file_exists("img/products/" . basename($_FILES["hinhanh"]["name"]))) 
-                                        {
-                                            echo ("Error Code: " . $_FILES["file"]["error"] . "<br />Chỉnh sửa ảnh lại sau)");
-                                        }
-                                        else
-                                        {
-                                            /*$tmp = explode(".", $_FILES["hinhanh"]["name"]);
-                                            $duoifile = end($tmp);
-                                            $masp = $_POST['maspThem'];
-                                            $tenfilemoi = $masp . "." . $duoifile;*/
-                                            $file = $_FILES["hinhanh"]["name"];
-                                            $tenfilemoi = "img/products/" .$_FILES["hinhanh"]["name"];
-                                            move_uploaded_file( $_FILES["hinhanh"]["tmp_name"], $tenfilemoi);
-                                        }
-                                    }
-                                }
-                        // require_once ("php/uploadfile.php");
-                        ?>
                         <tr>
                             <td>Hình:</td>
                             <td>
                                 <img class="hinhDaiDien" id="anhDaiDienSanPhamThem" src="">
                                 <input type="file" name="hinhanh"
-                                    onchange="capNhatAnhSanPham(this.files, 'anhDaiDienSanPhamThem', '<?php echo $tenfilemoi; ?>')">
+                                    onchange="previewImage(this, 'anhDaiDienSanPhamThem')">
                                 <input style="display: none;" type="text" id="hinhanh" value="">
                             </td>
                         </tr>
                         <tr>
                             <td>Giá tiền:</td>
-                            <td><input type="text"></td>
+                            <td><input type="number"></td>
                         </tr>
                         <tr>
                             <td>Số lượng:</td>
-                            <td><input type="text" value="0"></td>
+                            <td><input type="number" value="0"></td>
                         </tr>
                         <tr>
                             <td>Số sao:</td>
-                            <td><input disabled="disabled" value="0" type="text"></td>
+                            <td><input disabled="disabled" value="0" type="number"></td>
                         </tr>
                         <tr>
                             <td>Đánh giá:</td>
-                            <td><input disabled="disabled" value="0" type="text"></td>
+                            <td><input disabled="disabled" value="0" type="number"></td>
                         </tr>
                         <tr>
                             <td>Khuyến mãi:</td>

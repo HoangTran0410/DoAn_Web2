@@ -83,6 +83,37 @@
                 die (json_encode($spBUS->add_new($spAddArr)));
             break;
 
+        // sua
+        case 'change':
+            $data = $_POST['dataChange'];
+
+            $id = $data['masp'];
+
+            $spChangeArr = array(
+                'MaLSP' => $data['company'],
+                'TenSP' => $data['name'],
+                'DonGia' => $data['price'],
+                'SoLuong' => $data['amount'],
+                // 'HinhAnh' => $data['img'],
+                'MaKM' => $data['promo']['name'],
+                'ManHinh' => $data['detail']['screen'],
+                'HDH' => $data['detail']['os'],
+                'CamSau' => $data['detail']['camara'],
+                'CamTruoc' => $data['detail']['camaraFront'],
+                'CPU' => $data['detail']['cpu'],
+                'Ram' => $data['detail']['ram'],
+                'Rom' => $data['detail']['rom'],
+                'SDCard' => $data['detail']['microUSB'],
+                'Pin' => $data['detail']['battery'],
+                'SoSao' => $data['star'],
+                'SoDanhGia' => $data['rateCount'],
+                'TrangThai' => $data['TrangThai']
+            );
+
+            $spBUS = new SanPhamBUS();
+            die (json_encode($spBUS->suaSanPham($spChangeArr, $id)));
+        break;
+
         // xóa
         case 'delete':
                 $spBUS = new SanPhamBUS();
