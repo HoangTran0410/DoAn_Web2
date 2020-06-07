@@ -1,5 +1,8 @@
 # DoAn_Web2
 
+## Demo
+[Youtube Video](https://www.youtube.com/watch?v=GlSDvBLYsOc&t)
+
 ## Các bước cài đặt:
 
 1. Mở xampp, apache, MySQL
