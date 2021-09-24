@@ -9,12 +9,10 @@ window.onload = function() {
     }
 
     getCurrentUser((user)=>{
-        if(user != null) {
-            if(user.MaQuyen != 1) {
-                addEventChangeTab();
-                addThongKe();
-                openTab('Home');
-            }
+        if(user != null && user.MaQuyen != 1) {
+            addEventChangeTab();
+            addThongKe();
+            openTab('Home');
         } else {
             document.body.innerHTML = `<h1 style="color:red; with:100%; text-align:center; margin: 50px;"> Truy cập bị từ chối.. </h1>`;
         }
