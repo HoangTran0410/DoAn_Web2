@@ -5,11 +5,17 @@ class DB_driver
   // My Heroku Database: mysql://be8458edc48295:a2b7bcff@us-cdbr-iron-east-04.cleardb.net/heroku_bbff145fd5e97ab?reconnect=true
   // link : https://scotch.io/@phalconVee/using-mysql-on-heroku
     // Biến lưu trữ kết nối
-    public $__conn,
-        $host = "us-cdbr-iron-east-04.cleardb.net",
-        $DbName = "heroku_bbff145fd5e97ab",
-        $user = "be8458edc48295",
-        $pass = "a2b7bcff";
+//     public $__conn,
+//         $host = "us-cdbr-iron-east-04.cleardb.net",
+//         $DbName = "heroku_bbff145fd5e97ab",
+//         $user = "be8458edc48295",
+//         $pass = "a2b7bcff";
+  
+  public $__conn,
+        $host = "localhost",
+        $DbName = "web2",
+        $user = "root",
+        $pass = "";
 
     // Hàm Kết Nối
     function connect()
