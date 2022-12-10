@@ -1,4 +1,5 @@
 var TONGTIEN = 0;
+var TATCA_DONHANG = [];
 
 window.onload = function () {
   document.getElementById("btnDangXuat").onclick = function () {
@@ -398,8 +399,9 @@ function layThongTinSanPhamTuTable(id) {
   var screen = tr[12]
     .getElementsByTagName("td")[1]
     .getElementsByTagName("input")[0].value;
-  var os = tr[13].getElementsByTagName("td")[1].getElementsByTagName("input")[0]
-    .value;
+  var os = tr[13]
+    .getElementsByTagName("td")[1]
+    .getElementsByTagName("input")[0].value;
   var camara = tr[14]
     .getElementsByTagName("td")[1]
     .getElementsByTagName("input")[0].value;
@@ -865,12 +867,13 @@ function refreshTableDonHang() {
     },
     success: function (data, status, xhr) {
       addTableDonHang(data);
+      TATCA_DONHANG = data;
       console.log(data);
     },
     error: function (e) {
       Swal.fire({
         type: "error",
-        title: "Lỗi lấy dữ liệu khách Hàng (admin.js > refreshTableKhachHang)",
+        title: "Lỗi lấy dữ liệu đơn Hàng (admin.js > refreshTableDonHang)",
         html: e.responseText,
       });
     },
@@ -897,27 +900,49 @@ function addTableDonHang(data) {
       </a>`;
     }
 
+    let action =
+      d.TrangThai == "-1" // Đã hủy
+        ? "_"
+        : d.TrangThai == "1" // Chờ duyệt
+        ? `<div class="tooltip">
+              <i class="fa fa-check" onclick="capNhatDonHang('${d.MaHD}', '2')"></i>
+              <span class="tooltiptext">Duyệt</span>
+          </div>
+          <div class="tooltip">
+              <i class="fa fa-remove" onclick="capNhatDonHang('${d.MaHD}', '-1')"></i>
+              <span class="tooltiptext">Hủy</span>
+          </div>`
+        : d.TrangThai == "2" // Đã duyệt
+        ? `<div class="tooltip">
+                <i class="fa fa-check" onclick="capNhatDonHang('${d.MaHD}', '3')"></i>
+                <span class="tooltiptext">Giao hàng</span>
+            </div>
+            <div class="tooltip">
+                <i class="fa fa-remove" onclick="capNhatDonHang('${d.MaHD}', '-1')"></i>
+                <span class="tooltiptext">Hủy</span>
+            </div>`
+        : d.TrangThai == "3" // Đang giao
+        ? `<div class="tooltip">
+              <i class="fa fa-check" onclick="capNhatDonHang('${d.MaHD}', '4')"></i>
+              <span class="tooltiptext">Giao xong</span>
+          </div>
+          <div class="tooltip">
+              <i class="fa fa-remove" onclick="capNhatDonHang('${d.MaHD}', '-1')"></i>
+              <span class="tooltiptext">Hủy</span>
+          </div>`
+        : d.TrangThai == "4" // Giao xong
+        ? `_`
+        : "";
+
     s += `<tr>
           <td style="width: 5%">${i + 1}</td>
           <td style="width: 13%">${d.MaHD}</td>
           <td style="width: 7%">${d.MaND}</td>
           <td style="width: 20%; text-align:right;">${dssp}</td>
-          <td style="width: 15%">${d.TongTien}</td>
+          <td style="width: 15%">${numToString(Number(d.TongTien))}</td>
           <td style="width: 10%">${date}</td>
-          <td style="width: 10%">${d.TrangThai}</td>
-          <td style="width: 10%">
-              <div class="tooltip">
-                  <i class="fa fa-check" onclick="duyet('${d.MaHD}', true)"></i>
-                  <span class="tooltiptext">Duyệt</span>
-              </div>
-              <div class="tooltip">
-                  <i class="fa fa-remove" 
-                      onclick="duyet('${d.MaHD}', false)"
-                  ></i>
-                  <span class="tooltiptext">Hủy</span>
-              </div>
-              
-          </td>
+          <td style="width: 10%">${getTenTrangThaiDonHang(d.TrangThai)}</td>
+          <td style="width: 10%">${action}</td>
       </tr>`;
     TONGTIEN += Number(d.tongtien);
   }
@@ -967,41 +992,83 @@ function getListDonHang() {
 }
 
 // Duyệt
-function duyet(maDonHang, duyetDon) {
-  var u = getListUser();
-  for (var i = 0; i < u.length; i++) {
-    for (var j = 0; j < u[i].donhang.length; j++) {
-      if (u[i].donhang[j].ngaymua == maDonHang) {
-        if (duyetDon) {
-          if (u[i].donhang[j].tinhTrang == "Đang chờ xử lý") {
-            u[i].donhang[j].tinhTrang = "Đã giao hàng";
-          } else if (u[i].donhang[j].tinhTrang == "Đã hủy") {
-            alert("Không thể duyệt đơn đã hủy !");
-            return;
-          }
-        } else {
-          if (u[i].donhang[j].tinhTrang == "Đang chờ xử lý") {
-            if (
-              window.confirm(
-                "Bạn có chắc muốn hủy đơn hàng này. Hành động này sẽ không thể khôi phục lại !"
-              )
-            )
-              u[i].donhang[j].tinhTrang = "Đã hủy";
-          } else if (u[i].donhang[j].tinhTrang == "Đã giao hàng") {
-            alert("Không thể hủy đơn hàng đã giao !");
-            return;
-          }
-        }
-        break;
-      }
-    }
+function capNhatDonHang(maDonHang, trangThai) {
+  let donhang = TATCA_DONHANG.find((_) => _.MaHD === maDonHang);
+  if (!donhang) {
+    Swal.fire({
+      type: "error",
+      title:
+        "Không tìm thấy đơn hàng #" + maDonHang + ". Vui lòng tải lại trang.",
+      html: e.responseText,
+    });
+    return;
   }
+  if (trangThai == "-1") {
+    Swal.fire({
+      type: "warning",
+      title: "Bạn có chắc muốn Hủy đơn hàng #" + maDonHang + "?",
+      text: "Việc này không thể hoàn tác!",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Hủy đơn",
+      cancelButtonText: "Giữ lại",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        capNhatDonHangAjax(maDonHang, trangThai);
+      }
+    });
+  } else {
+    Swal.fire({
+      type: "info",
+      title:
+        "Cập nhật đơn hàng #" +
+        maDonHang +
+        " thành " +
+        getTenTrangThaiDonHang(trangThai) +
+        "?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        capNhatDonHangAjax(maDonHang, trangThai);
+      }
+    });
+  }
+}
 
-  // lưu lại
-  setListUser(u);
-
-  // vẽ lại
-  refreshTableDonHang();
+function capNhatDonHangAjax(maDonHang, trangThai) {
+  $.ajax({
+    type: "POST",
+    url: "php/xulydonhang.php",
+    dataType: "json",
+    data: {
+      request: "capNhatTrangThai",
+      maDonHang: maDonHang,
+      trangThai: trangThai,
+    },
+    beforeSend: function () {
+      Swal.showLoading();
+    },
+    success: function (data, status, xhr) {
+      console.log(data);
+      Swal.fire({
+        type: "success",
+        title: "Cập nhật trạng thái đơn hàng #" + maDonHang + " thành công",
+      });
+      refreshTableDonHang();
+    },
+    error: function (e) {
+      console.log(e);
+      Swal.fire({
+        type: "error",
+        title:
+          "Lỗi cập nhật trạng thái đơn hàng (admin.js > capNhatDonHangAjax)",
+        html: e.responseText,
+      });
+    },
+  });
 }
 
 function locDonHangTheoKhoangNgay() {

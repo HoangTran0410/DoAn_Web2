@@ -101,6 +101,13 @@ class HoaDonBUS extends DB_business
         $sql = "SELECT * FROM hoadon WHERE MaND=$mand";
         $dsdh = (new HoaDonBUS())->get_list($sql);
     }
+
+    function capNhapTrangThai($trangthai, $id) {
+        $hoadon = $this->select_by_id("*", $id);
+        $hoadon["TrangThai"] = $trangthai;
+
+        return $this->update_by_id($hoadon, $id);
+    }
 }
 
 // Lớp tài khoản

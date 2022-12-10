@@ -20,7 +20,7 @@
 				"DiaChi" => $dulieu["diaChiNguoiNhan"],
 				"PhuongThucTT" => $dulieu["phuongThucTT"],
 				"TongTien" => $dulieu["tongTien"],
-				"TrangThai" => 1
+				"TrangThai" => 1 // Chờ duyệt
 			));
 
 			$hoadonMaxID = $hoadonBUS->get_list("SELECT * FROM hoadon ORDER BY MaHD DESC LIMIT 0, 1");

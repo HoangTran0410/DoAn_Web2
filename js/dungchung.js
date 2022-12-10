@@ -3,9 +3,8 @@ function khoiTao() {
   setupEventTaiKhoan();
   capNhatThongTinUser();
 
-  document.getElementsByClassName(
-    "cart-number"
-  )[0].innerHTML = getSoLuongGioHang();
+  document.getElementsByClassName("cart-number")[0].innerHTML =
+    getSoLuongGioHang();
 }
 
 // Hàm get set cho danh sách người dùng
@@ -122,6 +121,24 @@ function setupBanner() {
 // nên dùng bản copy để chắc chắn ko ảnh hưởng tới bản chính
 function copyObject(o) {
   return JSON.parse(JSON.stringify(o));
+}
+
+// Trả về tên trạng thái đơn hàng, đầu vào là id của trạng thái
+function getTenTrangThaiDonHang(trangThai) {
+  switch (Number(trangThai)) {
+    case 1:
+      return "Chờ duyệt";
+    case 2:
+      return "Đã duyệt";
+    case 3:
+      return "Đang giao";
+    case 4:
+      return "Đã giao";
+    case -1:
+      return "Đã hủy";
+    default:
+      return "(không xác định)";
+  }
 }
 
 // ================ Cart Number + Thêm vào Giỏ hàng ======================

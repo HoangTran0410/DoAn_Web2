@@ -109,7 +109,7 @@ function tableDonHang_Html(data) {
           <td >${donhang.DiaChi}</td>
           <td >${donhang.PhuongThucTT}</td>
           <td >${Number(donhang.TongTien).toLocaleString()} đ</td>
-          <td >${donhang.TrangThai}</td>
+          <td >${getTenTrangThaiDonHang(donhang.TrangThai)}</td>
           <td >
             <button 
               type="button" 
@@ -282,9 +282,8 @@ function changePass() {
 }
 
 function changeInfo(iTag, info) {
-  var inp = iTag.parentElement.previousElementSibling.getElementsByTagName(
-    "input"
-  )[0];
+  var inp =
+    iTag.parentElement.previousElementSibling.getElementsByTagName("input")[0];
 
   // Đang hiện
   if (!inp.readOnly && inp.value != "") {
