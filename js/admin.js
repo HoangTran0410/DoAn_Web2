@@ -22,7 +22,6 @@ window.onload = function () {
     (user) => {
       if (user != null && user.MaQuyen != 1) {
         addEventChangeTab();
-        addThongKe();
       } else {
         tuChoiTruyCap();
       }
@@ -63,61 +62,108 @@ function addChart(id, chartOption) {
   var chart = new Chart(ctx, chartOption);
 }
 
-function addThongKe() {
-  var dataChart = {
-    type: "bar",
-    data: {
-      labels: ["Apple", "Samsung", "Xiaomi", "Vivo", "Oppo", "Mobiistar"],
-      datasets: [
-        {
-          label: "Số lượng bán ra",
-          data: [12, 19, 10, 5, 20, 5],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255,99,132,1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)",
-          ],
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      title: {
-        fontColor: "#fff",
-        fontSize: 25,
-        display: true,
-        text: "Sản phẩm bán ra",
+// https://stackoverflow.com/a/1484514
+function getRandomColor() {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+async function refreshTableThongKe() {
+  layTatCaDonHang((tatCaDonHang) => {
+    console.log(tatCaDonHang);
+
+    let sanPhamBanRaTheoMaSP = {};
+    for (let donHang of tatCaDonHang) {
+      for (let chiTietDonHang of donHang.CTDH) {
+        let masp = chiTietDonHang.MaSP;
+        let soluong = Number(chiTietDonHang.SoLuong);
+        let dongia = chiTietDonHang.DonGia;
+
+        if (!(masp in sanPhamBanRaTheoMaSP)) {
+          sanPhamBanRaTheoMaSP[masp] = {
+            maSP: masp,
+            ten: chiTietDonHang.SP.TenSP,
+            soLuong: 0,
+            tongTien: 0,
+          };
+        }
+
+        sanPhamBanRaTheoMaSP[masp].soLuong += soluong;
+        sanPhamBanRaTheoMaSP[masp].tongTien += soluong * dongia;
+      }
+    }
+
+    console.log(sanPhamBanRaTheoMaSP);
+
+    let danhSachSanPhamBanRa = Object.values(sanPhamBanRaTheoMaSP);
+    let bgColor = danhSachSanPhamBanRa.map(getRandomColor);
+    let soLuongBanRa = {
+      type: "bar",
+      data: {
+        labels: danhSachSanPhamBanRa.map((_) => _.ten),
+        datasets: [
+          {
+            label: "Số lượng bán ra",
+            data: danhSachSanPhamBanRa.map((_) => _.soLuong),
+            backgroundColor: bgColor,
+            borderWidth: 2,
+          },
+        ],
       },
-    },
-  };
+      options: {
+        // legend: { display: false },
+        title: {
+          fontColor: "#fff",
+          fontSize: 25,
+          display: true,
+          text: "Số lượng bán ra",
+        },
+      },
+    };
+    let doanhThu = {
+      type: "bar",
+      data: {
+        labels: danhSachSanPhamBanRa.map((_) => _.ten),
+        datasets: [
+          {
+            label: "Số lượng bán ra",
+            data: danhSachSanPhamBanRa.map((_) => _.tongTien),
+            backgroundColor: bgColor,
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        title: {
+          fontColor: "#fff",
+          fontSize: 25,
+          display: true,
+          text: "Doanh thu",
+        },
+      },
+    };
 
-  // Thêm thống kê
-  var barChart = copyObject(dataChart);
-  barChart.type = "bar";
-  addChart("myChart1", barChart);
+    // Thêm thống kê
+    var chart = copyObject(soLuongBanRa);
+    chart.type = "bar";
+    addChart("myChart1", chart);
 
-  var doughnutChart = copyObject(dataChart);
-  doughnutChart.type = "doughnut";
-  addChart("myChart2", doughnutChart);
+    chart = copyObject(doanhThu);
+    chart.type = "doughnut";
+    addChart("myChart2", chart);
 
-  var pieChart = copyObject(dataChart);
-  pieChart.type = "pie";
-  addChart("myChart3", pieChart);
+    // var pieChart = copyObject(dataChart);
+    // pieChart.type = "pie";
+    // addChart("myChart3", pieChart);
 
-  var lineChart = copyObject(dataChart);
-  lineChart.type = "line";
-  addChart("myChart4", lineChart);
+    // var lineChart = copyObject(dataChart);
+    // lineChart.type = "line";
+    // addChart("myChart4", lineChart);
+  });
 }
 
 function ajaxLoaiSanPham() {
@@ -854,9 +900,8 @@ function getValueOfTypeInTable_SanPham(tr, loai) {
 }
 
 // ========================= Đơn Hàng ===========================
-// Vẽ bảng
 
-function refreshTableDonHang() {
+function layTatCaDonHang(callback) {
   $.ajax({
     type: "POST",
     url: "php/xulydonhang.php",
@@ -866,9 +911,7 @@ function refreshTableDonHang() {
       request: "getall",
     },
     success: function (data, status, xhr) {
-      addTableDonHang(data);
-      TATCA_DONHANG = data;
-      console.log(data);
+      callback(data);
     },
     error: function (e) {
       Swal.fire({
@@ -876,7 +919,17 @@ function refreshTableDonHang() {
         title: "Lỗi lấy dữ liệu đơn Hàng (admin.js > refreshTableDonHang)",
         html: e.responseText,
       });
+      callback([]);
     },
+  });
+}
+
+// Vẽ bảng
+function refreshTableDonHang() {
+  layTatCaDonHang((data) => {
+    addTableDonHang(data);
+    TATCA_DONHANG = data;
+    console.log(data);
   });
 }
 function addTableDonHang(data) {
@@ -900,6 +953,7 @@ function addTableDonHang(data) {
       </a>`;
     }
 
+    // Nút bấm Hành động
     let action =
       d.TrangThai == "-1" // Đã hủy
         ? "_"
@@ -934,10 +988,16 @@ function addTableDonHang(data) {
         ? `_`
         : "";
 
+    // Người dùng
+    let nguoiDung =
+      `${d.ND.TaiKhoan}<br/>` +
+      `(${d.ND.Ho} ${d.ND.Ten})<br/>` +
+      `Mã: ${d.MaND}`;
+
     s += `<tr>
           <td style="width: 5%">${i + 1}</td>
-          <td style="width: 13%">${d.MaHD}</td>
-          <td style="width: 7%">${d.MaND}</td>
+          <td style="width: 7%">${d.MaHD}</td>
+          <td style="width: 13%">${nguoiDung}</td>
           <td style="width: 20%; text-align:right;">${dssp}</td>
           <td style="width: 15%">${numToString(Number(d.TongTien))}</td>
           <td style="width: 10%">${date}</td>
@@ -949,46 +1009,6 @@ function addTableDonHang(data) {
 
   s += `</table>`;
   tc.innerHTML = s;
-}
-
-function getListDonHang() {
-  var u = getListUser();
-  var result = [];
-  for (var i = 0; i < u.length; i++) {
-    for (var j = 0; j < u[i].donhang.length; j++) {
-      // Tổng tiền
-      var tongtien = 0;
-      for (var s of u[i].donhang[j].sp) {
-        var timsp = timKiemTheoMa(list_products, s.ma);
-        if (timsp.MaKM.name == "giareonline")
-          tongtien += stringToNum(timsp.MaKM.value);
-        else tongtien += stringToNum(timsp.DonGia);
-      }
-
-      // Ngày giờ
-      var x = new Date(u[i].donhang[j].ngaymua).toLocaleString();
-
-      // Các sản phẩm
-      var sps = "";
-      for (var s of u[i].donhang[j].sp) {
-        sps +=
-          `<p style="text-align: right">` +
-          (timKiemTheoMa(list_products, s.ma).name + " [" + s.soluong + "]") +
-          `</p>`;
-      }
-
-      // Lưu vào result
-      result.push({
-        ma: u[i].donhang[j].ngaymua.toString(),
-        khach: u[i].username,
-        sp: sps,
-        tongtien: numToString(tongtien),
-        ngaygio: x,
-        tinhTrang: u[i].donhang[j].tinhTrang,
-      });
-    }
-  }
-  return result;
 }
 
 // Duyệt

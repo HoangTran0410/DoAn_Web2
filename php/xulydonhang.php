@@ -9,9 +9,15 @@
     	case 'getall':
 			$dsdh = (new HoaDonBUS())->select_all();
 			$spBUS = new SanPhamBUS();
+			$cthdBUS = new ChiTietHoaDonBUS();
+			$ndBUS = new NguoiDungBUS();
 
 			for($i = 0; $i < sizeof($dsdh); $i++) {
-				$dsdh[$i]["CTDH"] = (new ChiTietHoaDonBUS())->select_all_in_hoadon($dsdh[$i]["MaHD"]);
+				// Thêm thông tin người dùng
+				$dsdh[$i]["ND"] = $ndBUS->select_by_id("*", $dsdh[$i]["MaND"]);
+
+				// Thêm thông tin chi tiết sản phẩm
+				$dsdh[$i]["CTDH"] = $cthdBUS->select_all_in_hoadon($dsdh[$i]["MaHD"]);
 
 				for($j = 0; $j < sizeof($dsdh[$i]["CTDH"]); $j++) {
 					$dsdh[$i]["CTDH"][$j]["SP"] = $spBUS->select_by_id("*", $dsdh[$i]["CTDH"][$j]["MaSP"]);

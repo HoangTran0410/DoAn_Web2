@@ -61,7 +61,7 @@
                     <span>Khách Hàng</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" onclick="refreshTableThongKe()">
                 <a class="nav-link">
                     <i class="fa fa-bar-chart-o"></i>
                     <span>Thống Kê</span>
@@ -243,9 +243,9 @@
                     <!-- Theo độ rộng của table content -->
                     <th title="Sắp xếp" style="width: 5%" onclick="sortDonHangTable('stt')">Stt <i
                             class="fa fa-sort"></i></th>
-                    <th title="Sắp xếp" style="width: 13%" onclick="sortDonHangTable('madon')">Mã đơn <i
+                    <th title="Sắp xếp" style="width: 7%" onclick="sortDonHangTable('madon')">Mã đơn <i
                             class="fa fa-sort"></i></th>
-                    <th title="Sắp xếp" style="width: 7%" onclick="sortDonHangTable('khach')">Khách <i
+                    <th title="Sắp xếp" style="width: 13%" onclick="sortDonHangTable('khach')">Khách <i
                             class="fa fa-sort"></i></th>
                     <th title="Sắp xếp" style="width: 20%" onclick="sortDonHangTable('sanpham')">Sản phẩm <i
                             class="fa fa-sort"></i></th>
