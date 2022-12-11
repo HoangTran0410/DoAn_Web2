@@ -1033,7 +1033,7 @@ function capNhatDonHang(maDonHang, trangThai) {
       confirmButtonText: "Hủy đơn",
       cancelButtonText: "Giữ lại",
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (result.value) {
         capNhatDonHangAjax(maDonHang, trangThai);
       }
     });
@@ -1051,7 +1051,7 @@ function capNhatDonHang(maDonHang, trangThai) {
       confirmButtonText: "Đồng ý",
       cancelButtonText: "Hủy",
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (result.value) {
         capNhatDonHangAjax(maDonHang, trangThai);
       }
     });
